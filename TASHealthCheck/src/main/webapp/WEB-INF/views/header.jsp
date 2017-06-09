@@ -3,5 +3,5 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 
 <div class="jumbotron">
-  <h1 style="text-align: center" "class="display-3">Hello, world!</h1>
+  <h1 style="text-align: center" "class="display-3">TAS HealthCheck</h1>
 </div>
