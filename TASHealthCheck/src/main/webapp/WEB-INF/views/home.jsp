@@ -2,13 +2,37 @@
 <%@ page session="false" %>
 <html>
 <head>
+<link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 	<title>Home</title>
 </head>
 <body>
-<h1>
-	Hello world!  
-</h1>
-
-<P>  The time on the server is ${serverTime}. </P>
+<jsp:include page="header.jsp" />
+<div class="container">
+		<div class="row">
+			<div class = "col-sm-8 col-centered">
+				<table id="myTable" class="table table-striped tablesorter">
+				<thead class="thead-inverse">
+					<tr>
+						<th style="text-align: center"></th>
+						<th style="text-align: center">Application</th>
+						<th style="text-align: center">Version</th>
+					</tr>
+					</thead>
+					<tbody>
+					<tr>
+					<td align="center"><img src="${pageContext.request.contextPath}/resources/red_sphere.png"/></td>
+					<td align="center">LEOFA</td>
+					<td align="center">v3.5.6</td>
+					</tr>
+					<tr>
+					<td align="center"><img src="${pageContext.request.contextPath}/resources/blue_sphere.png"/></td>
+					<td align="center">IdeaFactory</td>
+					<td align="center">2.7.8</td>
+					</tr>
+				</table>
+		</div>
+	</div>
+</div>		
 </body>
 </html>
