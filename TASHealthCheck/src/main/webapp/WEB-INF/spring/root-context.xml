@@ -17,7 +17,7 @@
 	<mvc:resources mapping="/resources/**" location="/resources/css" />
 	<mvc:annotation-driven />
 	
-	<context:component-scan base-package="com.tas.healthcheck.service, com.tas.healthcheck.dao" />
+	<context:component-scan base-package="com.tas.healthcheck.service, com.tas.healthcheck.dao, com.tas.healthcheck.web" />
 	
 	<tx:annotation-driven transaction-manager="txManager"/>
 	
