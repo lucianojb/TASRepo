@@ -6,10 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name="tas_app")
-public class TASApplication {
+public class Application {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,32 +21,35 @@ public class TASApplication {
 	private int appID;
 	
 	@Column(name="app_name")
+	@NotEmpty
 	private String appName;
 	
 	@Column(name="url")
+	@URL(message="Not a valid url (assure url contains http:// or https:// in front)")
+	@NotEmpty
 	private String url;
 	
-	@Column(name="components")
-	private String components;
+	@Column(name="connections")
+	private String connections;
 	
 	@Column(name="version_num")
 	private String versionNum;
 	
-	public TASApplication(){
+	public Application(){
 		super();
 	}
 	
-	public TASApplication(String appName, String url, String components, String versionNum){
+	public Application(String appName, String url, String connections, String versionNum){
 		super();
 		this.appName = appName;
 		this.url = url;
-		this.components = components;
+		this.connections = connections;
 		this.versionNum = versionNum;
 	}
 
 	@Override
 	public String toString() {
-		return "TASApplication [appName=" + appName + ", url=" + url + ", components=" + components + ", versionNum="
+		return "Application [appName=" + appName + ", url=" + url + ", connections=" + connections + ", versionNum="
 				+ versionNum + "]";
 	}
 
@@ -70,12 +77,12 @@ public class TASApplication {
 		this.url = url;
 	}
 
-	public String getComponents() {
-		return components;
+	public String getConnections() {
+		return connections;
 	}
 
-	public void setComponents(String components) {
-		this.components = components;
+	public void setConnections(String connections) {
+		this.connections = connections;
 	}
 
 	public String getVersionNum() {
