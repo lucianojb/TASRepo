@@ -37,7 +37,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="annotatedClasses">
 			<list>
-				<value>com.tas.healthcheck.models.TASApplication</value>
+				<value>com.tas.healthcheck.models.Application</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
