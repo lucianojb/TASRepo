@@ -1,9 +1,13 @@
 package com.tas.healthcheck.dao;
 
+import java.util.List;
+
 import com.tas.healthcheck.models.Application;
 
 public interface TASApplicationDao {
 
 	boolean saveApplication(Application app);
+
+	List<Application> getAllApps();
 
 }

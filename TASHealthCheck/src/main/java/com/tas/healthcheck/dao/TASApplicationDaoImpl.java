@@ -1,5 +1,7 @@
 package com.tas.healthcheck.dao;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.hibernate.HibernateException;
@@ -32,6 +34,11 @@ private static final Logger logger = LoggerFactory.getLogger(TASApplicationDaoIm
 		}catch(HibernateException exc){
 			return false;
 		}
+	}
+
+	@Override
+	public List<Application> getAllApps() {
+		return this.sessionFactory.getCurrentSession().createQuery("from Application order by app_name", Application.class).getResultList();
 	}
 	
 }

@@ -1,5 +1,7 @@
 package com.tas.healthcheck.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.tas.healthcheck.dao.TASApplicationDao;
@@ -12,6 +14,10 @@ public class TASApplicationService {
 	
 	public void saveApplication(Application application) {
 		tasApplicationDao.saveApplication(application);
+	}
+
+	public List<Application> getAllApplications() {
+		return tasApplicationDao.getAllApps();
 	}
 
 }

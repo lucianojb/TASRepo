@@ -27,6 +27,16 @@ public class AdminController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
+	
+	@RequestMapping(value = "/applications", method = RequestMethod.GET)
+	public String viewApps(Model model) {
+		List<Application> apps = tasApplicationService.getAllApplications();
+		
+		model.addAttribute("appData", apps);
+		
+		return "applicationlist";
+	}
+	
 	@RequestMapping(value = "/createapplication", method = RequestMethod.GET)
 	public String createApp(Model model, Application application) {
 		return "createapplication";
