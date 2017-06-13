@@ -6,10 +6,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.URL;
 
 @Entity
 @Table(name="tas_app")
-public class TASApplication {
+public class Application {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,9 +21,12 @@ public class TASApplication {
 	private int appID;
 	
 	@Column(name="app_name")
+	@NotEmpty
 	private String appName;
 	
 	@Column(name="url")
+	@URL(message="Not a valid url (assure url contains http:// or https:// in front)")
+	@NotEmpty
 	private String url;
 	
 	@Column(name="components")
@@ -28,11 +35,11 @@ public class TASApplication {
 	@Column(name="version_num")
 	private String versionNum;
 	
-	public TASApplication(){
+	public Application(){
 		super();
 	}
 	
-	public TASApplication(String appName, String url, String components, String versionNum){
+	public Application(String appName, String url, String components, String versionNum){
 		super();
 		this.appName = appName;
 		this.url = url;
@@ -42,7 +49,7 @@ public class TASApplication {
 
 	@Override
 	public String toString() {
-		return "TASApplication [appName=" + appName + ", url=" + url + ", components=" + components + ", versionNum="
+		return "Application [appName=" + appName + ", url=" + url + ", components=" + components + ", versionNum="
 				+ versionNum + "]";
 	}
 
