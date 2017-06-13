@@ -1,8 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/mvc
+	  http://www.springframework.org/schema/mvc/spring-mvc.xsd
+	    http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	<mvc:resources mapping="/resources/**" location="/resources/css" />
+	<mvc:annotation-driven />
+	
+	<context:component-scan base-package="com.tas.healthcheck.service, com.tas.healthcheck.dao, com.tas.healthcheck.web" />
+	
+	<tx:annotation-driven transaction-manager="txManager"/>
+	
+	<bean id="txManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+    	<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
 		
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">	
+        <property name = "driverClassName" value = "org.postgresql.Driver" />     
+        <property name="username" value="lucypastrana" />
+        <property name = "password" value = "afstas2017"/>   
+      	<property name="url" value ="jdbc:postgresql://tasagilesignup.custm6rfbdy3.us-west-2.rds.amazonaws.com:5432/agilesignup"/>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="annotatedClasses">
+			<list>
+				<value>com.tas.healthcheck.models.TASApplication</value>
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+				<prop key="hibernate.show_sql">false</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="tasApplicationDao" class="com.tas.healthcheck.dao.TASApplicationDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="tasApplicationService" class="com.tas.healthcheck.service.TASApplicationService"></bean>
+	
+	<!--  <bean id="customAuthenticationSuccessHandler" class="com.tas.healthcheck.security.customAuthenticationSuccessHandler"/> -->
 </beans>

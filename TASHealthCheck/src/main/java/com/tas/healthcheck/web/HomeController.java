@@ -1,4 +1,4 @@
-package com.tas.healthcheck;
+package com.tas.healthcheck.web;
 
 import java.text.DateFormat;
 import java.util.Date;
