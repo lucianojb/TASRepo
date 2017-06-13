@@ -14,16 +14,22 @@
 	function add() {
 		var element = document.createElement("input");
 		element.setAttribute("type", "text");
-		element.setAttribute("name", "component");
+		element.setAttribute("name", "connection");
 		
-		var group = document.getElementById("componentsGroup");
+		var group = document.getElementById("connectionsGroup");
 		group.appendChild(element);
 	}
 	
 	function remove() {		
-		var group = document.getElementById("componentsGroup");
+		var group = document.getElementById("connectionsGroup");
 		if(group.childElementCount > 0){
-			group.removeChild(group.lastChild);
+			var element = group.lastChild;
+			if(element.tagName != "INPUT"){
+				group.removeChild(element);
+				element = group.lastChild;
+			}
+			
+			group.removeChild(element);
 		}
 	}
 </script>
@@ -58,21 +64,26 @@
 	
 	
 		<div class = "row">
-			<button type="button" name="addComponent" value="addComponent" onclick="add();">Add Component</button>
+			<button type="button" name="addConnection" value="addConnection" onclick="add();">Add Component</button>
 		</div>
 		<div class = "row">
-			<button type="button" name="removeComponent" value="removeComponent" onclick="remove();">Remove Component</button>
+			<button type="button" name="removeConnection" value="removeConnection" onclick="remove();">Remove Component</button>
 		</div>
 		
 		<div class = "row">
 			<div class="col-sm-6 col-centered">	
-				<div class="form-group" id="componentsGroup">
-					<c:if test="${not empty componentsAdded}">
-						<c:forEach var="com" items="${componentsAdded}">
-							<input type="text" name="component" value="${com}">
+				<div class="form-group" id="connectionsGroup">
+					<c:if test="${not empty connectionsAdded}">
+						<c:forEach var="con" items="${connectionsAdded}">
+							<input type="text" name="connection" value="${con}">
 						</c:forEach>
 					</c:if>
 				</div>
+			</div>
+			<div>
+				<c:if test="${not empty connectionInvalid}">
+					<c:out value="${connectionInvalid}"></c:out>
+				</c:if>
 			</div>
 		</div>
 		

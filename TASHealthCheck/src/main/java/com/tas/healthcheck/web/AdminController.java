@@ -34,7 +34,7 @@ public class AdminController {
 	
 	@RequestMapping(value = "/createapplication", method = RequestMethod.POST)
 	public String saveApp(Model model, @Valid Application application, BindingResult bindingResult, 
-			@RequestParam(name="component", required=false) String[] componentValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
+			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
 		
 		if(submit.equals("cancel")){
 			return "redirect:./";
@@ -44,24 +44,35 @@ public class AdminController {
 		
 		if(bindingResult.hasErrors()){
 			logger.info("Binding errors on application " + application);
-			if(componentValues != null){
-				logger.info("Preserving componentValues " + componentValues.toString() + ", size " + componentValues.length);
+			if(connectionValues != null){
+				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
-			model.addAttribute("componentsAdded", componentValues);
+			model.addAttribute("connectionsAdded", connectionValues);
 			
 			return "createapplication";
 		}
 		
-		if(componentValues != null){
+		if(connectionValues != null){
 			StringBuilder strBuild = new StringBuilder();
-			for(int x = 0; x < componentValues.length; x++){
-				strBuild.append(componentValues[x] + ",");
+			for(int x = 0; x < connectionValues.length; x++){
+				
+				if(connectionValues[x].isEmpty()){
+					logger.info("Empty connection component");
+					
+					redirectAttributes.addFlashAttribute("application", application);
+					model.addAttribute("connectionsAdded", connectionValues);
+					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
+					
+					return "createapplication";
+				}
+				
+				strBuild.append(connectionValues[x] + ",");
 			}
 			strBuild.deleteCharAt(strBuild.length() - 1);
 		
-			application.setComponents(strBuild.toString());
+			application.setConnections(strBuild.toString());
 		}
 		
 		logger.info("Creating: " + application);
