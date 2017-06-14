@@ -26,7 +26,8 @@
 						<tr>
 							<td align="center"><c:out value="${app.appName}"/></td>
 							<td align="center"><c:out value="${app.url}" /></td>
-							<td align="center"><a href="<c:url value='/editapplication/${app.appID}' />" >Edit</a></td>
+							<td align="center"><a href="<c:url value='/editapplication/${app.appID}'/>">Edit</a></td>
+							<td align="center"><a href="<c:url value='/deleteapplication/${app.appID}'/>">Delete</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

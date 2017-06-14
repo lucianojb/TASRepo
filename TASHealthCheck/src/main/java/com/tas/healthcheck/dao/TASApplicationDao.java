@@ -10,4 +10,8 @@ public interface TASApplicationDao {
 
 	List<Application> getAllApps();
 
+	Application getAppById(int id);
+
+	boolean removeById(int id);
+
 }

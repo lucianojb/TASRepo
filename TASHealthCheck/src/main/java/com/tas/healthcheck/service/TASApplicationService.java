@@ -20,4 +20,12 @@ public class TASApplicationService {
 		return tasApplicationDao.getAllApps();
 	}
 
+	public Application getApplicationById(int id) {
+		return tasApplicationDao.getAppById(id);
+	}
+
+	public boolean removeApplicationById(int id) {
+		return tasApplicationDao.removeById(id);
+	}
+
 }
