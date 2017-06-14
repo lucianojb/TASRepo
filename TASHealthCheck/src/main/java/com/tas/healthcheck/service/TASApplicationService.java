@@ -1,14 +1,26 @@
 package com.tas.healthcheck.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tas.healthcheck.dao.TASApplicationDao;
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.web.AdminController;
 
 public class TASApplicationService {
 
+	private static final Logger logger = LoggerFactory.getLogger(TASApplicationService.class);
+	
 	@Autowired
 	TASApplicationDao tasApplicationDao;
 	
@@ -26,6 +38,85 @@ public class TASApplicationService {
 
 	public boolean removeApplicationById(int id) {
 		return tasApplicationDao.removeById(id);
+	}
+
+	/*
+	 * Return health state as int
+	 * -2 error retrieving healthcheck json
+	 * -1 healthcheck json missing expected values
+	 * 0 is known outage
+	 * 1 is healthy
+	 * 2 is some healthy, some down
+	 * 3 is all down
+	 */
+	public int determineHealthOfApp(Application app) {
+		
+		//String healthCheckURL = app.getUrl();
+		
+		//TO-DO: add logic here for known outage
+		//return 0
+		
+		String jsonContent;
+						
+		try {
+			//TO-DO: retrieve JSON from url instead of resource
+			jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("allfalse.json").toURI())));
+			
+			ObjectMapper mapper = new ObjectMapper();
+			
+			JsonNode rootNode = mapper.readTree(jsonContent);
+			logger.info("App version: " + rootNode.get("ver"));
+			
+			//save the application version name
+			app.setVersionNum(rootNode.get("ver").asText());
+			
+			this.saveApplication(app);
+			
+			if(!rootNode.has("conns")){
+				//if there are no connections then app is healthy
+				return 1;
+			}
+			JsonNode connectionsNode = rootNode.get("conns");
+			
+			if(app.getConnections() == null){
+				//if there are no connections on application object side then also healthy
+				return 1;
+			}
+			
+			String[] appConnections = app.getConnections().split(",");
+			
+			boolean allFalse = true;
+			boolean allTrue = true;
+			for(int x = 0; x < appConnections.length; x++){
+				if(!connectionsNode.has(appConnections[x])){
+					//if healthcheck json does not have expected connection
+					return -1;
+				}
+				boolean connectionValue = connectionsNode.get(appConnections[x]).asBoolean();
+				if(connectionValue){
+					allFalse = false;
+				}
+				if(!connectionValue){
+					allTrue = false;
+				}
+			}
+			
+			if(allFalse){
+				return 3;
+			}else if(allTrue){
+				return 1;
+			}else{
+				return 2;
+			}
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+			return -2;
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+			return -2;
+		}
 	}
 
 }

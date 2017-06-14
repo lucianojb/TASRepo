@@ -1,0 +1,8 @@
+{
+	"ver": "2.2.1",
+	"name": "Leofa",
+	"conns": {
+		"server": true,
+		"db": true
+	}
+}
