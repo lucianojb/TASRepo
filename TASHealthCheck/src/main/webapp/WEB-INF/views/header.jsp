@@ -12,14 +12,14 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#"> <img style="max-width: 20px; max-height: 20px;"src="${pageContext.request.contextPath}/resources/pictures/Hospital-Symbol.png" /></a>
-          <a class="navbar-brand" href="#"> TAS Healthcheck</a>
+          <a class="navbar-brand" href="/"> <img style="max-width: 20px; max-height: 20px;"src="${pageContext.request.contextPath}/resources/pictures/Hospital-Symbol.png" /></a>
+          <a class="navbar-brand" href="/"> TAS Healthcheck</a>
         </div>
     
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="navbar-collapse-2">
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Home</a></li>
+            <li><a href="/">Home</a></li>
             <li>
               <a class="btn btn-default btn-outline btn-circle"  data-toggle="collapse" href="#nav-collapse2" aria-expanded="false" aria-controls="nav-collapse2">Sign in</a>
             </li>
