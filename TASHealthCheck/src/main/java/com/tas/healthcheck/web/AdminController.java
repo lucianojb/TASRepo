@@ -162,7 +162,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.GET)
-	public String deleteUserGet(Model model, @PathVariable("id") int id) {
+	public String deleteApplicationGet(Model model, @PathVariable("id") int id) {
 		logger.info("Getting page to delete application {}", id);
 		
 		Application app = tasApplicationService.getApplicationById(id);
@@ -177,7 +177,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.POST)
-	public String deleteUser(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
+	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
 		logger.info("Deleting application {}!", id);
 		
 		if(submit.equals("delete")){
@@ -189,6 +189,40 @@ public class AdminController {
 
 			//remove app
 			tasApplicationService.removeApplicationById(id);
+		}
+		
+						
+		return "redirect:../applications";
+	}
+	
+	@RequestMapping(value = "/disableapplication/{id}", method = RequestMethod.GET)
+	public String disableAppGet(Model model, @PathVariable("id") int id) {
+		logger.info("Getting page to disable application {}", id);
+		
+		Application app = tasApplicationService.getApplicationById(id);
+		if(app == null){
+			model.addAttribute("errorMessage", "Could not find application to disable");
+			return "redirect:../error";
+		}
+		
+		model.addAttribute("application", app);
+						
+		return "disableapplication";
+	}
+	
+	@RequestMapping(value = "/disableapplication/{id}", method = RequestMethod.POST)
+	public String deleteUser(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
+		logger.info("Disabling application {}!", id);
+		
+		if(submit.equals("continue")){
+			Application app = tasApplicationService.getApplicationById(id);
+			if(app == null){
+				model.addAttribute("errorMessage", "Could not find application to disable");
+				return "redirect:../error";
+			}
+			logger.info("Toggling state of application to {}", !app.isActiveState());
+			app.setActiveState(!app.isActiveState());
+			tasApplicationService.saveApplication(app);
 		}
 		
 						

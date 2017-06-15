@@ -44,7 +44,7 @@ public class TASApplicationService {
 	/*
 	 * Return health state as int
 	 * -1 error retrieving or parsing healthcheck
-	 * 0 is known outage
+	 * 0 is known disabled
 	 * 1 is healthy
 	 * 2 is some healthy, some down
 	 * 3 is all down
@@ -54,8 +54,11 @@ public class TASApplicationService {
 		
 		//String healthCheckURL = app.getUrl();
 		
-		//TO-DO: add logic here for known outage
-		//return 0
+		//App is manually disabled
+		if(!app.isActiveState()){
+			payload.setResultValue(0);
+			return payload;
+		}
 		
 		String jsonContent;
 						

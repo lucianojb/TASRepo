@@ -62,7 +62,7 @@
 														src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 												</c:otherwise>
 											</c:choose>
-											${payload.app.appName}
+											${payload.app.appName} v${payload.app.versionNum}
 										</h2>
 
 									</div>
@@ -71,6 +71,9 @@
 								<div class="detail">
 									<div id="sup">
 										<c:choose>
+										<c:when test="${payload.resultValue == 0 }">
+											Application health checks manually turned off
+										</c:when>
 										<c:when test="${not empty payload.errorMessage}">
 											${payload.errorMessage}
 										</c:when>

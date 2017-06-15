@@ -42,6 +42,16 @@
 									href="<c:url value='/editapplication/${app.appID}'/>">Edit</a></td>
 								<td align="center"><a
 									href="<c:url value='/deleteapplication/${app.appID}'/>">Delete</a></td>
+								<c:choose>
+								<c:when test="${app.activeState}">
+									<td align="center"><a
+									href="<c:url value='/disableapplication/${app.appID}'/>">Off</a></td>
+								</c:when>
+								<c:otherwise>
+									<td align="center"><a
+									href="<c:url value='/disableapplication/${app.appID}'/>">On</a></td>
+								</c:otherwise>
+								</c:choose>
 							</tr>
 						</c:forEach>
 					</tbody>
