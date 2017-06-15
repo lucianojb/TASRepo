@@ -13,7 +13,7 @@
 <body>
 	<jsp:include page="header.jsp" />
 
-	<div class="container">
+	<div class="container-fluid">
 		<sf:form method="POST" commandName="application">
 			<div class="row">
 				<div class="col-sm-3 col-centered  row-bordered">
