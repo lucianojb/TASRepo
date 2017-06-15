@@ -9,35 +9,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Add Application</title>
 <script src="resources/jquery-3.2.1.min.js"></script>
-<script type="text/javascript">
-	function add() {
-		var element = document.createElement("input");
-		element.setAttribute("type", "text");
-		element.setAttribute("name", "connection");
-		element.setAttribute("class","form-control margin-bottom");
-		
-		var group = document.getElementById("connectionsGroup");
-		group.appendChild(element);
-	}
-	
-	function remove() {		
-		var group = document.getElementById("connectionsGroup");
-		if(group.childElementCount > 2){
-			var element = group.lastChild;
-			if(element.id != "conlabel"){
-				group.removeChild(element);
-				element = group.lastChild;
-			}
-			
-			group.removeChild(element);
-		}
-	}
-</script>
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-	<sf:form method="POST" commandName="application">
-		<div class="container">
+
+	<div class="container">
+		<sf:form method="POST" commandName="application">
 			<div class="row">
 				<div class="col-sm-3 col-centered  row-bordered">
 					<h1 style="text-align: center; font-weight: bold;">Add
@@ -84,34 +61,19 @@
 				</div>
 			</div>
 
-			<div class="row">
-				<div class="col-sm-1 col-sm-offset-5 text-center">
-					<button type="button" style="display: block"
-						class="btn btn-danger btn-circle btn-lg" name="removeConnection"
-						value="removeConnection" onclick="remove();">
-						<i class="glyphicon glyphicon-minus"></i>
-					</button>
-				</div>
-				<div class="col-sm-1 text-center">
-					<button type="button" style="text-align: center"
-						class="btn btn-warning btn-circle btn-lg" name="addConnection"
-						value="addConnection" onclick="add();">
-						<i class="glyphicon glyphicon-plus"></i>
-					</button>
-				</div>
-			</div>
-		</div>
+			<jsp:include page="component.jsp" />
 
-		<div class="row top-buffer">
-			<div class="col-sm-2 col-centered">
-				<button type="submit" class="btn btn-success btn-block"
-					name="submit" value="create">Create</button>
-				<button type="submit" class="btn btn-error btn-block" name="submit"
-					value="cancel">Cancel</button>
+
+			<div class="row top-buffer">
+				<div class="col-sm-2 col-centered">
+					<button type="submit" class="btn btn-success btn-block"
+						name="submit" value="create">Create</button>
+					<button type="submit" class="btn btn-error btn-block" name="submit"
+						value="cancel">Cancel</button>
+				</div>
+
 			</div>
-		</div>
-		</div>
-	</sf:form>
+		</sf:form>
 	</div>
 </body>
 </html>
