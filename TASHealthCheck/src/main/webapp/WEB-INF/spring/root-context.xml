@@ -54,5 +54,7 @@
 	
 	<bean id="tasApplicationService" class="com.tas.healthcheck.service.TASApplicationService"></bean>
 	
+	<bean id="customAuthenticationSuccessHandler" class="com.tas.healthcheck.security.customAuthenticationSuccessHandler"/>
+	
 	<!--  <bean id="customAuthenticationSuccessHandler" class="com.tas.healthcheck.security.customAuthenticationSuccessHandler"/> -->
 </beans>
