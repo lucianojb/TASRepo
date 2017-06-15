@@ -1,0 +1,8 @@
+{
+	"ver": "7.1",
+	"name": "Collabnet",
+	"conns": {
+		"server": false,
+		"db": false
+	}
+}

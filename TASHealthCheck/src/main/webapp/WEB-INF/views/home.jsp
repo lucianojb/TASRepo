@@ -37,7 +37,7 @@ $(function() {
 						<li><a class="expand">
 								<div class="right-arrow">+</div>
 								<div id>
-									<h2><img src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png"/> LEOFA v3.5.6
+									<h2><img src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png"/>LEOFA v3.5.6
 									</h2>
 									
 								</div>
