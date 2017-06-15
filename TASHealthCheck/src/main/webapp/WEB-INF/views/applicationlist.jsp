@@ -11,30 +11,43 @@
 </head>
 <body>
 
-	<div class="row top-buffer">
-			<div class = "col-sm-8 col-centered">
-				<table id="myTable" class="table table-striped tablesorter">
-				<thead class="thead-inverse">
-					<tr>
-						<th style="text-align: center">App Name</th>
-						<th style="text-align: center">URL</th>
-					</tr>
-				</thead>
-				
-				<tbody>
-					<c:forEach items="${appData}" var="app">
-						<tr>
-							<td align="center"><c:out value="${app.appName}"/></td>
-							<td align="center"><c:out value="${app.url}" /></td>
-							<td align="center"><a href="<c:url value='/editapplication/${app.appID}'/>">Edit</a></td>
-							<td align="center"><a href="<c:url value='/deleteapplication/${app.appID}'/>">Delete</a></td>
-						</tr>
-					</c:forEach>
-				</tbody>
-				</table>
-			</div>		
+	<jsp:include page="header.jsp" />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-centered  row-bordered">
+				<h1 style="text-align: center; font-weight: bold;">Admin
+					Application List</h1>
+			</div>
 		</div>
 
+		<div class="row top-buffer">
+			<div class="col-sm-8 col-centered">
+				<table id="myTable" class="table table-striped tablesorter">
+					<thead class="thead-inverse">
+						<tr>
+							<th style="text-align: center">App Name</th>
+							<th style="text-align: center">URL</th>
+							<th></th>
+							<th></th>
+						</tr>
+					</thead>
 
+					<tbody>
+						<c:forEach items="${appData}" var="app">
+							<tr>
+								<td align="center"><c:out value="${app.appName}" /></td>
+								<td align="center"><c:out value="${app.url}" /></td>
+								<td align="center"><a
+									href="<c:url value='/editapplication/${app.appID}'/>">Edit</a></td>
+								<td align="center"><a
+									href="<c:url value='/deleteapplication/${app.appID}'/>">Delete</a></td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </body>
 </html>
