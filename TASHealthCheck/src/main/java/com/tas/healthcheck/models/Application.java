@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
@@ -35,22 +34,26 @@ public class Application {
 	@Column(name="version_num")
 	private String versionNum;
 	
+	@Column(name="active")
+	private boolean activeState;
+	
 	public Application(){
 		super();
 	}
 	
-	public Application(String appName, String url, String connections, String versionNum){
+	public Application(String appName, String url, String connections, String versionNum, boolean activeState){
 		super();
 		this.appName = appName;
 		this.url = url;
 		this.connections = connections;
 		this.versionNum = versionNum;
+		this.activeState = activeState;
 	}
 
 	@Override
 	public String toString() {
 		return "Application [appName=" + appName + ", url=" + url + ", connections=" + connections + ", versionNum="
-				+ versionNum + "]";
+				+ versionNum + ", activeState=" + activeState + "]";
 	}
 
 	public int getAppID() {
@@ -91,5 +94,13 @@ public class Application {
 
 	public void setVersionNum(String versionNum) {
 		this.versionNum = versionNum;
+	}
+
+	public boolean isActiveState() {
+		return activeState;
+	}
+
+	public void setActiveState(boolean activeState) {
+		this.activeState = activeState;
 	}
 }

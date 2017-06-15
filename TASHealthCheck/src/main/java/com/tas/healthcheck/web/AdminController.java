@@ -1,6 +1,5 @@
 package com.tas.healthcheck.web;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.service.TASApplicationService;
@@ -88,7 +86,7 @@ public class AdminController {
 		}
 		
 		logger.info("Creating: " + application);
-		
+		application.setActiveState(true);
 		tasApplicationService.saveApplication(application);
 		
 		return "redirect:./applications";

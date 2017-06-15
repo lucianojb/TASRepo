@@ -1,6 +1,5 @@
 package com.tas.healthcheck.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -80,12 +79,15 @@ public class TASApplicationService {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			JsonNode rootNode = mapper.readTree(jsonContent);
-			logger.info("App version: " + rootNode.get("ver"));
 			
 			//save the application version name
-			app.setVersionNum(rootNode.get("ver").asText());
+			if(rootNode.has("ver") && !app.getVersionNum().equals(rootNode.get("ver").asText())){
+				String newVersion = rootNode.get("ver").asText();
+				logger.info("Saving version of app {} as {}", app.getAppName(), newVersion);
+				app.setVersionNum(newVersion);
 			
-			this.saveApplication(app);
+				this.saveApplication(app);
+			}
 			
 			if(!rootNode.has("conns")){
 				//if there are no connections then app is healthy
