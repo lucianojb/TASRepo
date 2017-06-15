@@ -10,14 +10,24 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form method=POST>
-	Deleting application <c:out value="${application.appName}"/>
-	<div class = "row">
-			<div class = "col-sm-2 col-centered">
-				<button type="submit" class="btn btn-success btn-block" name="submit" value="delete">For real</button>
-				<button type="submit" class="btn btn-error btn-block" name="submit" value="cancel">Nah, Im just playing</button>
+	<jsp:include page="header.jsp" />
+
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-3 col-centered row-bordered">
+				<h1 style="text-align: center;">Delete ${application.appName}</h1>
 			</div>
 		</div>
+		<form method=POST>
+			<div class="row top-buffer">
+				<div class="col-sm-2 col-centered">
+					<button type="submit" class="btn btn-danger btn-block"
+						name="submit" value="delete">Delete</button>
+					<button type="submit" class="btn btn-error btn-block" name="submit"
+						value="cancel">Cancel</button>
+				</div>
+			</div>
 		</form>
+	</div>
 </body>
 </html>
