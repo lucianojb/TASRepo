@@ -7,6 +7,6 @@
 <title>Error</title>
 </head>
 <body>
-	Something unexpected happened ${errorMessage}
+	Something unexpected happened: ${errorMessage}
 </body>
 </html>
