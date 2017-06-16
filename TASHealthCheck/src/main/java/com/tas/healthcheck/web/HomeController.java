@@ -54,12 +54,6 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String posthome(Locale locale, Model model) {
-		
-		return "home";
-	}
-	
 	@RequestMapping(value = "/application/{id}", method = RequestMethod.GET)
 	public String individualAppView(Model model, @PathVariable("id") int id){
 		
