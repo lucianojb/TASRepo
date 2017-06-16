@@ -1,9 +1,7 @@
 package com.tas.healthcheck.web;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,23 +31,18 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+	public String home(Model model) {
+		logger.info("Accessing the tas healthcheck dashboard homepage");
 		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate);
-		
-		/*List<Application> apps = tasApplicationService.getAllApplications();
+		List<Application> apps = tasApplicationService.getAllApplications();
+		List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
 		
 		for(Application app : apps){
-			tasApplicationService.determineHealthOfApp(app);
+			payloads.add(tasApplicationService.determineHealthOfApp(app));
 		}
 		
-		model.addAttribute("applications", apps);*/
+		model.addAttribute("applications", apps);
+		model.addAttribute("payloads", payloads);
 		
 		return "home";
 	}
