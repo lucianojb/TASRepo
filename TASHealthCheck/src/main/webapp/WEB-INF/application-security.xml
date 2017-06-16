@@ -8,10 +8,11 @@
     http://www.springframework.org/schema/security/spring-security-4.2.xsd">
     
     <http auto-config="true"  use-expressions="true">
+    	<intercept-url pattern="/" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
-        <intercept-url pattern="/resources/pictures/logo.png" access="permitAll" />
-        <intercept-url pattern="/resources/css/bootstrap.min.css" access="permitAll" />
+        <intercept-url pattern="/logout" access="permitAll" />
+        <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
         <form-login login-page="/login" authentication-failure-url="/applications"
         username-parameter="username"

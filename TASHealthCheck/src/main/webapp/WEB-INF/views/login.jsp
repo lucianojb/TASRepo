@@ -15,7 +15,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-3 col-centered row-bordered">
-					<h1 style="text-align: center">Login to Agile Sign-up</h1>
+					<h1 style="text-align: center">Admin Login</h1>
 				</div>
 			</div>
 
@@ -26,7 +26,7 @@
 			<div class="row top-buffer">
 				<div class="col-sm-3 col-centered top-buffer">
 					<div class="form-group">
-						<label for="username">Username:</label> <input type="text" class="form-control" id="username" name="username"/>
+						<label class="control-label"for="username">Username:</label> <input type="text" class="form-control" id="username" name="username"/>
 					</div>
 				</div>
 			</div>
@@ -34,14 +34,14 @@
 			<div class="row">
 				<div class="col-sm-3 col-centered">
 					<div class="form-group">
-						<label for="password">Password:</label> <input type="password" class="form-control" id="password" name="password">
+						<label class="control-label" for="password">Password:</label> <input type="password" class="form-control" id="password" name="password">
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-sm-3 col-centered">
-					<button type="submit" class="btn btn-success btn-block">Login</button>
+					<button type="submit" class="btn btn-primary btn-block">Login</button>
 				</div>
 			</div>
 	</form>
