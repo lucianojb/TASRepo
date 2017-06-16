@@ -12,9 +12,10 @@
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/logout" access="permitAll" />
+        <intercept-url pattern="/denied" access="permitAll" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
-        <form-login login-page="/login" authentication-failure-url="/applications"
+        <form-login login-page="/login" authentication-failure-url="/denied"
         username-parameter="username"
 		password-parameter="password"
         authentication-success-handler-ref="customAuthenticationSuccessHandler" />
