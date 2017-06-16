@@ -72,7 +72,7 @@
 									<div id="sup">
 										<c:choose>
 										<c:when test="${payload.resultValue == 0 }">
-											Application health checks manually turned off
+											Application health checks manually turned off or have scheduled down time
 										</c:when>
 										<c:when test="${not empty payload.errorMessage}">
 											${payload.errorMessage}

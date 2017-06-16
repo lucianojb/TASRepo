@@ -8,21 +8,69 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
+<script src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
+<script>
+	$(function () {
+		$("#datetimepicker").datetimepicker();
+	});
+</script>
 </head>
 <body>
-		<form method=POST>
-	<c:choose>
-		<c:when test="${application.activeState}">
-		Would you like to turn off app: ${application.appName}?
-	</c:when>
-		<c:otherwise>
-		Would you like to turn on app: ${application.appName}?
+	<sf:form method="POST" commandName="downSchedule">
+		
+		<c:choose>
+			<c:when test="${application.activeState}">
+			${application.appName} healthchecks manually ON
+			</c:when>
+			<c:otherwise>
+			${application.appName} healthchecks manually OFF
 	</c:otherwise>
-	</c:choose>
-	<button type="submit" class="btn btn-danger btn-block" name="submit"
-		value="continue">Continue</button>
-	<button type="submit" class="btn btn-error btn-block" name="submit"
-		value="cancel">Cancel</button>
-		</form>
+		</c:choose>
+		<button type="submit" class="btn btn-danger btn-block" name="submit"
+			value="continue">Toggle status</button>
+
+		<br/> <br/>
+		Or Schedule a planned down time <br/> <br/>
+		
+		<sf:input type="hidden" path="appID" value="${application.appID}" />
+		
+		<sf:input class="form-control" id="startDate" name="startDate"
+							path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm:ss"/>
+		<sf:errors path="startDate" />
+							
+				
+		<sf:input class="form-control" id="endDate" name="endDate"
+							path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm:sss"/>
+		<sf:errors path="endDate" />
+		
+		${dateError}
+							
+
+		<button type="submit" class="btn btn-error btn-block" name="submit"
+			value="schedule">Schedule</button>
+
+
+		<br /> <br />
+		<button type="submit" class="btn btn-error btn-block" name="submit"
+			value="cancel">Cancel</button>
+			
+			
+			<br/>
+			<br/>
+			Scheduled downtimes <br/>
+			<table>
+			<tr>
+				<td>Start time</td>
+				<td>End time</td>
+			</tr>
+		<c:forEach items="${scheduledTimes}" var="sched">
+			<tr>
+				<td>${sched.startDate}</td>
+				<td>${sched.endDate}</td>
+			</tr>
+		</c:forEach>
+		</table>
+			
+	</sf:form>
 </body>
 </html>
