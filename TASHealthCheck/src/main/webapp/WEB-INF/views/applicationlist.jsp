@@ -42,6 +42,8 @@
 									href="<c:url value='/editapplication/${app.appID}'/>">Edit</a></td>
 								<td align="center"><a
 									href="<c:url value='/deleteapplication/${app.appID}'/>">Delete</a></td>
+								<td align="center"><a
+									href="<c:url value='/disableapplication/${app.appID}'/>">Schedule Down Time</a></td>
 							</tr>
 						</c:forEach>
 					</tbody>
