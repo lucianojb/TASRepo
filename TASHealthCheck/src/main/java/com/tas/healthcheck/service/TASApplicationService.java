@@ -110,7 +110,7 @@ public class TASApplicationService {
 				
 				if(jsonContent == null){
 					payload.setResultValue(-1);
-					payload.setErrorMessage("Unable to read JSON content");
+					payload.setErrorMessage("Unable to read JSON content from " + app.getUrl());
 					return payload;
 				}
 				
