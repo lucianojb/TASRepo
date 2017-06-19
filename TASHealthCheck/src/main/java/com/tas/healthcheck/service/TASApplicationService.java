@@ -1,7 +1,14 @@
 package com.tas.healthcheck.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Date;
@@ -13,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tas.healthcheck.dao.DownScheduleDao;
@@ -56,6 +64,8 @@ public class TASApplicationService {
 	 * 3 is all down
 	 */
 	public HealthcheckPayload determineHealthOfApp(Application app) {
+		logger.info("Checking health of app " + app);
+		
 		HealthcheckPayload payload = new HealthcheckPayload(app);
 		
 		//String healthCheckURL = app.getUrl();
@@ -73,11 +83,9 @@ public class TASApplicationService {
 		
 		String jsonContent = null;
 						
-		try {
-			//TO-DO: retrieve JSON from url instead of resource
-			
+		try {			
 			//Mocking data
-			if(app.getAppName().equals("alltrue")){
+			if(app.getAppName().equals("alltrue") || app.getAppName().equals("missingconnections")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("alltrue.json").toURI())));
 			}else if(app.getAppName().equals("allfalse")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("allfalse.json").toURI())));
@@ -85,18 +93,48 @@ public class TASApplicationService {
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("sometrue.json").toURI())));
 			}else if(app.getAppName().equals("noconnections")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("noconnections.json").toURI())));
+				//End of mock
 			}else{
-				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("sometrue.json").toURI())));
+				URL urlToParse = new URL(app.getUrl());
+				
+				HttpURLConnection connection = (HttpURLConnection) urlToParse.openConnection();
+		        connection.setRequestMethod("GET");
+		        connection.setDoOutput(true);
+		        connection.connect();
+				
+		        BufferedReader rd = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+				
+				jsonContent = readAllChars(rd);
+				
+				connection.disconnect();
+				
+				if(jsonContent == null){
+					payload.setResultValue(-1);
+					payload.setErrorMessage("Unable to read JSON content");
+					return payload;
+				}
+				
 			}
-			//End of mock
+
+			
+			logger.info("Parsing the json content " + jsonContent);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			
-			JsonNode rootNode = mapper.readTree(jsonContent);
+			JsonNode rootNode = null;
+			
+			try{
+				rootNode = mapper.readTree(jsonContent);
+			}catch(JsonParseException e){
+				logger.error("Error parsing json " + jsonContent);
+				payload.setResultValue(-1);
+				payload.setErrorMessage("Unable to read JSON content from " + app.getUrl());
+				return payload;
+			}
 			
 			if(rootNode == null){
 				payload.setResultValue(-1);
-				payload.setErrorMessage("Unable to read JSON content");
+				payload.setErrorMessage("No content found in " + app.getUrl());
 				return payload;
 			}
 			
@@ -154,10 +192,14 @@ public class TASApplicationService {
 			}
 			
 			return payload;
-		} catch (IOException e) {
+		}catch (JsonParseException e){
+			payload.setResultValue(-1);
+			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", application url may be wrong or json may be formatted incorrectly");
+			return payload;
+		}catch (IOException e) {
 			e.printStackTrace();
 			payload.setResultValue(-1);
-			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName());
+			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", please confirm application url");
 			return payload;
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -188,5 +230,20 @@ public class TASApplicationService {
 		
 		return appScheduledDown;
 	}
+	
+	  private String readAllChars(Reader rd){
+		    StringBuilder sb = new StringBuilder();
+		    int cc;
+		    try {
+				while ((cc = rd.read()) != -1) {
+				  sb.append((char) cc);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.error("Error reading json from reader" + rd);
+				return null;
+			}
+		    return sb.toString();
+	  }
 
 }

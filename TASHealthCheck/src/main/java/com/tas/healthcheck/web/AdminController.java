@@ -192,7 +192,6 @@ public class AdminController {
 				return "redirect:../error";
 			}
 
-			//remove app
 			tasApplicationService.removeApplicationById(id);
 		}
 		
@@ -256,15 +255,61 @@ public class AdminController {
 			
 			downScheduleService.saveSchedule(downSchedule);
 			
-			return "redirect:../applications";
+			return "redirect:../disableapplication/" + app.getAppID();
 			
 		}else if(submit.equals("continue")){
 			logger.info("Toggling state of application to {}", !app.isActiveState());
 			app.setActiveState(!app.isActiveState());
 			tasApplicationService.saveApplication(app);
+			
+			return "redirect:../disableapplication/" + app.getAppID();
 		}
 		
 						
+		return "redirect:../applications";
+	}
+	
+	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.GET)
+	public String deleteScheduleGet(Model model, @PathVariable("id") int id) {
+		logger.info("Getting page to delete application {}", id);
+		
+		DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
+		if(sched == null){
+			model.addAttribute("errorMessage", "Could not find schedule to delete");
+			return "error";
+		}
+		Application app = tasApplicationService.getApplicationById(sched.getAppID());
+		if(app == null){
+			model.addAttribute("errorMessage", "Could not find app for specified schedule with id " + id);
+			return "error";
+		}
+		
+		model.addAttribute("schedule", sched);
+		model.addAttribute("application", app);
+						
+		return "deleteschedule";
+	}
+	
+	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.POST)
+	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
+		logger.info("Deleting application {}!", id);
+		
+		if(submit.equals("delete")){
+			DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
+			if(sched == null){
+				model.addAttribute("errorMessage", "Could not find schedule to delete");
+				return "redirect:../error";
+			}
+			
+			int appId = sched.getAppID();
+			
+			downScheduleService.removeScheduleById(id);
+			
+			String url = "redirect:../disableapplication/" + appId;
+			
+			return url;
+		}
+				
 		return "redirect:../applications";
 	}
 }

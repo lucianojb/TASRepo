@@ -47,7 +47,7 @@ public class HomeController {
 		return "home";
 	}
 	
-	@RequestMapping(value = "/application/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = {"/application/{id}", "/application/{id}/*"}, method = RequestMethod.GET)
 	public String individualAppView(Model model, @PathVariable("id") int id){
 		
 		Application app = tasApplicationService.getApplicationById(id);
@@ -66,4 +66,11 @@ public class HomeController {
 		return "application";
 	}
 	
+	
+	
+	@RequestMapping(value = {"/jsontest"}, method = RequestMethod.GET)
+	public String jsonEndpointTest(Model model){
+		
+		return "jsontest";
+	}
 }

@@ -25,4 +25,12 @@ public class DownScheduleService {
 		return downScheduleDao.getAllDownSchedulesByAppId(id);
 	}
 
+	public DownSchedule getScheduleBySchedId(int id) {
+		return downScheduleDao.getDownScheduleById(id);
+	}
+
+	public boolean removeScheduleById(int id) {
+		return downScheduleDao.removeById(id);
+	}
+
 }
