@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tas.healthcheck.dao.DownScheduleDao;
 import com.tas.healthcheck.dao.TASApplicationDao;
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
 
 public class TASApplicationService {
@@ -24,6 +27,9 @@ public class TASApplicationService {
 	
 	@Autowired
 	TASApplicationDao tasApplicationDao;
+	
+	@Autowired
+	DownScheduleDao downScheduleDao;
 	
 	public void saveApplication(Application application) {
 		tasApplicationDao.saveApplication(application);
@@ -44,7 +50,7 @@ public class TASApplicationService {
 	/*
 	 * Return health state as int
 	 * -1 error retrieving or parsing healthcheck
-	 * 0 is known outage
+	 * 0 is known disabled
 	 * 1 is healthy
 	 * 2 is some healthy, some down
 	 * 3 is all down
@@ -54,10 +60,18 @@ public class TASApplicationService {
 		
 		//String healthCheckURL = app.getUrl();
 		
-		//TO-DO: add logic here for known outage
-		//return 0
+		//App is manually disabled
+		if(!app.isActiveState()){
+			payload.setResultValue(0);
+			return payload;
+		}
 		
-		String jsonContent;
+		if(this.checkForScheduledDown(app)){
+			payload.setResultValue(0);
+			return payload;
+		}
+		
+		String jsonContent = null;
 						
 		try {
 			//TO-DO: retrieve JSON from url instead of resource
@@ -79,6 +93,12 @@ public class TASApplicationService {
 			ObjectMapper mapper = new ObjectMapper();
 			
 			JsonNode rootNode = mapper.readTree(jsonContent);
+			
+			if(rootNode == null){
+				payload.setResultValue(-1);
+				payload.setErrorMessage("Unable to read JSON content");
+				return payload;
+			}
 			
 			//save the application version name
 			if(rootNode.has("ver") && !rootNode.get("ver").asText().equals(app.getVersionNum())){
@@ -111,7 +131,7 @@ public class TASApplicationService {
 				if(!connectionsNode.has(appConnections[x])){
 					//if healthcheck json does not have expected connection
 					payload.setResultValue(-1);
-					payload.setErrorMessage("Healthcheck JSON does not contain expected connection " + appConnections[x]);
+					payload.setErrorMessage("Healthcheck JSON does not contain expected connection: " + appConnections[x]);
 					return payload;
 				}
 				boolean connectionValue = connectionsNode.get(appConnections[x]).asBoolean();
@@ -145,6 +165,28 @@ public class TASApplicationService {
 			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName());
 			return payload;
 		}
+	}
+
+	private boolean checkForScheduledDown(Application app) {
+
+		List<DownSchedule> dScheds = downScheduleDao.getAllDownSchedulesByAppId(app.getAppID());
+		
+		Date currentDateTime = new Date();
+		
+		boolean appScheduledDown = false;
+		//remove schedules in past
+		//check to see if current time falls in one schedule and return true
+		for(DownSchedule sched: dScheds){
+			if(sched.getEndDate().before(currentDateTime)){
+				downScheduleDao.removeById(sched.getSchedID());
+			}
+			if(sched.getStartDate().before(currentDateTime) && sched.getEndDate().after(currentDateTime)){
+				appScheduledDown = true;
+			}
+			
+		}
+		
+		return appScheduledDown;
 	}
 
 }

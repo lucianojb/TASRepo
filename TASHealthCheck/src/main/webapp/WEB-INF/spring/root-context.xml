@@ -38,6 +38,7 @@
 		<property name="annotatedClasses">
 			<list>
 				<value>com.tas.healthcheck.models.Application</value>
+				<value>com.tas.healthcheck.models.DownSchedule</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -52,7 +53,13 @@
 			<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="downScheduleDao" class="com.tas.healthcheck.dao.DownScheduleDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
 	<bean id="tasApplicationService" class="com.tas.healthcheck.service.TASApplicationService"></bean>
 	
+	<bean id="downScheduleService" class="com.tas.healthcheck.service.DownScheduleService"></bean>
+
 	<bean id="customAuthenticationSuccessHandler" class="com.tas.healthcheck.security.customAuthenticationSuccessHandler"/>
 </beans>

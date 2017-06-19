@@ -8,7 +8,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
-<script src="resources/jquery-3.2.1.min.js"></script>
+<script src="${pageContext.servletContext.contextPath}/resources/jquery-3.2.1.min.js"></script>
 </head>
 <body>
 	<jsp:include page="header.jsp" />

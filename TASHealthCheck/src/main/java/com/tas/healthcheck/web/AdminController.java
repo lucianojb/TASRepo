@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.models.DownSchedule;
+import com.tas.healthcheck.service.DownScheduleService;
 import com.tas.healthcheck.service.TASApplicationService;
 
 @Controller
@@ -24,6 +26,9 @@ public class AdminController {
 	
 	@Autowired
 	TASApplicationService tasApplicationService;
+	
+	@Autowired
+	DownScheduleService downScheduleService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -162,7 +167,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.GET)
-	public String deleteUserGet(Model model, @PathVariable("id") int id) {
+	public String deleteApplicationGet(Model model, @PathVariable("id") int id) {
 		logger.info("Getting page to delete application {}", id);
 		
 		Application app = tasApplicationService.getApplicationById(id);
@@ -177,7 +182,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.POST)
-	public String deleteUser(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
+	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
 		logger.info("Deleting application {}!", id);
 		
 		if(submit.equals("delete")){
@@ -189,6 +194,74 @@ public class AdminController {
 
 			//remove app
 			tasApplicationService.removeApplicationById(id);
+		}
+		
+						
+		return "redirect:../applications";
+	}
+	
+	@RequestMapping(value = "/disableapplication/{id}", method = RequestMethod.GET)
+	public String disableAppGet(Model model, @PathVariable("id") int id, DownSchedule downSchedule) {
+		logger.info("Getting page to disable application {}", id);
+		
+		Application app = tasApplicationService.getApplicationById(id);
+		if(app == null){
+			model.addAttribute("errorMessage", "Could not find application to disable");
+			return "redirect:../error";
+		}
+		
+		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
+
+		model.addAttribute("application", app);
+		model.addAttribute("scheduledTimes", dScheds);
+						
+		return "disableapplication";
+	}
+	
+	@RequestMapping(value = "/disableapplication/{id}", method = RequestMethod.POST)
+	public String disableApp(Model model,  @PathVariable("id") int id, @Valid DownSchedule downSchedule, BindingResult bindingResult,
+			@RequestParam(name="submit", required=true)String submit, RedirectAttributes redirectAttributes) {
+		logger.info("Disabling application {}!", id);
+		
+		Application app = tasApplicationService.getApplicationById(id);
+		if(app == null){
+			model.addAttribute("errorMessage", "Could not find application to disable");
+			return "redirect:../error";
+		}
+		
+		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
+		
+		if(submit.equals("schedule")){
+			
+			if(bindingResult.hasErrors()){
+				logger.info("Binding errors on schedule " + downSchedule);
+		        redirectAttributes.addFlashAttribute("errors", bindingResult);
+				redirectAttributes.addFlashAttribute("downSchedule", downSchedule);
+				model.addAttribute("application", app);
+				model.addAttribute("scheduledTimes", dScheds);
+				
+				return "disableapplication";
+			}
+			
+			logger.info("Binding schedule " + downSchedule);
+			
+			if(!downSchedule.getEndDate().after(downSchedule.getStartDate())){
+				redirectAttributes.addFlashAttribute("downSchedule", downSchedule);
+				model.addAttribute("dateError", "End date must be after start date");
+				model.addAttribute("application", app);
+				model.addAttribute("scheduledTimes", dScheds);
+				
+				return "disableapplication";
+			}
+			
+			downScheduleService.saveSchedule(downSchedule);
+			
+			return "redirect:../applications";
+			
+		}else if(submit.equals("continue")){
+			logger.info("Toggling state of application to {}", !app.isActiveState());
+			app.setActiveState(!app.isActiveState());
+			tasApplicationService.saveApplication(app);
 		}
 		
 						
