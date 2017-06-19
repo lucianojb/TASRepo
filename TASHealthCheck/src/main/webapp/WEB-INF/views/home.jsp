@@ -114,7 +114,7 @@
 												</tr>
 											</c:forEach>
 									</table>
-									<a href="<c:url value='/application/${payload.app.appID}'/>" class="btn btn-success btn-block" role="button">Details</a>
+									<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 								</c:otherwise>
 							</c:choose></div>
 						</div></li>
