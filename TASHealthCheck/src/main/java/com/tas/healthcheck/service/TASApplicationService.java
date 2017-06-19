@@ -81,7 +81,7 @@ public class TASApplicationService {
 			JsonNode rootNode = mapper.readTree(jsonContent);
 			
 			//save the application version name
-			if(rootNode.has("ver") && !app.getVersionNum().equals(rootNode.get("ver").asText())){
+			if(rootNode.has("ver") && !rootNode.get("ver").asText().equals(app.getVersionNum())){
 				String newVersion = rootNode.get("ver").asText();
 				logger.info("Saving version of app {} as {}", app.getAppName(), newVersion);
 				app.setVersionNum(newVersion);
