@@ -24,13 +24,13 @@ public class DownSchedule {
 	
 	@Column(name="start_date")
 	@Future(message="Date must be in future")
-	@DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+	@DateTimeFormat(pattern = "MM/dd/yy HH:mm")
 	@NotNull
 	private Date startDate;
 	
 	@Column(name="end_date")
 	@Future(message="Date must be in future")
-	@DateTimeFormat(pattern = "MM/dd/yyyy HH:mm:ss")
+	@DateTimeFormat(pattern = "MM/dd/yy HH:mm")
 	@NotNull
 	private Date endDate;
 

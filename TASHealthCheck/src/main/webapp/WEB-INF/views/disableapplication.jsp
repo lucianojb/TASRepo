@@ -20,10 +20,10 @@
 		
 		<c:choose>
 			<c:when test="${application.activeState}">
-			${application.appName} healthchecks manually ON
+			${application.appName} healthchecks ON
 			</c:when>
 			<c:otherwise>
-			${application.appName} healthchecks manually OFF
+			${application.appName} healthchecks OFF
 	</c:otherwise>
 		</c:choose>
 		<button type="submit" class="btn btn-danger btn-block" name="submit"
@@ -35,12 +35,12 @@
 		<sf:input type="hidden" path="appID" value="${application.appID}" />
 		
 		<sf:input class="form-control" id="startDate" name="startDate"
-							path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm:ss"/>
+							path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm"/>
 		<sf:errors path="startDate" />
 							
 				
 		<sf:input class="form-control" id="endDate" name="endDate"
-							path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm:sss"/>
+							path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm"/>
 		<sf:errors path="endDate" />
 		
 		${dateError}
@@ -54,7 +54,7 @@
 		<button type="submit" class="btn btn-error btn-block" name="submit"
 			value="cancel">Cancel</button>
 			
-			
+		<c:if test="${not empty scheduledTimes}">
 			<br/>
 			<br/>
 			Scheduled downtimes <br/>
@@ -65,11 +65,13 @@
 			</tr>
 		<c:forEach items="${scheduledTimes}" var="sched">
 			<tr>
-				<td>${sched.startDate}</td>
-				<td>${sched.endDate}</td>
+				<td><fmt:formatDate value="${sched.startDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+				<td><fmt:formatDate value="${sched.endDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+				<td><a href="<c:url value='/deleteschedule/${sched.schedID}'/>">Delete</a></td>
 			</tr>
 		</c:forEach>
 		</table>
+		</c:if>
 			
 	</sf:form>
 </body>
