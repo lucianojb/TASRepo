@@ -7503,6 +7503,10 @@ img {
     max-width: 10%;
 }
 
+img-md {
+    max-width: 20%;
+}
+
 .navbar-brand { position: relative; z-index: 2; }
 
 .navbar-nav.navbar-right .btn { position: relative; z-index: 2; padding: 4px 20px; margin: 10px auto; transition: transform 0.3s; }
@@ -7610,6 +7614,14 @@ img {
 .control-label {
     display: block !important;
     text-align: center !important;
+}
+
+.table td {
+   text-align: center;   
+}
+
+tr.spaceUnder>td {
+  padding-bottom: 1em;
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */

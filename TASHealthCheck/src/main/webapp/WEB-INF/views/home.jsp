@@ -82,9 +82,11 @@
 							<c:choose>
 								<c:when test="${not empty payload.errorMessage}">
 											${payload.errorMessage}
+											<a href="<c:url value='/application/${payload.app.appID}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:when test="${empty payload.connections}">
 											Application has no connections
+											<a href="<c:url value='/application/${payload.app.appID}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:otherwise>
 								<div class = "col-sm-12 col-centered">
