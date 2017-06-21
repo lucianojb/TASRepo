@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Delete Scheduled Downtime</title>
 <script>
 function goBack() {
     window.history.back();
@@ -16,18 +16,40 @@ function goBack() {
 
 </head>
 <body>
+	<jsp:include page="header.jsp" />
+	<div class="containter">
+		<sf:form>
+			<div class="row">
+				<div class="col-sm-3 col-centered row-bordered">
+					<h1 style="text-align: center">${application.appName}</h1>
+				</div>
+			</div>
 
-	<sf:form>
-	
-			Confirm deletion of scheduled down time from  
-			<fmt:formatDate value="${schedule.startDate}" pattern="MM/dd/yyyy HH:mm" /> to 
-			<fmt:formatDate value="${schedule.endDate}" pattern="MM/dd/yyyy HH:mm" /> for ${application.appName}
-	
-			<button type="submit" class="btn btn-error btn-block" name="submit"
-			value="delete">Delete</button>
-			<button onclick="goBack()">Cancel</button>
-	
-	</sf:form>
+			<div class="row" style="margin-top: 40px;">
+				<div class="col-sm-3 col-centered">
+					<h2 style="text-align: center">
 
+						Confirm deletion of scheduled down time from
+						<fmt:formatDate value="${schedule.startDate}"
+							pattern="MM/dd/yyyy HH:mm" />
+						to
+						<fmt:formatDate value="${schedule.endDate}"
+							pattern="MM/dd/yyyy HH:mm" />
+						for ${application.appName}
+					</h2>
+				</div>
+			</div>
+			<div class="row top-buffer">
+				<div class="col-sm-3 col-centered">
+
+					<button type="submit" class="btn btn-danger btn-block"
+						name="submit" value="delete">Delete</button>
+
+					<button class="btn btn-error btn-block" onclick="goBack()">Cancel</button>
+				</div>
+			</div>
+		</sf:form>
+
+	</div>
 </body>
 </html>
