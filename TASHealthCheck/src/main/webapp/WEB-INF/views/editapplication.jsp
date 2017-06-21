@@ -22,6 +22,7 @@
 
 		<sf:form method="POST" commandName="application">
 			<sf:input type="hidden" path="appID" value="${application.appID}" />
+			<sf:input type="hidden" path="activeState" value="${application.activeState}"/>
 			<div class="row top-buffer">
 				<div class="col-sm-3 col-centered">
 					<div class="form-group">

@@ -159,9 +159,13 @@ public class AdminController {
 				
 				strBuild.append(connectionValues[x] + ",");
 			}
-			strBuild.deleteCharAt(strBuild.length() - 1);
+			if(strBuild.length() > 0){
+				strBuild.deleteCharAt(strBuild.length() - 1);
 		
-			application.setConnections(strBuild.toString());
+				application.setConnections(strBuild.toString());
+			}else{
+				application.setConnections(null);
+			}
 		}
 		
 		tasApplicationService.saveApplication(application);
