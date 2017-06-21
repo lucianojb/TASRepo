@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Schedule Downtime</title>
 <script src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
 <script>
 	$(function() {
@@ -73,10 +73,11 @@
 				</div>
 			</div>
 
-			<div class="row top-buffer">
-				<div class="col-sm-5 col-centered">
+			<div class="row" style="margin-top:40px;">
+				<div class="col-sm-6 col-centered">
 					<c:if test="${not empty scheduledTimes}">
-						<table class="table-striped">
+						<h2 style="text-align:center">Scheduled Downtimes</h2>
+						<table class="table-striped" style = "width:100%">
 							<thead class="thead-inverse">
 								<tr>
 									<td align="center">Start time</td>
@@ -87,9 +88,9 @@
 							<tbody>
 								<c:forEach items="${scheduledTimes}" var="sched">
 									<tr>
-										<td><fmt:formatDate value="${sched.startDate}"
+										<td align="center"><fmt:formatDate value="${sched.startDate}"
 												pattern="MM/dd/yyyy HH:mm" /></td>
-										<td><fmt:formatDate value="${sched.endDate}"
+										<td align="center"><fmt:formatDate value="${sched.endDate}"
 												pattern="MM/dd/yyyy HH:mm" /></td>
 										<td><a
 											href="<c:url value='/deleteschedule/${sched.schedID}'/>">Delete</a></td>
