@@ -7,72 +7,101 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Schedule Downtime</title>
 <script src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
 <script>
-	$(function () {
+	$(function() {
 		$("#datetimepicker").datetimepicker();
 	});
 </script>
 </head>
 <body>
-	<sf:form method="POST" commandName="downSchedule">
-		
-		<c:choose>
-			<c:when test="${application.activeState}">
-			${application.appName} healthchecks ON
-			</c:when>
-			<c:otherwise>
-			${application.appName} healthchecks OFF
-	</c:otherwise>
-		</c:choose>
-		<button type="submit" class="btn btn-danger btn-block" name="submit"
-			value="continue">Toggle status</button>
+	<jsp:include page="header.jsp" />
 
-		<br/> <br/>
-		Or Schedule a planned down time <br/> <br/>
-		
-		<sf:input type="hidden" path="appID" value="${application.appID}" />
-		
-		<sf:input class="form-control" id="startDate" name="startDate"
-							path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm"/>
-		<sf:errors path="startDate" />
-							
-				
-		<sf:input class="form-control" id="endDate" name="endDate"
-							path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm"/>
-		<sf:errors path="endDate" />
-		
+	<div class="container">
+		<sf:form method="POST" commandName="downSchedule">
+			<div class="row">
+				<div class="col-sm-3 col-centered">
+					<c:choose>
+						<c:when test="${application.activeState}">
+							<h1 style="text-align: center;">${application.appName}
+								HealthChecks: ON</h1>
+							<button type="submit" class="btn btn-danger btn-block"
+								name="submit" value="continue">Turn HealthChecks Off</button>
+						</c:when>
+						<c:otherwise>
+							<h1 style="text-align: center;">${application.appName}
+								HealthChecks: OFF</h1>
+							<button type="submit" class="btn btn-success btn-block"
+								name="submit" value="continue">Turn HealthChecks On</button>
+						</c:otherwise>
+					</c:choose>
+				</div>
+			</div>
+
+			<div class="row top-buffer">
+				<div class="col-sm-3 col-centered">
+					<h2 style="text-align: center;">Or Schedule a planned down
+						time</h2>
+				</div>
+			</div>
+
+			<div class="row top-buffer">
+				<div class="col-sm-3 col-centered">
+					<sf:input type="hidden" path="appID" value="${application.appID}" />
+
+					<sf:input class="form-control" id="startDate" name="startDate"
+						path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
+					<sf:errors path="startDate" />
+
+
+					<sf:input class="form-control" id="endDate" name="endDate"
+						path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
+					<sf:errors path="endDate" />
+				</div>
+			</div>
 		${dateError}
-							
+		
+		<div class="row top-buffer">
+				<div class="col-sm-3 col-sm-offset-3">
+					<button type="submit" class="btn btn-error btn-block" name="submit"
+						value="cancel">Return to App List</button>
+				</div>
+				<div class="col-sm-3">
+					<button type="submit" class="btn btn-success btn-block"
+						name="submit" value="schedule">Schedule</button>
+				</div>
+			</div>
 
-		<button type="submit" class="btn btn-error btn-block" name="submit"
-			value="schedule">Schedule</button>
-
-
-		<br /> <br />
-		<button type="submit" class="btn btn-error btn-block" name="submit"
-			value="cancel">Return to Apps List</button>
-			
-		<c:if test="${not empty scheduledTimes}">
-			<br/>
-			<br/>
-			Scheduled downtimes <br/>
-			<table>
-			<tr>
-				<td>Start time</td>
-				<td>End time</td>
-			</tr>
-		<c:forEach items="${scheduledTimes}" var="sched">
-			<tr>
-				<td><fmt:formatDate value="${sched.startDate}" pattern="MM/dd/yyyy HH:mm" /></td>
-				<td><fmt:formatDate value="${sched.endDate}" pattern="MM/dd/yyyy HH:mm" /></td>
-				<td><a href="<c:url value='/deleteschedule/${sched.schedID}'/>">Delete</a></td>
-			</tr>
-		</c:forEach>
-		</table>
-		</c:if>
-			
-	</sf:form>
+			<div class="row" style="margin-top:40px;">
+				<div class="col-sm-6 col-centered">
+					<c:if test="${not empty scheduledTimes}">
+						<h2 style="text-align:center">Scheduled Downtimes</h2>
+						<table class="table-striped" style = "width:100%">
+							<thead class="thead-inverse">
+								<tr>
+									<td align="center">Start time</td>
+									<td align="center">End time</td>
+									<td align="center"></td>
+								</tr>
+							</thead>
+							<tbody>
+								<c:forEach items="${scheduledTimes}" var="sched">
+									<tr>
+										<td align="center"><fmt:formatDate value="${sched.startDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+										<td align="center"><fmt:formatDate value="${sched.endDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+										<td><a
+											href="<c:url value='/deleteschedule/${sched.schedID}'/>">Delete</a></td>
+									</tr>
+								</c:forEach>
+							</tbody>
+						</table>
+					</c:if>
+				</div>
+			</div>
+		</sf:form>
+	</div>
 </body>
 </html>

@@ -26,6 +26,5 @@
 	<div id="inner-home">
 		<jsp:include page="homeinner.jsp" />
 	</div>
-	
 </body>
 </html>

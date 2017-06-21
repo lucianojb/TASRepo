@@ -60,7 +60,7 @@
 								</c:otherwise>
 							</c:choose>
 						</div>
-							<h1 align:"center" style="font-size: 30px;">${payload.app.appName} v${payload.app.versionNum}</h1>
+							<h1 align:"center" style="font-size: 30px;">${payload.app.appName} <c:if test="${not empty payload.app.versionNum}">v${payload.app.versionNum}</c:if></h1>
 
 
 						</div>
@@ -71,12 +71,15 @@
 							<c:choose>
 								<c:when test="${not empty payload.errorMessage}">
 											${payload.errorMessage}
+											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:when test="${payload.resultValue == 0}">
 									Healthcheck parsing for application is manually turned off or has scheduled downtime
+									<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 								</c:when>
 								<c:when test="${empty payload.connections}">
 											Application has no connections
+											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:otherwise>
 								<div class = "col-sm-12 col-centered">
