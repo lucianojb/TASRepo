@@ -19,22 +19,22 @@
 			<a class="navbar-brand" href="/"> <img
 				style="max-width: 20px; max-height: 20px;"
 				src="${pageContext.request.contextPath}/resources/pictures/logo.png" /></a>
-			<a class="navbar-brand" href="/"> TAS Healthcheck</a>
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> TAS Healthcheck</a>
 		</div>
 		
 		<sec:authorize access="isAuthenticated()">
 				<ul class="nav navbar-nav navbar-center">
-      				<li><a href="/applications">Applications</a></li>
-      				<li><a href="/createapplication">Create Application</a></li>
+      				<li><a href="${pageContext.request.contextPath}/applications">Applications</a></li>
+      				<li><a href="${pageContext.request.contextPath}/createapplication">Create Application</a></li>
     			</ul>
     			<ul class="nav navbar-nav navbar-right">
-      				<li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
+      				<li><a href="${pageContext.request.contextPath}/logout"><span class="glyphicon glyphicon-log-in"></span> Logout</a></li>
     			</ul>
 		</sec:authorize>
 		
 		<sec:authorize access="isAnonymous()">
 	    		<ul class=" nav navbar-nav navbar-right">
-      				<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+      				<li><a href="${pageContext.request.contextPath}/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
     			</ul>
     		</sec:authorize>
 	</div>

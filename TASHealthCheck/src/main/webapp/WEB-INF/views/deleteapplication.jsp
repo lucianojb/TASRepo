@@ -18,7 +18,8 @@
 				<h1 style="text-align: center;">Delete ${application.appName}</h1>
 			</div>
 		</div>
-		<form method=POST>
+		<sf:form method="POST">
+		
 			<div class="row top-buffer">
 				<div class="col-sm-2 col-centered">
 					<button type="submit" class="btn btn-danger btn-block"
@@ -27,7 +28,7 @@
 						value="cancel">Cancel</button>
 				</div>
 			</div>
-		</form>
+		</sf:form>
 	</div>
 </body>
 </html>
