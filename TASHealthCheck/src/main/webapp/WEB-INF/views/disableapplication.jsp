@@ -52,7 +52,7 @@
 
 		<br /> <br />
 		<button type="submit" class="btn btn-error btn-block" name="submit"
-			value="cancel">Cancel</button>
+			value="cancel">Return to Apps List</button>
 			
 		<c:if test="${not empty scheduledTimes}">
 			<br/>
