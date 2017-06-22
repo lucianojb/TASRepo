@@ -19,7 +19,6 @@
 			</div>
 		</div>
 		<sf:form method="POST">
-		
 			<div class="row top-buffer">
 				<div class="col-sm-2 col-centered">
 					<button type="submit" class="btn btn-danger btn-block"
