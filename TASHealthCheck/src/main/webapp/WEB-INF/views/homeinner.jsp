@@ -17,6 +17,14 @@
 	});
 </script>
 
+
+<c:if test="${empty payloads}">
+		<div class="row">
+			<div class="col-sm-3 col-centered row-bordered">
+				<h1 style="text-align: center;">No Applications Added</h1>
+			</div>
+		</div>
+</c:if>
 <c:set var="count" value="1" scope="page" />
 	<c:forEach items="${payloads}" var="payload">
 
