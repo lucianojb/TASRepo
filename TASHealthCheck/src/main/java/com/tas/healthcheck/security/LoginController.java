@@ -4,10 +4,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,13 +22,15 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 	
 	 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	    public String login(Model model) {
+	    public String login(Model model, HttpServletRequest request, HttpSession session) {
 	 		logger.info("Getting login page");
+	 		
 	        return "login";
 	    }
 	 
 	 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	    public String loginsuccess(Model model) {
+	    public String loginsuccess(Model model, HttpSession session) {
+	 		
 	        return "home";
 	    }
 	 
