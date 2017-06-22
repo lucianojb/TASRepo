@@ -19,7 +19,7 @@
 				</div>
 			</div>
 
-		<form action="${loginUrl}" method="post">
+		<sf:form action="${loginUrl}" method="post">
 		<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 		<c:url var="loginUrl" value="/login" />
 
@@ -44,7 +44,7 @@
 					<button type="submit" class="btn btn-primary btn-block">Login</button>
 				</div>
 			</div>
-	</form>
+	</sf:form>
 	</div>
 </body>
 </html>
