@@ -25,7 +25,14 @@
     	<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
 		
-	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">	
+	<!-- Prod <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">	
+        <property name = "driverClassName" value = "org.postgresql.Driver" />     
+        <property name="username" value="" />
+        <property name = "password" value = ""/>   
+      	<property name="url" value =""/>
+	</bean> -->
+		
+	<!-- Dev --><bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">	
         <property name = "driverClassName" value = "org.postgresql.Driver" />     
         <property name="username" value="lucypastrana" />
         <property name = "password" value = "afstas2017"/>   
