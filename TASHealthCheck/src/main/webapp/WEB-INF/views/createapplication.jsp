@@ -12,7 +12,6 @@
 </head>
 <body>
 	<jsp:include page="header.jsp" />
-
 	<div class="container-fluid">
 		<sf:form method="POST" commandName="application">
 			<div class="row">
@@ -44,14 +43,18 @@
 				<div class="col-sm-3 col-centered">
 					<div class="form-group" id="connectionsGroup">
 						<label class="control-label" for="connectionsGroup">Connections</label>
-						<input type="text" class="form-control margin-bottom"
-							name="connection" value="${con}">
-						<c:if test="${not empty connectionsAdded}">
-							<c:forEach var="con" items="${connectionsAdded}">
+						<c:choose>
+							<c:when test="${not empty connectionsAdded}">
+								<c:forEach var="con" items="${connectionsAdded}">
+									<input type="text" class="form-control margin-bottom"
+										name="connection" value="${con}">
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
 								<input type="text" class="form-control margin-bottom"
 									name="connection" value="${con}">
-							</c:forEach>
-						</c:if>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<div>
@@ -63,7 +66,6 @@
 
 			<jsp:include page="component.jsp" />
 
-
 			<div class="row top-buffer">
 				<div class="col-sm-2 col-centered">
 					<button type="submit" class="btn btn-success btn-block"
@@ -71,7 +73,6 @@
 					<button type="submit" class="btn btn-error btn-block" name="submit"
 						value="cancel">Cancel</button>
 				</div>
-
 			</div>
 		</sf:form>
 	</div>
