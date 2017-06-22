@@ -47,6 +47,23 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value = "/homeinner", method = RequestMethod.GET)
+	public String homeInner(Model model) {
+		logger.info("Accessing the tas healthcheck dashboard homepage");
+		
+		List<Application> apps = tasApplicationService.getAllApplications();
+		List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
+		
+		for(Application app : apps){
+			payloads.add(tasApplicationService.determineHealthOfApp(app));
+		}
+		
+		model.addAttribute("applications", apps);
+		model.addAttribute("payloads", payloads);
+		
+		return "homeinner";
+	}
+	
 	@RequestMapping(value = {"/application/{id}", "/application/{id}/*"}, method = RequestMethod.GET)
 	public String individualAppView(Model model, @PathVariable("id") int id){
 		
@@ -66,6 +83,24 @@ public class HomeController {
 		return "application";
 	}
 	
+	@RequestMapping(value = {"/appinner/{id}", "/appinner/{id}/*"}, method = RequestMethod.GET)
+	public String appInner(Model model, @PathVariable("id") int id) {
+		
+		Application app = tasApplicationService.getApplicationById(id);
+		if(app == null){
+			model.addAttribute("errorMessage", "Could not find app with id " + id);
+			return "redirect:../error";
+		}
+		
+		HealthcheckPayload payload = tasApplicationService.determineHealthOfApp(app);
+		
+		logger.info(payload.toString());
+		
+		model.addAttribute("app", app);
+		model.addAttribute("healthPayload", payload);
+		
+		return "appinner";
+	}
 	
 	
 	@RequestMapping(value = {"/jsontest"}, method = RequestMethod.GET)

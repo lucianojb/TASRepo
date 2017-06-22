@@ -52,7 +52,7 @@ public class AdminController {
 			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
 		
 		if(submit.equals("cancel")){
-			return "redirect:./";
+			return "redirect:./applications";
 		}
 		
 		logger.info("Posting to create application");
@@ -70,6 +70,7 @@ public class AdminController {
 		}
 		
 		if(connectionValues != null){
+			logger.info("Parsing through connection values {}", connectionValues.toString());
 			StringBuilder strBuild = new StringBuilder();
 			for(int x = 0; x < connectionValues.length; x++){
 				
@@ -85,9 +86,11 @@ public class AdminController {
 				
 				strBuild.append(connectionValues[x] + ",");
 			}
-			strBuild.deleteCharAt(strBuild.length() - 1);
+			if(strBuild.length() > 0){
+				strBuild.deleteCharAt(strBuild.length() - 1);
 		
-			application.setConnections(strBuild.toString());
+				application.setConnections(strBuild.toString());
+			}
 		}
 		
 		logger.info("Creating: " + application);
@@ -156,9 +159,13 @@ public class AdminController {
 				
 				strBuild.append(connectionValues[x] + ",");
 			}
-			strBuild.deleteCharAt(strBuild.length() - 1);
+			if(strBuild.length() > 0){
+				strBuild.deleteCharAt(strBuild.length() - 1);
 		
-			application.setConnections(strBuild.toString());
+				application.setConnections(strBuild.toString());
+			}else{
+				application.setConnections(null);
+			}
 		}
 		
 		tasApplicationService.saveApplication(application);
@@ -182,10 +189,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.POST)
-	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
-		logger.info("Deleting application {}!", id);
-		
+	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {		
 		if(submit.equals("delete")){
+			logger.info("Deleting application {}!", id);
+			
 			Application app = tasApplicationService.getApplicationById(id);
 			if(app == null){
 				model.addAttribute("errorMessage", "Could not find application to delete");
