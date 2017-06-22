@@ -21,7 +21,7 @@
 		</div>
 		<div class = "row top-buffer">
 			<div class = "col-sm-3 col-centered">
-				<a href="/login" class="btn btn-warning btn-block" role="button">Return to Login</a>	
+				<a href="${pageContext.request.contextPath}/login" class="btn btn-warning btn-block" role="button">Return to Login</a>	
 			</div>
 		</div>
 	</div>

@@ -18,6 +18,8 @@
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_ADMIN')" />
         <form-login login-page="/login" authentication-failure-url="/denied"
+        default-target-url="/"
+        always-use-default-target="false"
         username-parameter="username"
 		password-parameter="password"
         authentication-success-handler-ref="customAuthenticationSuccessHandler" />

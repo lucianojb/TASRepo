@@ -72,11 +72,13 @@ public class TASApplicationService {
 		
 		//App is manually disabled
 		if(!app.isActiveState()){
+			logger.info("Application health checks manually turned off");
 			payload.setResultValue(0);
 			return payload;
 		}
 		
 		if(this.checkForScheduledDown(app)){
+			logger.info("Application has scheduled down time");
 			payload.setResultValue(0);
 			return payload;
 		}
