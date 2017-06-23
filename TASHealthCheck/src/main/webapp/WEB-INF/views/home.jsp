@@ -1,6 +1,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="sec"
 	uri="http://www.springframework.org/security/tags"%>
+	<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+	
 <%@ page session="false"%>
 <html>
 <head>
@@ -15,7 +17,7 @@
 		setInterval(function() {
 			$.get( "${pageContext.request.contextPath}/homeinner", function( data ) {
 				$( "#inner-home" ).html( data );
-			});}, 60000);
+			});}, 20000 * ${fn:length(payloads)});
 	});
 </script>
 <title>Home</title>

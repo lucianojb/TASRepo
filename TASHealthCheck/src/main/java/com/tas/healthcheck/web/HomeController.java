@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.HealthcheckPayload;
@@ -84,11 +85,11 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = {"/appinner/{id}", "/appinner/{id}/*"}, method = RequestMethod.GET)
-	public String appInner(Model model, @PathVariable("id") int id) {
+	public String appInner(Model model, @PathVariable("id") int id, RedirectAttributes redirect) {
 		
 		Application app = tasApplicationService.getApplicationById(id);
 		if(app == null){
-			model.addAttribute("errorMessage", "Could not find app with id " + id);
+			redirect.addFlashAttribute("errorMessage", "Could not find app with id " + id);
 			return "redirect:../error";
 		}
 		
@@ -107,5 +108,10 @@ public class HomeController {
 	public String jsonEndpointTest(Model model){
 		
 		return "jsontest";
+	}
+	
+	@RequestMapping(value = "/error", method = RequestMethod.GET)
+	public String error(Model model) {
+		return "error";
 	}
 }

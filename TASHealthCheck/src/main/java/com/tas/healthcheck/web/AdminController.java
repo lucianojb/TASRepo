@@ -101,12 +101,12 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/editapplication/{id}", method = RequestMethod.GET)
-	public String editAppGet(@PathVariable("id") int id, Model model, Application application) {
+	public String editAppGet(@PathVariable("id") int id, Model model, Application application, RedirectAttributes redirect) {
 		application = tasApplicationService.getApplicationById(id);
 		
 		if(application == null){
-			model.addAttribute("errorMessage", "Could not find application to edit");
-			return "error";
+			redirect.addFlashAttribute("errorMessage", "Could not find application to edit");
+			return "redirect:../error";
 		}
 		
 		logger.info("Editing Application {} is {} GET", id, application);
@@ -174,13 +174,13 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.GET)
-	public String deleteApplicationGet(Model model, @PathVariable("id") int id) {
+	public String deleteApplicationGet(Model model, @PathVariable("id") int id, RedirectAttributes redirect) {
 		logger.info("Getting page to delete application {}", id);
 		
 		Application app = tasApplicationService.getApplicationById(id);
 		if(app == null){
-			model.addAttribute("errorMessage", "Could not find application to delete");
-			return "error";
+			redirect.addFlashAttribute("errorMessage", "Could not find application to delete");
+			return "redirect:../error";
 		}
 		
 		model.addAttribute("application", app);
@@ -189,13 +189,13 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteapplication/{id}", method = RequestMethod.POST)
-	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {		
+	public String deleteApplication(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit, RedirectAttributes redirect) {		
 		if(submit.equals("delete")){
 			logger.info("Deleting application {}!", id);
 			
 			Application app = tasApplicationService.getApplicationById(id);
 			if(app == null){
-				model.addAttribute("errorMessage", "Could not find application to delete");
+				redirect.addFlashAttribute("errorMessage", "Could not find application to delete");
 				return "redirect:../error";
 			}
 
@@ -207,12 +207,12 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/disableapplication/{id}", method = RequestMethod.GET)
-	public String disableAppGet(Model model, @PathVariable("id") int id, DownSchedule downSchedule) {
+	public String disableAppGet(Model model, @PathVariable("id") int id, DownSchedule downSchedule, RedirectAttributes redirect) {
 		logger.info("Getting page to disable application {}", id);
 		
 		Application app = tasApplicationService.getApplicationById(id);
 		if(app == null){
-			model.addAttribute("errorMessage", "Could not find application to disable");
+			redirect.addFlashAttribute("errorMessage", "Could not find application to disable");
 			return "redirect:../error";
 		}
 		
@@ -231,7 +231,7 @@ public class AdminController {
 		
 		Application app = tasApplicationService.getApplicationById(id);
 		if(app == null){
-			model.addAttribute("errorMessage", "Could not find application to disable");
+			redirectAttributes.addFlashAttribute("errorMessage", "Could not find application to disable");
 			return "redirect:../error";
 		}
 		
@@ -277,18 +277,18 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.GET)
-	public String deleteScheduleGet(Model model, @PathVariable("id") int id) {
+	public String deleteScheduleGet(Model model, @PathVariable("id") int id, RedirectAttributes redirect) {
 		logger.info("Getting page to delete application {}", id);
 		
 		DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
 		if(sched == null){
-			model.addAttribute("errorMessage", "Could not find schedule to delete");
-			return "error";
+			redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
+			return "redirect:../error";
 		}
 		Application app = tasApplicationService.getApplicationById(sched.getAppID());
 		if(app == null){
-			model.addAttribute("errorMessage", "Could not find app for specified schedule with id " + id);
-			return "error";
+			redirect.addFlashAttribute("errorMessage", "Could not find app for specified schedule with id " + id);
+			return "redirect:../error";
 		}
 		
 		model.addAttribute("schedule", sched);
@@ -298,13 +298,13 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.POST)
-	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit) {
+	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit, RedirectAttributes redirect) {
 		logger.info("Deleting application {}!", id);
 		
 		if(submit.equals("delete")){
 			DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
 			if(sched == null){
-				model.addAttribute("errorMessage", "Could not find schedule to delete");
+				redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
 				return "redirect:../error";
 			}
 			
