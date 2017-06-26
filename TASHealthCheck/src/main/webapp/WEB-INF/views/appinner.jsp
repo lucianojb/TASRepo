@@ -3,6 +3,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container">
 	<div class="row">
@@ -102,6 +103,25 @@
 				</c:otherwise>
 
 			</c:choose>
+			
+			<c:if test="${not empty scheduledTimes}">
+				Schedule Down Times
+				<table>
+					<tr>
+						<th>Start Date</th>
+						<th>End Date</th>
+					</tr>
+					<c:forEach items="${scheduledTimes}" var="sched">
+						<tr>
+							<td align="center"><fmt:formatDate value="${sched.startDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+							<td align="center"><fmt:formatDate value="${sched.endDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+			
 		</div>
 	</div>
 </div>

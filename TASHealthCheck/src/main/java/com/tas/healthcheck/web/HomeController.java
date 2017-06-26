@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
+import com.tas.healthcheck.service.DownScheduleService;
 import com.tas.healthcheck.service.TASApplicationService;
 
 /**
@@ -27,6 +29,9 @@ public class HomeController {
 	
 	@Autowired
 	TASApplicationService tasApplicationService;
+	
+	@Autowired
+	DownScheduleService downScheduleService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -75,11 +80,13 @@ public class HomeController {
 		}
 		
 		HealthcheckPayload payload = tasApplicationService.determineHealthOfApp(app);
+		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
 		
 		logger.info(payload.toString());
 		
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
+		model.addAttribute("scheduledTimes", dScheds);
 		
 		return "application";
 	}
@@ -94,11 +101,13 @@ public class HomeController {
 		}
 		
 		HealthcheckPayload payload = tasApplicationService.determineHealthOfApp(app);
+		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
 		
 		logger.info(payload.toString());
 		
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
+		model.addAttribute("scheduledTimes", dScheds);
 		
 		return "appinner";
 	}
