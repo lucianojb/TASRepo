@@ -1,8 +1,7 @@
-{
-	"ver": "3.4.1",
-	"name": "TRIP",
-	"conns": {
-		"server": true,
-		"db": false
-	}
+{ 
+   “appName”: “FASDS”,
+   “appVersion”: “1.3.1”,
+   “connChecks”: [
+      {“name”: “db”, “description”: “Connectivity to SQL Server”, “functional”: true},
+      {“name”: “server”, “description”: “Connectivity to Tomcat Server”, “functional”: false}]
 }

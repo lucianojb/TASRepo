@@ -8,6 +8,7 @@ public class HealthcheckPayload {
 	private int resultValue;
 	private Application app;
 	private String errorMessage;
+	private Map<String, String> details;
 	
 	public HealthcheckPayload(){
 		super();
@@ -16,9 +17,10 @@ public class HealthcheckPayload {
 		this.errorMessage = null;
 	}
 	
-	public HealthcheckPayload(Application app, int resultValue, Map<String, Boolean> connections, String errorMessage){
+	public HealthcheckPayload(Application app, int resultValue, Map<String, Boolean> connections, Map<String, String> details, String errorMessage){
 		super();
 		this.connections = connections;
+		this.details = details;
 		this.resultValue = resultValue;
 		this.app = app;
 		this.errorMessage = errorMessage;
@@ -70,6 +72,14 @@ public class HealthcheckPayload {
 	public void setApp(Application app) {
 		this.app = app;
 	}
+	
+	public Map<String, String> getDetails(){
+		return details;
+	}
+	
+	public void setDetails(Map<String, String> details){
+		this.details = details;
+	}
 
 	public String getErrorMessage() {
 		return errorMessage;
@@ -81,7 +91,7 @@ public class HealthcheckPayload {
 
 	@Override
 	public String toString() {
-		return "HealthcheckPayload [connections=" + connections + ", resultValue=" + resultValue + ", app=" + app
+		return "HealthcheckPayload [connections=" + connections + ", details=" + details + ", resultValue=" + resultValue + ", app=" + app
 				+ ", errorMessage=" + errorMessage + "]";
 	}
 }
