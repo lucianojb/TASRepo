@@ -16,7 +16,6 @@
 		$('#startDate').appendDtpicker();
 	});
 </script>
-
 </head>
 <body>
 	<jsp:include page="header.jsp" />
@@ -107,5 +106,6 @@
 			</div>
 		</sf:form>
 	</div>
+	
 </body>
 </html>
