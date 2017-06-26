@@ -165,7 +165,6 @@ public class TASApplicationService {
 				return payload;
 			}
 			
-			//what do i do with this...
 			String[] appConnections = app.getConnections().split(",");
 			Map<String, Boolean> connectionsMap = new HashMap<String, Boolean>();
 			Map<String, String> detailsMap = new HashMap<String, String>();
@@ -200,12 +199,25 @@ public class TASApplicationService {
 					connectionsMap.put(connName, connValue);
 					detailsMap.put(connName, connDetails);
 				}
-				
 			}
+			
+			boolean doesNotContainConnection = false;
+			for(String connection: appConnections){
+				if(!connectionsMap.containsKey(connection)){
+					connectionsMap.put(connection, null);
+					detailsMap.put(connection, "Expected connection but was not in JSON");
+					
+					doesNotContainConnection = true;
+				}
+			}
+			
+
 			
 			payload.setConnections(connectionsMap);
 			payload.setDetails(detailsMap);
-			if(allFalse){
+			if(doesNotContainConnection){
+				payload.setResultValue(2);
+			}else if(allFalse){
 				payload.setResultValue(3);
 			}else if(allTrue){
 				payload.setResultValue(1);
