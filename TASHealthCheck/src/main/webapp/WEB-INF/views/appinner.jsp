@@ -3,6 +3,7 @@
 	uri="http://www.springframework.org/security/tags"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="container">
 	<div class="row">
@@ -51,14 +52,14 @@
 		<div class="col-sm-4 col-centered">
 			<c:choose>
 				<c:when test="${healthPayload.resultValue == 0 }">
-								Application health checks manually turned off or have scheduled down time
-							</c:when>
+					Application health checks manually turned off or have scheduled down time
+				</c:when>
 				<c:when test="${not empty healthPayload.errorMessage}">
-			${payload.errorMessage}
-		</c:when>
+					${payload.errorMessage}
+				</c:when>
 				<c:when test="${empty healthPayload.connections}">
-			Application has no connections
-		</c:when>
+					Application has no connections
+				</c:when>
 				<c:otherwise>
 					<table id="myTable"
 						class="table-responsive table-striped tablesorter"
@@ -66,6 +67,7 @@
 						<thead class="thead-inverse">
 							<tr>
 								<th style="text-align: center; font-size: 20px;">Connection</th>
+								<th style="text-align: center; font-size: 20px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
 							</tr>
 						</thead>
@@ -73,17 +75,25 @@
 							<c:forEach items="${healthPayload.connections}" var="conn">
 								<tr class="spaceUnder">
 									<c:choose>
-										<c:when test="${conn.value}">
+										<c:when test="${empty conn.value.functional}">
 											<td align="center">${conn.key}</td>
+											<td align="center">${conn.value.details}</td>
+											<td align="center"><img
+												src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" />
+											</td>
+										</c:when>
+										<c:when test="${conn.value.functional}">
+											<td align="center">${conn.key}</td>
+											<td align="center">${conn.value.details}</td>
 											<td align="center"><img
 												src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
-											<td>
+											</td>
 										</c:when>
 										<c:otherwise>
 											<td align="center">${conn.key}</td>
+											<td align="center">${conn.value.details}</td>
 											<td align="center"><img
 												src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" /></td>
-
 										</c:otherwise>
 									</c:choose>
 								</tr>
@@ -93,6 +103,25 @@
 				</c:otherwise>
 
 			</c:choose>
+			
+			<c:if test="${not empty scheduledTimes}">
+				Schedule Down Times
+				<table>
+					<tr>
+						<th>Start Date</th>
+						<th>End Date</th>
+					</tr>
+					<c:forEach items="${scheduledTimes}" var="sched">
+						<tr>
+							<td align="center"><fmt:formatDate value="${sched.startDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+							<td align="center"><fmt:formatDate value="${sched.endDate}"
+												pattern="MM/dd/yyyy HH:mm" /></td>
+						</tr>
+					</c:forEach>
+				</table>
+			</c:if>
+			
 		</div>
 	</div>
 </div>
