@@ -1,17 +1,19 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="sf" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Schedule Downtime</title>
-<script src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
-<script>
-	$(function() {
-		$("#datetimepicker").datetimepicker();
+<script type="text/javascript" src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/jquery.simple-dtpicker.js"/>"></script>
+<link type="text/css" href="<c:url value="/resources/css/jquery.simple-dtpicker.css" />" rel="stylesheet">	
+
+<script type="text/javascript">
+	$(function(){
+		$('#startDate').appendDtpicker();
 	});
 </script>
 </head>
@@ -50,11 +52,12 @@
 				<div class="col-sm-3 col-centered">
 					<sf:input type="hidden" path="appID" value="${application.appID}" />
 
+					Start Date and Time:
 					<sf:input class="form-control" id="startDate" name="startDate"
 						path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
 					<sf:errors path="startDate" />
 
-
+					End Date and Time:
 					<sf:input class="form-control" id="endDate" name="endDate"
 						path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
 					<sf:errors path="endDate" />
@@ -103,5 +106,6 @@
 			</div>
 		</sf:form>
 	</div>
+	
 </body>
 </html>
