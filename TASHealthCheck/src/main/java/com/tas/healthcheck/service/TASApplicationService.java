@@ -28,6 +28,7 @@ import com.tas.healthcheck.dao.TASApplicationDao;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
+import com.tas.healthcheck.models.Connection;
 
 public class TASApplicationService {
 
@@ -166,8 +167,7 @@ public class TASApplicationService {
 			}
 			
 			String[] appConnections = app.getConnections().split(",");
-			Map<String, Boolean> connectionsMap = new HashMap<String, Boolean>();
-			Map<String, String> detailsMap = new HashMap<String, String>();
+			Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
 			
 			boolean allFalse = true;
 			boolean allTrue = true;
@@ -196,27 +196,27 @@ public class TASApplicationService {
 						allTrue = false;
 					}
 				
-					connectionsMap.put(connName, connValue);
-					detailsMap.put(connName, connDetails);
+					connectionsMap.put(connName, new Connection(connValue, connDetails));
 				}
 			}
 			
 			boolean doesNotContainConnection = false;
 			for(String connection: appConnections){
 				if(!connectionsMap.containsKey(connection)){
-					connectionsMap.put(connection, null);
-					detailsMap.put(connection, "Expected connection but was not in JSON");
+					connectionsMap.put(connection, new Connection(null, "Expected connection but was not Expected connin JSON"));
 					
 					doesNotContainConnection = true;
 				}
 			}
-			
-
-			
+						
 			payload.setConnections(connectionsMap);
-			payload.setDetails(detailsMap);
+			
 			if(doesNotContainConnection){
-				payload.setResultValue(2);
+				if(allFalse){
+					payload.setResultValue(3);
+				}else{
+					payload.setResultValue(2);
+				}
 			}else if(allFalse){
 				payload.setResultValue(3);
 			}else if(allTrue){

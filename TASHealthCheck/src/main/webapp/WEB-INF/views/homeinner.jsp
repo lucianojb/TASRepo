@@ -103,12 +103,12 @@
 											<c:forEach items="${payload.connections}" var="conn">
 												<tr>
 													<c:choose>
-														<c:when test="${empty conn.value}">
+														<c:when test="${empty conn.value.functional}">
 															<td align="center"><img
-																src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" /></td>
+																src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" /></td>
 															<td align="center">${conn.key}</td>
 														</c:when>
-														<c:when test="${conn.value}">
+														<c:when test="${conn.value.functional}">
 															<td align="center"><img
 																src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" /></td>
 															<td align="center">${conn.key}</td>
