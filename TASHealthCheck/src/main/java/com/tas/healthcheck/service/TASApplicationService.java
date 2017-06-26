@@ -203,7 +203,7 @@ public class TASApplicationService {
 			boolean doesNotContainConnection = false;
 			for(String connection: appConnections){
 				if(!connectionsMap.containsKey(connection)){
-					connectionsMap.put(connection, new Connection(null, "Expected connection but was not Expected connin JSON"));
+					connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON"));
 					
 					doesNotContainConnection = true;
 				}
