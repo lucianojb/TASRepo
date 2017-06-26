@@ -1,8 +1,7 @@
-{
-	"ver": "7.1",
-	"name": "Collabnet",
-	"conns": {
-		"server": false,
-		"db": false
-	}
+{ 
+   "appName": "Collabnet",
+   "appVersion": "7.2",
+   "connChecks": [
+      {"name": "db", "description": "Connectivity to SQL Server", "functional": false},
+      {"name": "server", "description": "Connectivity to Tomcat Server", "functional": false}]
 }

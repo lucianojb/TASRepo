@@ -33,6 +33,9 @@ public class TASApplicationService {
 
 	private static final Logger logger = LoggerFactory.getLogger(TASApplicationService.class);
 	
+	private static final String APP_VERSION = "appVersion";
+	private static final String CONN_CHECKS = "connChecks";
+	
 	@Autowired
 	TASApplicationDao tasApplicationDao;
 	
@@ -141,20 +144,20 @@ public class TASApplicationService {
 			}
 			
 			//save the application version name
-			if(rootNode.has("ver") && !rootNode.get("ver").asText().equals(app.getVersionNum())){
-				String newVersion = rootNode.get("ver").asText();
+			if(rootNode.has(APP_VERSION) && !rootNode.get(APP_VERSION).asText().equals(app.getVersionNum())){
+				String newVersion = rootNode.get(APP_VERSION).asText();
 				logger.info("Saving version of app {} as {}", app.getAppName(), newVersion);
 				app.setVersionNum(newVersion);
 			
 				this.saveApplication(app);
 			}
 			
-			if(!rootNode.has("conns")){
+			if(!rootNode.has(CONN_CHECKS)){
 				//if there are no connections then app is healthy
 				payload.setResultValue(1);
 				return payload;
 			}
-			JsonNode connectionsNode = rootNode.get("conns");
+			JsonNode connectionsNode = rootNode.get(CONN_CHECKS);
 			
 			if(app.getConnections() == null){
 				//if there are no connections on application object side then also healthy
@@ -162,29 +165,46 @@ public class TASApplicationService {
 				return payload;
 			}
 			
+			//what do i do with this...
 			String[] appConnections = app.getConnections().split(",");
 			Map<String, Boolean> connectionsMap = new HashMap<String, Boolean>();
+			Map<String, String> detailsMap = new HashMap<String, String>();
 			
 			boolean allFalse = true;
 			boolean allTrue = true;
-			for(int x = 0; x < appConnections.length; x++){
-				if(!connectionsNode.has(appConnections[x])){
-					//if healthcheck json does not have expected connection
-					payload.setResultValue(-1);
-					payload.setErrorMessage("Healthcheck JSON does not contain expected connection: " + appConnections[x]);
-					return payload;
+			
+			if(!connectionsNode.isArray()){
+				payload.setResultValue(-1);
+				payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", JSON connChecks is not a list");
+				return payload;
+			}
+			
+			for(JsonNode objNode : connectionsNode){
+				System.out.println(objNode.toString());
+				
+				if(!objNode.has("name") || !objNode.has("functional") || !objNode.has("description")){
+					logger.error("Connection json string does not contain expected values");
+				}else{
+				
+					String connName = objNode.get("name").asText();
+					boolean connValue = objNode.get("functional").asBoolean();
+					String connDetails = objNode.get("description").asText();
+				
+					if(connValue){
+						allFalse = false;
+					}
+					if(!connValue){
+						allTrue = false;
+					}
+				
+					connectionsMap.put(connName, connValue);
+					detailsMap.put(connName, connDetails);
 				}
-				boolean connectionValue = connectionsNode.get(appConnections[x]).asBoolean();
-				connectionsMap.put(appConnections[x], connectionValue);
-				if(connectionValue){
-					allFalse = false;
-				}
-				if(!connectionValue){
-					allTrue = false;
-				}
+				
 			}
 			
 			payload.setConnections(connectionsMap);
+			payload.setDetails(detailsMap);
 			if(allFalse){
 				payload.setResultValue(3);
 			}else if(allTrue){

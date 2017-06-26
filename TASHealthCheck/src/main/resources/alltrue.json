@@ -1,8 +1,7 @@
-{
-	"ver": "2.2.1",
-	"name": "Leofa",
-	"conns": {
-		"server": true,
-		"db": true
-	}
+{ 
+   "appName": "Leofa",
+   "appVersion": "2.2.1",
+   "connChecks": [
+      {"name": "db", "description": "Connectivity to SQL Server", "functional": true},
+      {"name": "server", "description": "Connectivity to Tomcat Server", "functional": true}]
 }
