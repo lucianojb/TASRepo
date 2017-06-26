@@ -7499,9 +7499,9 @@ span {
     margin: 0 15px 0 0;
 }
 
-img {
-    max-width: 10%;
-}
+/* img { */
+/*     max-width: 10%; */
+/* } */
 
 img-md {
     max-width: 20%;

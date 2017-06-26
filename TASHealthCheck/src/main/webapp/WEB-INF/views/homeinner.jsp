@@ -47,23 +47,23 @@
 							<div>
 							<c:choose>
 								<c:when test="${payload.resultValue == 0}">
-									<img align="left"
+									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 1}">
-									<img align="left"
+									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 2}">
-									<img align="left"
+									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 3}">
-									<img align="left"
+									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 								</c:when>
 								<c:otherwise>
-									<img align="left"
+									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 								</c:otherwise>
 							</c:choose>
@@ -104,17 +104,17 @@
 												<tr>
 													<c:choose>
 														<c:when test="${empty conn.value.functional}">
-															<td align="center"><img
+															<td align="center"><img style="max-width: 20%"
 																src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" /></td>
 															<td align="center">${conn.key}</td>
 														</c:when>
 														<c:when test="${conn.value.functional}">
-															<td align="center"><img
+															<td align="center"><img style="max-width: 20%"
 																src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" /></td>
 															<td align="center">${conn.key}</td>
 														</c:when>
 														<c:otherwise>
-															<td align="center"><img
+															<td align="center"><img style="max-width: 20%"
 																src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" /></td>
 															<td align="center">${conn.key}</td>
 														</c:otherwise>
