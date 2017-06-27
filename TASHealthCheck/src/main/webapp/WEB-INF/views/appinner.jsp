@@ -18,7 +18,7 @@
 		<div class="col-sm-3 col-centered text-center">
 			<c:choose>
 				<c:when test="${not empty healthPayload.errorMessage}">
-					<img
+					<img style="max-width: 15%"
 						src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 					<div class="row top-buffer">
 						<h4>An error occurred: ${healthPayload.errorMessage}</h4>
@@ -27,19 +27,19 @@
 				<c:otherwise>
 					<c:choose>
 						<c:when test="${healthPayload.resultValue == 0}">
-							<img
+							<img style="max-width: 20%"
 								src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 						</c:when>
 						<c:when test="${healthPayload.resultValue == 1}">
-							<img
+							<img style="max-width: 15%"
 								src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 						</c:when>
 						<c:when test="${healthPayload.resultValue == 2}">
-							<img
+							<img style="max-width: 20%"
 								src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 						</c:when>
 						<c:when test="${healthPayload.resultValue == 3}">
-							<img
+							<img style="max-width: 15%"
 								src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 						</c:when>
 					</c:choose>
@@ -49,16 +49,16 @@
 	</div>
 
 	<div class="row top-buffer">
-		<div class="col-sm-4 col-centered">
+		<div class="col-sm-6 col-centered">
 			<c:choose>
 				<c:when test="${healthPayload.resultValue == 0 }">
-					Application health checks manually turned off or have scheduled down time
+					<h2 style="text-align:center">Application health checks manually turned off or have scheduled down time</h2>
 				</c:when>
 				<c:when test="${not empty healthPayload.errorMessage}">
-					${payload.errorMessage}
+				<h2 style="text-align:center">${payload.errorMessage}</h2>
 				</c:when>
 				<c:when test="${empty healthPayload.connections}">
-					Application has no connections
+					<h2 style="text-align:center">Application has no connections</h2>
 				</c:when>
 				<c:otherwise>
 					<table id="myTable"
@@ -67,7 +67,7 @@
 						<thead class="thead-inverse">
 							<tr>
 								<th style="text-align: center; font-size: 20px;">Connection</th>
-								<th style="text-align: center; font-size: 20px;">Details</th>
+								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
 							</tr>
 						</thead>
@@ -78,21 +78,21 @@
 										<c:when test="${empty conn.value.functional}">
 											<td align="center">${conn.key}</td>
 											<td align="center">${conn.value.details}</td>
-											<td align="center"><img
+											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" />
 											</td>
 										</c:when>
 										<c:when test="${conn.value.functional}">
 											<td align="center">${conn.key}</td>
 											<td align="center">${conn.value.details}</td>
-											<td align="center"><img
+											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 											</td>
 										</c:when>
 										<c:otherwise>
 											<td align="center">${conn.key}</td>
 											<td align="center">${conn.value.details}</td>
-											<td align="center"><img
+											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" /></td>
 										</c:otherwise>
 									</c:choose>
@@ -103,25 +103,31 @@
 				</c:otherwise>
 
 			</c:choose>
-			
-			<c:if test="${not empty scheduledTimes}">
-				Schedule Down Times
-				<table>
-					<tr>
-						<th>Start Date</th>
-						<th>End Date</th>
-					</tr>
-					<c:forEach items="${scheduledTimes}" var="sched">
-						<tr>
-							<td align="center"><fmt:formatDate value="${sched.startDate}"
-												pattern="MM/dd/yyyy HH:mm" /></td>
-							<td align="center"><fmt:formatDate value="${sched.endDate}"
-												pattern="MM/dd/yyyy HH:mm" /></td>
-						</tr>
-					</c:forEach>
-				</table>
-			</c:if>
-			
+		</div>
+		<div class="row top-buffer">
+			<div class="col-sm-6 col-centered">
+				<c:if test="${not empty scheduledTimes}">
+					<h2 class="row-bordered" style="text-align: center">Scheduled Down Times</h2>
+					<table class="table-striped" style="width: 100%">
+						<thead class="thead-inverse">
+							<tr>
+								<td align="center">Start time</td>
+								<td align="center">End time</td>
+							</tr>
+						</thead>
+						<tbody>
+							<c:forEach items="${scheduledTimes}" var="sched">
+								<tr>
+									<td align="center"><fmt:formatDate
+											value="${sched.startDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+									<td align="center"><fmt:formatDate
+											value="${sched.endDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:if>
+			</div>
 		</div>
 	</div>
 </div>
