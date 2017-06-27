@@ -161,9 +161,9 @@
 							<c:forEach items="${scheduledTimes}" var="sched">
 								<tr>
 									<td align="center"><fmt:formatDate
-											value="${sched.startDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+											value="${sched.startDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
 									<td align="center"><fmt:formatDate
-											value="${sched.endDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+											value="${sched.endDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>
