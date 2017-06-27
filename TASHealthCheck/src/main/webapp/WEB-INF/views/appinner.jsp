@@ -18,7 +18,7 @@
 		<div class="col-sm-3 col-centered text-center">
 			<c:choose>
 				<c:when test="${not empty healthPayload.errorMessage}">
-					<img
+					<img style="max-width: 15%"
 						src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 					<div class="row top-buffer">
 						<h4>An error occurred: ${healthPayload.errorMessage}</h4>
@@ -39,7 +39,7 @@
 								src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 						</c:when>
 						<c:when test="${healthPayload.resultValue == 3}">
-							<img style="max-width: 20%"
+							<img style="max-width: 15%"
 								src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 						</c:when>
 					</c:choose>
@@ -52,13 +52,13 @@
 		<div class="col-sm-6 col-centered">
 			<c:choose>
 				<c:when test="${healthPayload.resultValue == 0 }">
-					Application health checks manually turned off or have scheduled down time
+					<h2 style="text-align:center">Application health checks manually turned off or have scheduled down time</h2>
 				</c:when>
 				<c:when test="${not empty healthPayload.errorMessage}">
-					${payload.errorMessage}
+				<h2 style="text-align:center">${payload.errorMessage}</h2>
 				</c:when>
 				<c:when test="${empty healthPayload.connections}">
-					Application has no connections
+					<h2 style="text-align:center">Application has no connections</h2>
 				</c:when>
 				<c:otherwise>
 					<table id="myTable"
@@ -78,14 +78,14 @@
 										<c:when test="${empty conn.value.functional}">
 											<td align="center">${conn.key}</td>
 											<td align="center">${conn.value.details}</td>
-											<td align="center"><img
+											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" />
 											</td>
 										</c:when>
 										<c:when test="${conn.value.functional}">
 											<td align="center">${conn.key}</td>
 											<td align="center">${conn.value.details}</td>
-											<td align="center"><img width="50%"
+											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 											</td>
 										</c:when>
