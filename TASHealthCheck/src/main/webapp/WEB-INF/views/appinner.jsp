@@ -52,13 +52,14 @@
 		<div class="col-sm-6 col-centered">
 			<c:choose>
 				<c:when test="${healthPayload.resultValue == 0 }">
-					<h2 style="text-align:center">Application health checks manually turned off or have scheduled down time</h2>
+					<h2 style="text-align: center">Application health checks
+						manually turned off or have scheduled down time</h2>
 				</c:when>
 				<c:when test="${not empty healthPayload.errorMessage}">
-				<h2 style="text-align:center">${payload.errorMessage}</h2>
+					<h2 style="text-align: center">${payload.errorMessage}</h2>
 				</c:when>
 				<c:when test="${empty healthPayload.connections}">
-					<h2 style="text-align:center">Application has no connections</h2>
+					<h2 style="text-align: center">Application has no connections</h2>
 				</c:when>
 				<c:otherwise>
 					<table id="myTable"
@@ -107,7 +108,8 @@
 		<div class="row top-buffer">
 			<div class="col-sm-6 col-centered">
 				<c:if test="${not empty scheduledTimes}">
-					<h2 class="row-bordered" style="text-align: center">Scheduled Down Times</h2>
+					<h2 class="row-bordered" style="text-align: center">Scheduled
+						Down Times</h2>
 					<table class="table-striped" style="width: 100%">
 						<thead class="thead-inverse">
 							<tr>

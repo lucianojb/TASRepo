@@ -48,7 +48,7 @@ private static final Logger logger = LoggerFactory.getLogger(TASApplicationDaoIm
 	public List<Application> getAllApps() {
 		return this.sessionFactory.getCurrentSession().createQuery("from Application order by app_name", Application.class).getResultList();
 	}
-
+	
 	@Override
 	public Application getAppById(int id) {
 		Application app;
