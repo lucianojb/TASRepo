@@ -11,6 +11,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -166,7 +168,13 @@ public class TASApplicationService {
 				return payload;
 			}
 			
-			String[] appConnections = app.getConnections().split(",");
+			String[] connections = app.getConnections().split(",");
+			for(int x = 0; x < connections.length; x++){
+				connections[x] = connections[x].toLowerCase();
+			}
+			
+			List<String> appConnections = new ArrayList<String>(Arrays.asList(connections));
+			
 			Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
 			
 			boolean allFalse = true;
@@ -185,7 +193,7 @@ public class TASApplicationService {
 					logger.error("Connection json string does not contain expected values");
 				}else{
 				
-					String connName = objNode.get("name").asText();
+					String connName = objNode.get("name").asText().toLowerCase();
 					boolean connValue = objNode.get("functional").asBoolean();
 					String connDetails = objNode.get("description").asText();
 				
@@ -195,15 +203,19 @@ public class TASApplicationService {
 					if(!connValue){
 						allTrue = false;
 					}
-				
-					connectionsMap.put(connName, new Connection(connValue, connDetails));
+					
+					if(appConnections.contains(connName)){
+						connectionsMap.put(connName, new Connection(connValue, connDetails, true));
+					}else{
+						connectionsMap.put(connName, new Connection(connValue, connDetails, false));
+					}
 				}
 			}
 			
 			boolean doesNotContainConnection = false;
 			for(String connection: appConnections){
-				if(!connectionsMap.containsKey(connection)){
-					connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON"));
+				if(!connectionsMap.containsKey(connection.toLowerCase())){
+					connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true));
 					
 					doesNotContainConnection = true;
 				}
