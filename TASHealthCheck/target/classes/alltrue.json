@@ -3,5 +3,6 @@
    "appVersion": "2.2.1",
    "connChecks": [
       {"name": "db", "description": "Connectivity to SQL Server", "functional": true},
-      {"name": "server", "description": "Connectivity to Tomcat Server", "functional": true}]
+      {"name": "sErVer", "description": "Connectivity to Tomcat Server", "functional": true},
+      {"name": "seRver2", "description": "Connectivity to Tomcat Server 2", "functional": true}]
 }
