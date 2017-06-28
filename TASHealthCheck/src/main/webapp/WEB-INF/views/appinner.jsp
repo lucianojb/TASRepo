@@ -69,7 +69,7 @@
 								<th style="text-align: center; font-size: 20px;">Connection</th>
 								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
-								<th style="text-align: center; font-size: 20px;">Picture</th>
+								<th width=40px style="width: 40px;">picture</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -117,7 +117,8 @@
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 													</td>
-													<td align="center" data-toggle="tooltip" data-placement="right" title="This value was not expected"><img style="max-width: 40%"
+													<td align="center">
+													<img width=20px style="max-width: 40%" data-toggle="tooltip" data-placement="right" title="This value was not expected"
 														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" />
 													</td>
 													</tr>
@@ -129,7 +130,8 @@
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 													</td>
-													<td align="center" data-toggle="tooltip" data-placement="right" title="This value was not expected"><img style="max-width: 40%"
+													<td align="center">
+													<img width=20px style="max-width: 40%" data-toggle="tooltip" data-placement="right" title="This value was not expected"
 														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" />
 													</td>
 													</tr>

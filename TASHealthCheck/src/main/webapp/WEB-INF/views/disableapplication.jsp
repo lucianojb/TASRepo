@@ -8,14 +8,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Schedule Downtime</title>
 <script type="text/javascript" src="<c:url value="/resources/jquery-3.2.1.min.js"/>"></script>
-<script type="text/javascript" src="<c:url value="/resources/jquery.simple-dtpicker.js"/>"></script>
-<link type="text/css" href="<c:url value="/resources/css/jquery.simple-dtpicker.css" />" rel="stylesheet">	
-
+<script type="text/javascript" src="<c:url value="/resources/jquery-ui.min.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/jquery.datetimepicker.full.min.js"/>"></script>
+<link type="text/css" href="<c:url value="/resources/css/jquery.datetimepicker.css" />" rel="stylesheet">	
+	
 <script type="text/javascript">
 	$(function(){
-		$('#startDate').appendDtpicker();
+		jQuery.noConflict();
+		$('#startDate').datetimepicker({
+			format:'m/d/Y H:i',
+			step: 15
+		});
+		$('#endDate').datetimepicker({
+			format:'m/d/Y H:i',
+			step: 15
+		});
 	});
 </script>
+
 </head>
 <body>
 	<jsp:include page="header.jsp" />
@@ -54,12 +64,14 @@
 
 					Start Date and Time:
 					<sf:input class="form-control" id="startDate" name="startDate"
-						path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
+						path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm" 
+						autocomplete="off"/>
 					<sf:errors path="startDate" />
 
 					End Date and Time:
 					<sf:input class="form-control" id="endDate" name="endDate"
-						path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm" />
+						path="endDate" type="text" placeholder="MM/dd/yyyy HH:mm" 
+						autocomplete="off"/>
 					<sf:errors path="endDate" />
 				</div>
 			</div>
