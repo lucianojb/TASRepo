@@ -69,7 +69,7 @@
 								<th style="text-align: center; font-size: 20px;">Connection</th>
 								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
-								<th width=40px style="width: 40px;">picture</th>
+								<th style="text-align: center; font-size: 20px;">Expected</th>
 							</tr>
 						</thead>
 						<tbody>
