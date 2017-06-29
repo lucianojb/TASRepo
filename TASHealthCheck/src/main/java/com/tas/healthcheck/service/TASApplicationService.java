@@ -194,12 +194,6 @@ public class TASApplicationService {
 			}
 			JsonNode connectionsNode = rootNode.get(CONN_CHECKS);
 			
-			/*if(app.getConnections() == null){
-				//if there are no connections on application object side then also healthy
-				payload.setResultValue(1);
-				return payload;
-			}*/
-			
 			String[] connections = null;
 			List<String> appConnections = null;
 			if(app.getConnections() != null){
