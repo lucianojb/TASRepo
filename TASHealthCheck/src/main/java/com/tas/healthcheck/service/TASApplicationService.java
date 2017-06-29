@@ -65,16 +65,16 @@ public class TASApplicationService {
 	}
 
 	
-	private static int STATUS_ERROR = -1;
-	private static int STATUS_OFF = 0;
-	private static int STATUS_UP = 1;
+	private static int STATUS_OFF = -1;
+	private static int STATUS_UP = 0;
+	private static int STATUS_ERROR = 1;
 	private static int STATUS_SOME = 2;
 	private static int STATUS_DOWN = 3;
 	/*
 	 * Return health state as int
-	 * -1 error retrieving or parsing healthcheck
-	 * 0 is known disabled
-	 * 1 is healthy
+	 * -1 is known disabled
+	 * 0 is healthy
+	 * 1 error retrieving or parsing healthcheck
 	 * 2 is some healthy, some down
 	 * 3 is all down
 	 */

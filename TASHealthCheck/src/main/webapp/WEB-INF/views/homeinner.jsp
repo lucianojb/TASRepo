@@ -46,11 +46,11 @@
 						<div>
 							<div>
 							<c:choose>
-								<c:when test="${payload.resultValue == 0}">
+								<c:when test="${payload.resultValue == -1}">
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 								</c:when>
-								<c:when test="${payload.resultValue == 1}">
+								<c:when test="${payload.resultValue == 0}">
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 								</c:when>
@@ -81,7 +81,7 @@
 											${payload.errorMessage}
 											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
-								<c:when test="${payload.resultValue == 0}">
+								<c:when test="${payload.resultValue == -1}">
 									Healthcheck parsing for application is manually turned off or has scheduled downtime
 									<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 								</c:when>
