@@ -26,11 +26,11 @@
 				</c:when>
 				<c:otherwise>
 					<c:choose>
-						<c:when test="${healthPayload.resultValue == 0}">
+						<c:when test="${healthPayload.resultValue == -1}">
 							<img style="max-width: 20%"
 								src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 						</c:when>
-						<c:when test="${healthPayload.resultValue == 1}">
+						<c:when test="${healthPayload.resultValue == 0}">
 							<img style="max-width: 15%"
 								src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 						</c:when>
@@ -51,7 +51,7 @@
 	<div class="row top-buffer">
 		<div class="col-sm-6 col-centered">
 			<c:choose>
-				<c:when test="${healthPayload.resultValue == 0 }">
+				<c:when test="${healthPayload.resultValue == -1 }">
 					<h2 style="text-align:center">Application health checks manually turned off or have scheduled down time</h2>
 				</c:when>
 				<c:when test="${not empty healthPayload.errorMessage}">
@@ -112,7 +112,7 @@
 												<c:when test="${conn.value.functional}">
 													<tr class="spaceUnder">
 													<td align="center">${conn.key}<img class="arrow" width=20px style="max-width: 40%;" 
-													 align="right" data-toggle="tooltip" data-placement="right" title="This value was not expected"
+													 align="right" data-toggle="tooltip" data-placement="right" title="This value appears in JSON but was not expected"
 														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" /></td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
@@ -123,7 +123,7 @@
 												<c:otherwise>
 													<tr class="spaceUnder">
 													<td align="center">${conn.key}<img class="arrow" width=20px style="max-width: 40%;" 
-													 align="right" data-toggle="tooltip" data-placement="right" title="This value was not expected"
+													 align="right" data-toggle="tooltip" data-placement="right" title="This value appears in JSON but was not expected"
 														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" /></td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
