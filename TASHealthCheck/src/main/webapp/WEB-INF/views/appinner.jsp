@@ -69,7 +69,6 @@
 								<th style="text-align: center; font-size: 20px;">Connection</th>
 								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
-								<th style="text-align: center; font-size: 20px;">Picture</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -112,25 +111,23 @@
 												<c:choose>
 												<c:when test="${conn.value.functional}">
 													<tr class="spaceUnder">
-													<td align="center">${conn.key}</td>
+													<td align="center">${conn.key}<img class="arrow" width=20px style="max-width: 40%;" 
+													 align="right" data-toggle="tooltip" data-placement="right" title="This value was not expected"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" /></td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 													</td>
-													<td align="center" data-toggle="tooltip" data-placement="right" title="This value was not expected"><img style="max-width: 40%"
-														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" />
-													</td>
 													</tr>
 												</c:when>
 												<c:otherwise>
-													<tr class="spaceUnder" data-toggle="tooltip" data-placement="right" title="This value was not expected">
-													<td align="center">${conn.key}</td>
+													<tr class="spaceUnder">
+													<td align="center">${conn.key}<img class="arrow" width=20px style="max-width: 40%;" 
+													 align="right" data-toggle="tooltip" data-placement="right" title="This value was not expected"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" /></td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
-													</td>
-													<td align="center" data-toggle="tooltip" data-placement="right" title="This value was not expected"><img style="max-width: 40%"
-														src="${pageContext.request.contextPath}/resources/pictures/exclamation.png" />
 													</td>
 													</tr>
 												</c:otherwise>
@@ -161,9 +158,9 @@
 							<c:forEach items="${scheduledTimes}" var="sched">
 								<tr>
 									<td align="center"><fmt:formatDate
-											value="${sched.startDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+											value="${sched.startDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
 									<td align="center"><fmt:formatDate
-											value="${sched.endDate}" pattern="MM/dd/yyyy HH:mm" /></td>
+											value="${sched.endDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
 								</tr>
 							</c:forEach>
 						</tbody>
