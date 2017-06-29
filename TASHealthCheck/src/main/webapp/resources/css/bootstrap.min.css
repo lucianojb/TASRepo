@@ -7624,4 +7624,10 @@ tr.spaceUnder>td {
   padding-bottom: 1em;
 }
 
+.control-label {
+    display: block !important;
+    text-align: center !important;
+}
+
+
 /*# sourceMappingURL=bootstrap.min.css.map */
