@@ -215,6 +215,7 @@ public class TASApplicationService {
 			
 			boolean allFalse = true;
 			boolean allTrue = true;
+			boolean incorrectJSON = false;
 			
 			if(!connectionsNode.isArray()){
 				payload.setResultValue(STATUS_ERROR);
@@ -227,6 +228,7 @@ public class TASApplicationService {
 				
 				if(!objNode.has(CONN_NAME) || !objNode.has(CONN_FUNC) || !objNode.has(CONN_DESC)){
 					logger.error("Connection json string {} does not contain expected values", objNode.toString());
+					incorrectJSON = true;
 				}else{
 				
 					String connName = objNode.get(CONN_NAME).asText().toLowerCase();
@@ -261,6 +263,12 @@ public class TASApplicationService {
 						
 			payload.setConnections(connectionsMap);
 			
+			if(incorrectJSON && connectionsMap.size() == 0){
+					payload.setResultValue(STATUS_ERROR);
+					payload.setErrorMessage("Connection values incorrectly formatted in JSON");
+					return payload;
+			}
+				
 			if(doesNotContainConnection){
 				if(allFalse){
 					payload.setResultValue(STATUS_DOWN);
