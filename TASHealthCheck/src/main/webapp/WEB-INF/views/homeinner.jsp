@@ -14,7 +14,43 @@
 				$expand.text("+");
 			}
 		});
+		
+		
+		$('input').click(function() {
+		    var category = $(this).val();
+		    $('tr.approw').hide();
+		    var showAll = true;
+		    var status=["down", "up", "error", "warning", "off"];
+		    
+		    var checkboxes = document.getElementsByClassName('checkbox');
+		    for (var i=0; i<checkboxes.length; i++) {
+		    	if(checkboxes[i].checked){
+		    		 showAll=false;
+		    		 $('.' + status[i]).show();
+		    	}		
+		    }
+		    
+		    if(showAll){
+		        $('tr.approw').show();
+		    }
+		    
+		    
+		    
+// 		    if(category == 3){
+// 		    	$('.down').show();
+// 		    }
+// 		    if(category == 1){
+// 		    	$('.up').show();
+// 		    }
+// 		    $('.table1').hide();
+
+// 		    if (!$(this).attr('checked')) $('.' + category).hide();
+// 		    else $('.' + category).show();
+
+		});
+		
 	});
+		
 </script>
 
 <c:if test="${empty payloads}">
@@ -24,20 +60,66 @@
 			</div>
 		</div>
 </c:if>
+
+<div class = row>
+<div class = "col-sm-2 col-sm-offset-2">
+        <input type="checkbox" value="3" class="checkbox" id="down" />
+        <label for="down">Down</label>
+</div>
+<div class = "col-sm-2">
+        <input type="checkbox" value="1" class="checkbox" id="up" />
+        <label for="up">Up</label>
+</div>
+<div class = "col-sm-2">
+        <input type="checkbox" value="-1" class="checkbox" id="error" />
+        <label for="error">Error</label>
+</div>
+<div class = "col-sm-2">
+        <input type="checkbox" value="2" class="checkbox" id="warning" />
+        <label for="warning">Warning</label>
+</div>
+<div class = "col-sm-2">
+        <input type="checkbox" value="0" class="checkbox" id="off" />
+        <label for="off">Off</label>
+</div>
+        
+        
+</div>
+<table class = "table1">
+<tbody>
 <c:set var="count" value="1" scope="page" />
 			<c:forEach items="${payloads}" var="payload">
-				<c:choose>
-					<c:when test="${count % 2 == 1}">
-						<div class="container-fluid">
-							<div class="row">
-								<div class="col-sm-4 col-sm-offset-2">
-					</c:when>
-					<c:otherwise>
-						<div class="col-sm-4">
-					</c:otherwise>
-				</c:choose>
+<%-- 				<c:choose> --%>
+<%-- 					<c:when test="${count % 2 == 1}"> --%>
+<!-- 						<div class="container-fluid"> -->
+<!-- 							<div class="row"> -->
+<!-- 								<div class="col-sm-4 col-sm-offset-2"> -->
+<%-- 					</c:when> --%>
+<%-- 					<c:otherwise> --%>
+<!-- 						<div class="col-sm-4"> -->
+<%-- 					</c:otherwise> --%>
+<%-- 				</c:choose> --%>
 
-				<div id="integration-list">
+			<c:choose>
+				<c:when test="${payload.resultValue == 0}">
+					<tr class="approw off">
+				</c:when>
+				<c:when test="${payload.resultValue == 1}">
+					<tr class="approw up">
+				</c:when>
+				<c:when test="${payload.resultValue == 2}">
+					<tr class="approw warning">
+				</c:when>
+				<c:when test="${payload.resultValue == 3}">
+					<tr class="approw down">
+				</c:when>
+				<c:otherwise>
+					<tr class="approw error">
+				</c:otherwise>
+			</c:choose>
+
+			<td>
+					<div id="integration-list">
 					<ul>
 						<li style="text-align: center"><a class="expand">
 								<div class="right-arrow">+</div>
@@ -141,18 +223,23 @@
 							</div></li>
 					</ul>
 				</div>
+					</td>
+				</tr>
 
-				<c:choose>
-					<c:when test="${count % 2 == 1}">
-						</div>
-					</c:when>
-					<c:otherwise>
-						</div>
-						</div>
-						</div>
-					</c:otherwise>
-				</c:choose>
-
+<%-- 				<c:choose> --%>
+<%-- 					<c:when test="${count % 2 == 1}"> --%>
+<!-- 						</div> -->
+<%-- 					</c:when> --%>
+<%-- 					<c:otherwise> --%>
+<!-- 						</div> -->
+<!-- 						</div> -->
+<!-- 						</div> -->
+<%-- 					</c:otherwise> --%>
+<%-- 				</c:choose> --%>
+			
+			
 				<c:set var="count" value="${count + 1}" scope="page" />
 			</c:forEach>
+			</tbody>
+			</table>
 			<div id="show"></div>
