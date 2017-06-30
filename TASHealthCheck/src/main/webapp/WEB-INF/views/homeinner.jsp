@@ -21,11 +21,12 @@
 		    $('td.approw').hide();
 		    var showAll = true;
 		    var status=["down", "up", "error", "warn", "off"];
+		    var count = 1;
 		    
-		    var checkboxes = document.getElementsByClassName('checkbox');
+		    var checkboxes = document.getElementsByClassName('checkbox1');
 		    for (var i=0; i<checkboxes.length; i++) {
 		    	if(checkboxes[i].checked){
-		    		 showAll=false;
+		    		 showAll=false;		    		 
 		    		 $('.' + status[i]).show();
 		    	}		
 		    }
@@ -48,28 +49,40 @@
 </c:if>
 
 <div class=row>
-	<div class="col-sm-1 col-sm-offset-4">
-		<label class="control-label" for="down">Down</label> <input
-			type="checkbox" value="3" class="checkbox" id="down" />
-	</div>
-	<div class="col-sm-1">
-		<label class="control-label" for="up">Up</label> <input
-			type="checkbox" value="1" class="checkbox" id="up" />
-	</div>
-	<div class="col-sm-1">
-		<label class="control-label" for="error">Error</label> <input
-			type="checkbox" value="-1" class="checkbox" id="error" />
-	</div>
-	<div class="col-sm-1">
-		<label class="control-label" for="warning">Warning</label> <input
-			type="checkbox" value="2" class="checkbox" id="warning" />
-	</div>
-	<div class="col-sm-1" style="text-align: center">
-		<label class="control-label" for="off">Off</label> <input
-			type="checkbox" value="0" class="checkbox" id="off" />
-	</div>
-
-
+	<div class="col-sm-4 col-centered">
+		<table>
+			<thead>
+			<tr>
+				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Down</th>
+				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Up</th>
+				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Error</th>
+				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Warning</th>
+				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Off</th>
+			</tr>
+			</thead>
+		<tbody>
+		<tr>
+		<td class="center" align="center">
+			<input type="checkbox" value="3" class="checkbox1" id="down" />
+		</td>
+	<td style="text-align: center; vertical-align: middle;">
+		<input type="checkbox" value="1" class="checkbox1" id="up" />
+	</td>
+	<td style="text-align: center; vertical-align: middle;">
+		<input
+			type="checkbox" value="-1" class="checkbox1" id="error" />
+	</td>
+	<td style="text-align:center; vertical-align: middle;">
+		<input
+			type="checkbox" value="2" class="checkbox1" id="warning" />
+			</td>
+	<td style="text-align:center; vertical-align: middle;">
+		<input
+			type="checkbox" value="0" class="checkbox1" id="off" />
+	</td>
+	</tr>
+	</tbody>
+	</table>
 </div>
 <div class=row>
 	<div class="container">
@@ -86,7 +99,7 @@
 
 				<c:forEach items="${payloads}" var="payload">
 					<c:if test="${count % 2 == 1}">
-						<tr style= "border:none;">
+						<tr class="approw" style= "border:none;">
 					</c:if>
 
 					<c:choose>

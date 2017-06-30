@@ -7628,6 +7628,9 @@ tr.spaceUnder>td {
     display: block !important;
     text-align: center !important;
 }
-
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
 
 /*# sourceMappingURL=bootstrap.min.css.map */
