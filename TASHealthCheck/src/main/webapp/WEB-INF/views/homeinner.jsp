@@ -15,7 +15,6 @@
 			}
 		});
 		
-		
 		$('input').click(function() {
 		    var category = $(this).val();
 		    $('tr.approw').hide();
@@ -32,21 +31,7 @@
 		    
 		    if(showAll){
 		        $('tr.approw').show();
-		    }
-		    
-		    
-		    
-// 		    if(category == 3){
-// 		    	$('.down').show();
-// 		    }
-// 		    if(category == 1){
-// 		    	$('.up').show();
-// 		    }
-// 		    $('.table1').hide();
-
-// 		    if (!$(this).attr('checked')) $('.' + category).hide();
-// 		    else $('.' + category).show();
-
+		    }	    
 		});
 		
 	});
@@ -100,12 +85,6 @@
 					<%-- 					<c:when test="${count % 2 == 1}"> --%>
 					<!-- 						<div class="container-fluid"> -->
 					<!-- 							<div class="row"> -->
-					<!-- 								<div class="col-sm-4 col-sm-offset-2"> -->
-					<%-- 					</c:when> --%>
-					<%-- 					<c:otherwise> --%>
-					<!-- 						<div class="col-sm-4"> -->
-					<%-- 					</c:otherwise> --%>
-					<%-- 				</c:choose> --%>
 					<c:choose>
 						<c:when test="${payload.resultValue == 0}">
 							<tr class="approw off" style="display: inline-block;">
