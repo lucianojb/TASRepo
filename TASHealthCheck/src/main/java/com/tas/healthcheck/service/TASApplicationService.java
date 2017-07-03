@@ -11,6 +11,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +38,9 @@ public class TASApplicationService {
 	
 	private static final String APP_VERSION = "appVersion";
 	private static final String CONN_CHECKS = "connChecks";
+	private static final String CONN_NAME = "name";
+	private static final String CONN_DESC = "description";
+	private static final String CONN_FUNC = "functional";
 	
 	@Autowired
 	TASApplicationDao tasApplicationDao;
@@ -59,11 +64,17 @@ public class TASApplicationService {
 		return tasApplicationDao.removeById(id);
 	}
 
+	
+	private static int STATUS_OFF = -1;
+	private static int STATUS_UP = 0;
+	private static int STATUS_ERROR = 1;
+	private static int STATUS_SOME = 2;
+	private static int STATUS_DOWN = 3;
 	/*
 	 * Return health state as int
-	 * -1 error retrieving or parsing healthcheck
-	 * 0 is known disabled
-	 * 1 is healthy
+	 * -1 is known disabled
+	 * 0 is healthy
+	 * 1 error retrieving or parsing healthcheck
 	 * 2 is some healthy, some down
 	 * 3 is all down
 	 */
@@ -77,13 +88,13 @@ public class TASApplicationService {
 		//App is manually disabled
 		if(!app.isActiveState()){
 			logger.info("Application health checks manually turned off");
-			payload.setResultValue(0);
+			payload.setResultValue(STATUS_OFF);
 			return payload;
 		}
 		
 		if(this.checkForScheduledDown(app)){
 			logger.info("Application has scheduled down time");
-			payload.setResultValue(0);
+			payload.setResultValue(STATUS_OFF);
 			return payload;
 		}
 		
@@ -115,7 +126,7 @@ public class TASApplicationService {
 				connection.disconnect();
 				
 				if(jsonContent == null){
-					payload.setResultValue(-1);
+					payload.setResultValue(STATUS_ERROR);
 					payload.setErrorMessage("Unable to read JSON content from " + app.getUrl());
 					return payload;
 				}
@@ -133,13 +144,13 @@ public class TASApplicationService {
 				rootNode = mapper.readTree(jsonContent);
 			}catch(JsonParseException e){
 				logger.error("Error parsing json " + jsonContent);
-				payload.setResultValue(-1);
+				payload.setResultValue(STATUS_ERROR);
 				payload.setErrorMessage("Unable to read JSON content from " + app.getUrl());
 				return payload;
 			}
 			
 			if(rootNode == null){
-				payload.setResultValue(-1);
+				payload.setResultValue(STATUS_ERROR);
 				payload.setErrorMessage("No content found in " + app.getUrl());
 				return payload;
 			}
@@ -154,26 +165,54 @@ public class TASApplicationService {
 			}
 			
 			if(!rootNode.has(CONN_CHECKS)){
-				//if there are no connections then app is healthy
-				payload.setResultValue(1);
-				return payload;
+				if(app.getConnections() != null){
+					String[] connections = null;
+					List<String> appConnections = null;
+					if(app.getConnections() != null){
+						connections = app.getConnections().split(",");
+						for(int x = 0; x < connections.length; x++){
+							connections[x] = connections[x].toLowerCase();
+						}
+					
+						appConnections = new ArrayList<String>(Arrays.asList(connections));
+					}
+					
+					Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
+					
+					for(String connection: appConnections){
+						connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true));
+					}
+					
+					payload.setResultValue(STATUS_SOME);
+					payload.setConnections(connectionsMap);
+					return payload;
+				}else{
+					//if there are no connections then app is healthy
+					payload.setResultValue(STATUS_UP);
+					return payload;
+				}
 			}
 			JsonNode connectionsNode = rootNode.get(CONN_CHECKS);
 			
-			if(app.getConnections() == null){
-				//if there are no connections on application object side then also healthy
-				payload.setResultValue(1);
-				return payload;
+			String[] connections = null;
+			List<String> appConnections = null;
+			if(app.getConnections() != null){
+				connections = app.getConnections().split(",");
+				for(int x = 0; x < connections.length; x++){
+					connections[x] = connections[x].toLowerCase();
+				}
+			
+				appConnections = new ArrayList<String>(Arrays.asList(connections));
 			}
 			
-			String[] appConnections = app.getConnections().split(",");
 			Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
 			
 			boolean allFalse = true;
 			boolean allTrue = true;
+			boolean incorrectJSON = false;
 			
 			if(!connectionsNode.isArray()){
-				payload.setResultValue(-1);
+				payload.setResultValue(STATUS_ERROR);
 				payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", JSON connChecks is not a list");
 				return payload;
 			}
@@ -181,13 +220,14 @@ public class TASApplicationService {
 			for(JsonNode objNode : connectionsNode){
 				System.out.println(objNode.toString());
 				
-				if(!objNode.has("name") || !objNode.has("functional") || !objNode.has("description")){
-					logger.error("Connection json string does not contain expected values");
+				if(!objNode.has(CONN_NAME) || !objNode.has(CONN_FUNC) || !objNode.has(CONN_DESC)){
+					logger.error("Connection json string {} does not contain expected values", objNode.toString());
+					incorrectJSON = true;
 				}else{
 				
-					String connName = objNode.get("name").asText();
-					boolean connValue = objNode.get("functional").asBoolean();
-					String connDetails = objNode.get("description").asText();
+					String connName = objNode.get(CONN_NAME).asText().toLowerCase();
+					boolean connValue = objNode.get(CONN_FUNC).asBoolean();
+					String connDetails = objNode.get(CONN_DESC).asText();
 				
 					if(connValue){
 						allFalse = false;
@@ -195,49 +235,61 @@ public class TASApplicationService {
 					if(!connValue){
 						allTrue = false;
 					}
-				
-					connectionsMap.put(connName, new Connection(connValue, connDetails));
+					
+					if(appConnections != null && appConnections.contains(connName)){
+						connectionsMap.put(connName, new Connection(connValue, connDetails, true));
+					}else{
+						connectionsMap.put(connName, new Connection(connValue, connDetails, false));
+					}
 				}
 			}
 			
 			boolean doesNotContainConnection = false;
-			for(String connection: appConnections){
-				if(!connectionsMap.containsKey(connection)){
-					connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON"));
+			if(appConnections != null){
+				for(String connection: appConnections){
+					if(!connectionsMap.containsKey(connection.toLowerCase())){
+						connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true));
 					
-					doesNotContainConnection = true;
+						doesNotContainConnection = true;
+					}
 				}
 			}
 						
 			payload.setConnections(connectionsMap);
 			
+			if(incorrectJSON && connectionsMap.size() == 0){
+					payload.setResultValue(STATUS_ERROR);
+					payload.setErrorMessage("Connection values incorrectly formatted in JSON");
+					return payload;
+			}
+				
 			if(doesNotContainConnection){
 				if(allFalse){
-					payload.setResultValue(3);
+					payload.setResultValue(STATUS_DOWN);
 				}else{
-					payload.setResultValue(2);
+					payload.setResultValue(STATUS_SOME);
 				}
 			}else if(allFalse){
-				payload.setResultValue(3);
+				payload.setResultValue(STATUS_DOWN);
 			}else if(allTrue){
-				payload.setResultValue(1);
+				payload.setResultValue(STATUS_UP);
 			}else{
-				payload.setResultValue(2);
+				payload.setResultValue(STATUS_SOME);
 			}
 			
 			return payload;
 		}catch (JsonParseException e){
-			payload.setResultValue(-1);
+			payload.setResultValue(STATUS_ERROR);
 			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", application url may be wrong or json may be formatted incorrectly");
 			return payload;
 		}catch (IOException e) {
 			e.printStackTrace();
-			payload.setResultValue(-1);
+			payload.setResultValue(STATUS_ERROR);
 			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName() + ", please confirm application url");
 			return payload;
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
-			payload.setResultValue(-1);
+			payload.setResultValue(STATUS_ERROR);
 			payload.setErrorMessage("Could not read Healthcheck payload from application " + app.getAppName());
 			return payload;
 		}

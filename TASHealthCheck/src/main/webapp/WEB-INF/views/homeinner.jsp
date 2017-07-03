@@ -93,11 +93,40 @@
 			<tbody>
 				<c:set var="count" value="1" scope="page" />
 
-
 				<c:forEach items="${payloads}" var="payload">
 					<c:if test="${count % 2 == 1}">
 						<tr class="approw" style= "border:none;">
 					</c:if>
+		<div id="integration-list">
+			<ul>
+				<li style="text-align: center"><a class="expand">
+						<div class="right-arrow">+</div>
+						<div>
+							<div>
+							<c:choose>
+								<c:when test="${payload.resultValue == -1}">
+									<img align="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
+								</c:when>
+								<c:when test="${payload.resultValue == 0}">
+									<img align="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
+								</c:when>
+								<c:when test="${payload.resultValue == 2}">
+									<img align="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
+								</c:when>
+								<c:when test="${payload.resultValue == 3}">
+									<img align="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
+								</c:when>
+								<c:otherwise>
+									<img align="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
+								</c:otherwise>
+							</c:choose>
+						</div>
+							<h1 align:"center" style="font-size: 30px;">${payload.app.appName} <c:if test="${not empty payload.app.versionNum}">v${payload.app.versionNum}</c:if></h1>
 
 					<c:choose>
 						<c:when test="${payload.resultValue == 0}">
@@ -163,6 +192,10 @@
 													class="btn btn-success btn-block" role="button">Details</a>
 											</c:when>
 											<c:when test="${payload.resultValue == 0}">
+
+											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
+										</c:when>
+								<c:when test="${payload.resultValue == -1}">
 									Healthcheck parsing for application is manually turned off or has scheduled downtime
 									<a
 													href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>"
