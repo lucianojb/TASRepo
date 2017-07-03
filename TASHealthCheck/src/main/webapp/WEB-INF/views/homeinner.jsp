@@ -5,7 +5,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <script type="text/javascript">
-	$(function() {
+	$(function() {	
 		$(".expand").on("click", function() {
 			$(this).next().slideToggle(200);
 			$expand = $(this).find(">:first-child");
@@ -19,17 +19,46 @@
 		$('input').click(function() {
 		    var category = $(this).val();
 		    $('td.approw').hide();
+// 		    $('tr.approw').hide();
 		    var showAll = true;
 		    var status=["down", "up", "error", "warn", "off"];
 		    var count = 1;
+		    var divs = [];
+		    var divsdupe =[];
 		    
 		    var checkboxes = document.getElementsByClassName('checkbox1');
 		    for (var i=0; i<checkboxes.length; i++) {
 		    	if(checkboxes[i].checked){
-		    		 showAll=false;		    		 
-		    		 $('.' + status[i]).show();
+		    		 showAll=false;	
+		    		
+		    		 $('.' + status[i]).each(function( i, val ) {
+		    			  divs.push(val);
+		    			});
+		    		 
+		    		  $('.' + status[i]).show();
+		    		 
 		    	}		
 		    }
+
+// 		    $.each(divs, function(i, el){
+// 		        if($.inArray(el, divsdupe) === -1) divsdupe.push(el);
+// 		    });
+		    
+// 		    for (var i=0; i<divsdupe.length; i+=2) {
+		    	
+// 				if(i == divsdupe.length-1){
+// //			    	$('.table1').append(divsdupe[i]);
+//  			    	$('.table1').find('tbody').append($('<tr class="approw">').append(divsdupe[i]));
+
+// 				}
+// 				else{
+// 			    	var tr = $(".table1 tr:last");
+// 			    	$('.table1').find('tbody').append($('<tr class="approw">'));
+// 			    	$('.table1 tr.approw:last').append(divsdupe[i]);
+// 			    	$('.table1 tr.approw:last').append(divsdupe[i+1]);		
+// // 			    			divsdupe[i+1]));
+// 				}		    	
+// 		    }
 		    
 		    if(showAll){
 		        $('td.approw').show();
@@ -40,6 +69,7 @@
 		
 </script>
 
+
 <c:if test="${empty payloads}">
 	<div class="row">
 		<div class="col-sm-3 col-centered row-bordered">
@@ -49,40 +79,7 @@
 </c:if>
 
 <div class=row>
-	<div class="col-sm-4 col-centered">
-		<table>
-			<thead>
-			<tr>
-				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Down</th>
-				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Up</th>
-				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Error</th>
-				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Warning</th>
-				<th class="col-sm-4" style="text-align: center; font-size: 20px;">Off</th>
-			</tr>
-			</thead>
-		<tbody>
-		<tr>
-		<td class="center" align="center">
-			<input type="checkbox" value="3" class="checkbox1" id="down" />
-		</td>
-	<td style="text-align: center; vertical-align: middle;">
-		<input type="checkbox" value="1" class="checkbox1" id="up" />
-	</td>
-	<td style="text-align: center; vertical-align: middle;">
-		<input
-			type="checkbox" value="-1" class="checkbox1" id="error" />
-	</td>
-	<td style="text-align:center; vertical-align: middle;">
-		<input
-			type="checkbox" value="2" class="checkbox1" id="warning" />
-			</td>
-	<td style="text-align:center; vertical-align: middle;">
-		<input
-			type="checkbox" value="0" class="checkbox1" id="off" />
-	</td>
-	</tr>
-	</tbody>
-	</table>
+
 </div>
 <div class=row>
 	<div class="container">
