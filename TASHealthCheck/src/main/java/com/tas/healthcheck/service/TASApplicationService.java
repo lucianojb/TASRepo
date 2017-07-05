@@ -102,13 +102,13 @@ public class TASApplicationService {
 						
 		try {			
 			//Mocking data
-			if(app.getAppName().equals("alltrue") || app.getAppName().equals("missingconnections")){
+			if(app.getAppName().equals("LEOFA") || app.getAppName().equals("TRIP")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("alltrue.json").toURI())));
-			}else if(app.getAppName().equals("allfalse")){
+			}else if(app.getAppName().equals("Amber Alerts")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("allfalse.json").toURI())));
-			}else if(app.getAppName().equals("sometrue")){
+			}else if(app.getAppName().equals("Parking")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("sometrue.json").toURI())));
-			}else if(app.getAppName().equals("noconnections")){
+			}else if(app.getAppName().equals("Job Swap")){
 				jsonContent = new String(Files.readAllBytes(Paths.get(this.getClass().getClassLoader().getResource("noconnections.json").toURI())));
 				//End of mock
 			}else{
@@ -331,5 +331,4 @@ public class TASApplicationService {
 			}
 		    return sb.toString();
 	  }
-
 }
