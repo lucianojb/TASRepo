@@ -298,25 +298,24 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.POST)
-	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit, RedirectAttributes redirect) {
+	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=false)String submit, RedirectAttributes redirect) {
 		logger.info("Deleting application {}!", id);
 		
+		DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
+		if(sched == null){
+			redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
+			return "redirect:../error";
+		}
+		
+		int appId = sched.getAppID();
+		
 		if(submit.equals("delete")){
-			DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
-			if(sched == null){
-				redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
-				return "redirect:../error";
-			}
-			
-			int appId = sched.getAppID();
 			
 			downScheduleService.removeScheduleById(id);
 			
-			String url = "redirect:../disableapplication/" + appId;
-			
-			return url;
 		}
-				
-		return "redirect:../applications";
+		
+		return "redirect:../disableapplication/" + appId;
+		
 	}
 }
