@@ -16,7 +16,7 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/"> <img
+			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
 				style="max-width: 20px; max-height: 20px;"
 				src="${pageContext.request.contextPath}/resources/pictures/logo.png" /></a>
 			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> TAS Healthcheck</a>
