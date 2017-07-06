@@ -17,7 +17,6 @@
 	});
 </script>
 
-
 <c:if test="${empty payloads}">
 		<div class="row">
 			<div class="col-sm-3 col-centered row-bordered">
@@ -47,28 +46,28 @@
 							<div>
 							<c:choose>
 								<c:when test="${payload.resultValue == -1}">
-									<img align="left" style="max-width: 10%"
-										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
+									<img class="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" alt="Off" />
 								</c:when>
 								<c:when test="${payload.resultValue == 0}">
-									<img align="left" style="max-width: 10%"
-										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
+									<img class="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" alt="Up"/>
 								</c:when>
 								<c:when test="${payload.resultValue == 2}">
-									<img align="left" style="max-width: 10%"
-										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
+									<img class="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" alt="Warning"/>
 								</c:when>
 								<c:when test="${payload.resultValue == 3}">
-									<img align="left" style="max-width: 10%"
-										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
+									<img class="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" alt="Down"/>
 								</c:when>
 								<c:otherwise>
-									<img align="left" style="max-width: 10%"
-										src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
+									<img class="left" style="max-width: 10%"
+										src="${pageContext.request.contextPath}/resources/pictures/red-x.png" alt="Error"/>
 								</c:otherwise>
 							</c:choose>
 						</div>
-							<h1 align:"center" style="font-size: 30px;">${payload.app.appName} <c:if test="${not empty payload.app.versionNum}">v${payload.app.versionNum}</c:if></h1>
+							<h1 style="text-align: center; font-size: 30px;">${payload.app.appName} <c:if test="${not empty payload.app.versionNum}">v${payload.app.versionNum}</c:if></h1>
 
 
 						</div>
@@ -104,19 +103,19 @@
 												<tr>
 													<c:choose>
 														<c:when test="${empty conn.value.functional}">
-															<td align="center"><img style="max-width: 20%"
-																src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" /></td>
-															<td align="center">${conn.key}</td>
+															<td class="center"><img style="max-width: 20%"
+																src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" alt="warning"/></td>
+															<td class="center">${conn.key}</td>
 														</c:when>
 														<c:when test="${conn.value.functional}">
-															<td align="center"><img style="max-width: 20%"
-																src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" /></td>
-															<td align="center">${conn.key}</td>
+															<td class="center"><img style="max-width: 20%"
+																src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" alt="up" /></td>
+															<td class="center">${conn.key}</td>
 														</c:when>
 														<c:otherwise>
-															<td align="center"><img style="max-width: 20%"
-																src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" /></td>
-															<td align="center">${conn.key}</td>
+															<td class="center"><img style="max-width: 20%"
+																src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" alt="down" /></td>
+															<td class="center">${conn.key}</td>
 														</c:otherwise>
 													</c:choose>
 												</tr>
