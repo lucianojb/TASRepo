@@ -22,7 +22,7 @@
 <script type="text/javascript">
         $(function() {
             //Initialize filterizr with default options
-            $('.filtr-container').filterizr();
+            $('.filtr-container').filterizr('toggleFilter', toggledFilter);
         });
     </script>
 
@@ -35,34 +35,11 @@
 		</div>
 </c:if>
 
-<div class="row">
-            <ul class="simplefilter">
-                <li class="active" data-multifilter="all">All</li>
-                <li data-multifilter="1">Off</li>
-                <li data-multifilter="2">Up</li>
-                <li data-multifilter="3">Some</li>
-                <li data-multifilter="4">Down</li>
-                <li data-multifilter="5">Error</li>
-            </ul>
-        </div>
-
-<c:set var="count" value="1" scope="page" />
 <div class="filtr-container">
+			<ul>
 	<c:forEach items="${payloads}" var="payload">
 
-		<c:choose>
-			<c:when test="${count % 2 == 1}">
-				<div class="container-fluid">
-					<div class="row">
-						<div class="col-sm-4 col-sm-offset-2">
-			</c:when>
-			<c:otherwise>
-				<div class="col-sm-4">
-			</c:otherwise>
-		</c:choose>
 
-		<div id="integration-list">
-			<ul>
 							<c:choose>
 								<c:when test="${payload.resultValue == -1}">
 								<li class="filtr-item" data-category="1" style="text-align: center"><a class="expand">
@@ -93,7 +70,7 @@
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
-									<img align="left" style="max-width: 10%"
+									<img align="left" style="max-width: 5%"
 										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 								</c:when>
 								<c:otherwise>
@@ -164,22 +141,10 @@
 								</c:otherwise>
 							</c:choose></div>
 						</div></li>
-			</ul>
-		</div>
 
-		<c:choose>
-			<c:when test="${count % 2 == 1}">
-				</div>
-			</c:when>
-			<c:otherwise>
-				</div>
-				</div>
-				</div>
-			</c:otherwise>
-		</c:choose>
-
-		<c:set var="count" value="${count + 1}" scope="page" />
 	</c:forEach>
+	</ul>
+	</div>
 	</div>
 	
 	<div id="show"></div>
