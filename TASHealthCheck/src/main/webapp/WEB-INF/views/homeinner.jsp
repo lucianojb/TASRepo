@@ -17,6 +17,15 @@
 	});
 </script>
 
+<script type="text/javascript" src="<c:url value="/resources/jquery.filterizr.min.js"/>"></script>
+
+<script type="text/javascript">
+        $(function() {
+            //Initialize filterizr with default options
+            $('.filtr-container').filterizr();
+        });
+    </script>
+
 
 <c:if test="${empty payloads}">
 		<div class="row">
@@ -25,7 +34,20 @@
 			</div>
 		</div>
 </c:if>
+
+<div class="row">
+            <ul class="simplefilter">
+                <li class="active" data-multifilter="all">All</li>
+                <li data-multifilter="1">Off</li>
+                <li data-multifilter="2">Up</li>
+                <li data-multifilter="3">Some</li>
+                <li data-multifilter="4">Down</li>
+                <li data-multifilter="5">Error</li>
+            </ul>
+        </div>
+
 <c:set var="count" value="1" scope="page" />
+<div class="filtr-container">
 	<c:forEach items="${payloads}" var="payload">
 
 		<c:choose>
@@ -41,28 +63,44 @@
 
 		<div id="integration-list">
 			<ul>
-				<li style="text-align: center"><a class="expand">
-						<div class="right-arrow">+</div>
-						<div>
-							<div>
 							<c:choose>
 								<c:when test="${payload.resultValue == -1}">
+								<li class="filtr-item" data-category="1" style="text-align: center"><a class="expand">
+									<div class="right-arrow">+</div>
+									<div>
+									<div>
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 0}">
+								<li class="filtr-item" data-category="2" style="text-align: center"><a class="expand">
+									<div class="right-arrow">+</div>
+									<div>
+									<div>
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 2}">
+								<li class="filtr-item" data-category="3" style="text-align: center"><a class="expand">
+									<div class="right-arrow">+</div>
+									<div>
+									<div>
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 3}">
+								<li class="filtr-item" data-category="4" style="text-align: center"><a class="expand">
+									<div class="right-arrow">+</div>
+									<div>
+									<div>
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 								</c:when>
 								<c:otherwise>
+								<li class="filtr-item" data-category="5" style="text-align: center"><a class="expand">
+									<div class="right-arrow">+</div>
+									<div>
+									<div>
 									<img align="left" style="max-width: 10%"
 										src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 								</c:otherwise>
@@ -142,5 +180,6 @@
 
 		<c:set var="count" value="${count + 1}" scope="page" />
 	</c:forEach>
+	</div>
 	
 	<div id="show"></div>
