@@ -7465,7 +7465,7 @@ span {
 #sup{
     display: table-cell;
     vertical-align: middle;
-    width: 80%;
+    width: 100%;
 }
 .detail a {
     text-decoration: none;

@@ -38,7 +38,7 @@
 			</c:otherwise>
 		</c:choose>
 
-		<div id="integration-list">
+		<div id="integration-list" style="display:block;">
 			<ul>
 				<li style="text-align: center"><a class="expand">
 						<div class="right-arrow">+</div>
@@ -74,7 +74,7 @@
 				</a>
 
 					<div class="detail">
-						<div id="sup">
+						<div id="sup" style="display:block;">
 							<c:choose>
 								<c:when test="${not empty payload.errorMessage}">
 											${payload.errorMessage}
@@ -89,9 +89,10 @@
 											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:otherwise>
-								<div class = "col-sm-12 col-centered">
+<!-- 								<div class = "col-sm-12 col-centered"> -->
 									<table id="myTable"
-										class="table-responsive table-striped tablesorter" style="font-size: 20px;">
+										class="table-responsive table-striped tablesorter" style="font-size: 20px; table-layout:fixed;
+width: 100%;">
 										<thead class="thead-inverse">
 											<tr>
 												<th class ="col-sm-4" style="text-align: center; font-size: 20px;">Status</th>
