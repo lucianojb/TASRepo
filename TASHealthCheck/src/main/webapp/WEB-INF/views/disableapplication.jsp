@@ -67,6 +67,7 @@
 						path="startDate" type="text" placeholder="MM/dd/yyyy HH:mm" 
 						autocomplete="off"/>
 					<sf:errors path="startDate" />
+					<br/>
 
 					End Date and Time:
 					<sf:input class="form-control" id="endDate" name="endDate"
