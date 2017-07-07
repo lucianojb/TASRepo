@@ -7465,7 +7465,7 @@ span {
 #sup{
     display: table-cell;
     vertical-align: middle;
-    width: 80%;
+    width: 100%;
 }
 .detail a {
     text-decoration: none;
@@ -7622,6 +7622,14 @@ img-md {
 
 tr.spaceUnder>td {
   padding-bottom: 1em;
+}
+
+.left{
+	float:left;
+}
+
+.center{
+	float:center;
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */

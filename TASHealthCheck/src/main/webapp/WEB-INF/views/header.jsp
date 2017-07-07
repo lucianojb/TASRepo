@@ -3,7 +3,7 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring" %>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />" rel="stylesheet">	
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js" type="text/javascript"></script>
 
 <nav class="navbar navbar-default">
 
@@ -18,7 +18,7 @@
 			</button>
 			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
 				style="max-width: 20px; max-height: 20px;"
-				src="${pageContext.request.contextPath}/resources/pictures/logo.png" /></a>
+				src="${pageContext.request.contextPath}/resources/pictures/logo.png" alt="logo" /></a>
 			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> TAS Healthcheck</a>
 		</div>
 		
