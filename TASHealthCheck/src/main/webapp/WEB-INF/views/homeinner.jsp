@@ -89,7 +89,6 @@
 											<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
 										</c:when>
 								<c:otherwise>
-<!-- 								<div class = "col-sm-12 col-centered"> -->
 									<table id="myTable"
 										class="table-responsive table-striped tablesorter" style="font-size: 20px; table-layout:fixed;
 width: 100%;">
