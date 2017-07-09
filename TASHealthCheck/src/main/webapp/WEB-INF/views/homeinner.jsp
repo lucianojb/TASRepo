@@ -35,14 +35,13 @@
 		</div>
 </c:if>
 
-<div class="filtr-container">
-			<ul>
+<div class="filtr-container container">
 	<c:forEach items="${payloads}" var="payload">
-
+	<div class = "col-sm-3">
 
 							<c:choose>
 								<c:when test="${payload.resultValue == -1}">
-								<li class="filtr-item" data-category="1" style="text-align: center"><a class="expand">
+								<div class="filtr-item" data-category="1" style="text-align: center"><a class="expand">
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
@@ -50,7 +49,7 @@
 										src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 0}">
-								<li class="filtr-item" data-category="2" style="text-align: center"><a class="expand">
+								<div class="filtr-item" data-category="2" style="text-align: center"><a class="expand">
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
@@ -58,7 +57,7 @@
 										src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 2}">
-								<li class="filtr-item" data-category="3" style="text-align: center"><a class="expand">
+								<div class="filtr-item" data-category="3" style="text-align: center"><a class="expand">
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
@@ -66,7 +65,7 @@
 										src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 								</c:when>
 								<c:when test="${payload.resultValue == 3}">
-								<li class="filtr-item" data-category="4" style="text-align: center"><a class="expand">
+								<div class="filtr-item" data-category="4" style="text-align: center"><a class="expand">
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
@@ -74,7 +73,7 @@
 										src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 								</c:when>
 								<c:otherwise>
-								<li class="filtr-item" data-category="5" style="text-align: center"><a class="expand">
+								<div class="filtr-item" data-category="5" style="text-align: center"><a class="expand">
 									<div class="right-arrow">+</div>
 									<div>
 									<div>
@@ -138,13 +137,10 @@
 											</c:forEach>
 									</table>
 									<a href="<c:url value='/application/${payload.app.appID}/${payload.app.appName}'/>" class="btn btn-success btn-block" role="button">Details</a>
+									</div>
 								</c:otherwise>
-							</c:choose></div>
-						</div></li>
-
+							</c:choose>
+		</div></div></div></div>
 	</c:forEach>
-	</ul>
 	</div>
-	</div>
-	
 	<div id="show"></div>
