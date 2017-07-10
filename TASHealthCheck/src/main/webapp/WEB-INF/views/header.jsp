@@ -16,11 +16,15 @@
 					class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
-				style="max-width: 20px; max-height: 20px;"
-				src="${pageContext.request.contextPath}/resources/pictures/logo.png" alt="logo" /></a>
-			<a class="navbar-brand" href="${pageContext.request.contextPath}/"> TAS Healthcheck</a>
 		</div>
+		<div class="navbar-collapse collapse">
+    		<ul class="nav navbar-nav navbar-left">
+        		<li><a class="navbar-brand" href="${pageContext.request.contextPath}/"> <img
+				style="max-width: 20px; max-height: 20px;"
+				src="${pageContext.request.contextPath}/resources/pictures/logo.png" alt="logo" /></a></li>
+				<li><a class="navbar-brand" href="${pageContext.request.contextPath}/"> TAS Healthcheck</a></li>
+    		</ul>
+    	
 		
 		<sec:authorize access="isAuthenticated()">
 				<ul class="nav navbar-nav navbar-center">
@@ -38,5 +42,5 @@
     			</ul>
     		</sec:authorize>
 	</div>
-
+</div>
 </nav>

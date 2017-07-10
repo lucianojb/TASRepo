@@ -41,7 +41,7 @@
             <ul class="multifilter" style="text-align:center; padding-right: 40px;">
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
-                <li data-multifilter="3">Some</li>
+                <li data-multifilter="3">Warning</li>
                 <li data-multifilter="4">Down</li>
                 <li data-multifilter="5">Error</li>
             </ul>
