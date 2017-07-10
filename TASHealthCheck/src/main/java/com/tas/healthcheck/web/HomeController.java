@@ -1,5 +1,6 @@
 package com.tas.healthcheck.web;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
 import com.tas.healthcheck.service.DownScheduleService;
+import com.tas.healthcheck.service.PayloadComparator;
 import com.tas.healthcheck.service.TASApplicationService;
 
 /**
@@ -47,6 +49,8 @@ public class HomeController {
 			payloads.add(tasApplicationService.determineHealthOfApp(app));
 		}
 		
+		Collections.sort(payloads, new PayloadComparator());
+		
 		model.addAttribute("applications", apps);
 		model.addAttribute("payloads", payloads);
 		
@@ -63,6 +67,8 @@ public class HomeController {
 		for(Application app : apps){
 			payloads.add(tasApplicationService.determineHealthOfApp(app));
 		}
+		
+		Collections.sort(payloads, new PayloadComparator());
 		
 		model.addAttribute("applications", apps);
 		model.addAttribute("payloads", payloads);
