@@ -9,6 +9,8 @@
 <head>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />"
 	rel="stylesheet">
+<link rel="stylesheet" href="<c:url value="/resources/css/filter.css" />">
+	
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
 <script
@@ -23,12 +25,6 @@
 </script>
 <script type="text/javascript" src="<c:url value="/resources/jquery.filterizr.min.js"/>"></script>
 
-<script type="text/javascript">
-        $(function() {
-            //Initialize filterizr with default options
-            $('.filtr-container').filterizr();
-        });
-    </script>
 
 <title>Home</title>
 </head>
@@ -37,7 +33,7 @@
 	<jsp:include page="header.jsp" />
 	
 	<div class="row">
-            <ul class="simplefilter">
+            <ul class="multifilter">
                 <li class="active" data-multifilter="all">All</li>
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
