@@ -10,7 +10,16 @@
 <script type="text/javascript">
         $(function() {
             //Initialize filterizr with default options
+            console.log("initializing filter");
             $('.filtr-container').filterizr('toggleFilter');
+            
+            $('.multifilter li').each(function ( index ){
+            	console.log($(this));
+            	if($(this).hasClass("active")){
+            		$(this).click();
+            		$(this).addClass("active");
+            	}
+            });
         });
 </script>
 
