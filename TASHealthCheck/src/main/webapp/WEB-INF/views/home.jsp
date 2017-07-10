@@ -37,8 +37,8 @@
 <body>
 	<jsp:include page="header.jsp" />
 	
-	<div class="col-sm-6 col-centered row">
-            <ul class="multifilter" style="width: 70%;">
+	<div class="col-sm-6 col-centered">
+            <ul class="multifilter" style="text-align:center;">
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
                 <li data-multifilter="3">Some</li>
