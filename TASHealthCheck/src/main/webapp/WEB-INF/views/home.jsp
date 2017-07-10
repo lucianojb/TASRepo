@@ -8,8 +8,9 @@
 <head>
 <link href="<c:url value="/resources/css/bootstrap.min.css" />"
 	rel="stylesheet">
-<script 
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="<c:url value="/resources/css/filter.css" />">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js" type="text/javascript"></script>
 <script
 	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" type="text/javascript"></script>
 <script type="text/javascript">
@@ -19,11 +20,33 @@
 				$( "#inner-home" ).html( data );
 			});}, 20000 * ${fn:length(payloads)});
 	});
+	 
+	 $(function() {
+		    //Multifilter controls
+		    $('.multifilter li').click(function() {
+		        $(this).toggleClass('active');
+		    });
+
+		});
 </script>
+<script type="text/javascript" src="<c:url value="/resources/jquery.filterizr.min.js"/>"></script>
+
+
 <title>Home</title>
 </head>
 <body>
 	<jsp:include page="header.jsp" />
+	
+	<div class="col-sm-6 col-centered row">
+            <ul class="multifilter" style="width: 70%;">
+                <li data-multifilter="1">Off</li>
+                <li data-multifilter="2">Up</li>
+                <li data-multifilter="3">Some</li>
+                <li data-multifilter="4">Down</li>
+                <li data-multifilter="5">Error</li>
+            </ul>
+        </div>
+	
 	<div id="inner-home">
 		<jsp:include page="homeinner.jsp" />
 	</div>

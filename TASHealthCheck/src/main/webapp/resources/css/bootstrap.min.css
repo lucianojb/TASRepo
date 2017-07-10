@@ -7624,6 +7624,9 @@ tr.spaceUnder>td {
   padding-bottom: 1em;
 }
 
+.helper {
+    margin-top: 30px;
+}
 .left{
 	float:left;
 }
