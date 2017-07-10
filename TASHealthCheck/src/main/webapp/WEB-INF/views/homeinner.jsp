@@ -14,7 +14,6 @@
         });
 </script>
 
-
 <c:if test="${empty payloads}">
 	<div class="row">
 		<div class="col-sm-3 col-centered row-bordered">

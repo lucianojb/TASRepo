@@ -7465,7 +7465,7 @@ span {
 #sup{
     display: table-cell;
     vertical-align: middle;
-    width: 80%;
+    width: 100%;
 }
 .detail a {
     text-decoration: none;
@@ -7626,6 +7626,13 @@ tr.spaceUnder>td {
 
 .helper {
     margin-top: 30px;
+}
+.left{
+	float:left;
+}
+
+.center{
+	float:center;
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */
