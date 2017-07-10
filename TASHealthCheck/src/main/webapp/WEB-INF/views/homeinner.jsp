@@ -28,27 +28,27 @@
 		<c:choose>
 			<c:when test="${payload.resultValue == -1}">
 				<div class="filtr-item col-sm-3" data-category="1" style="text-align: center">
-					<img align="left" style="max-width: 10%"
+					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 			</c:when>
 			<c:when test="${payload.resultValue == 0}">
 				<div class="filtr-item col-sm-3" data-category="2" style="text-align: center">
-					<img align="left" style="max-width: 10%"
+					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
 			</c:when>
 			<c:when test="${payload.resultValue == 2}">
 				<div class="filtr-item col-sm-3" data-category="3" style="text-align: center">
-					<img align="left" style="max-width: 10%"
+					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/yellowcircle.png" />
 			</c:when>
 			<c:when test="${payload.resultValue == 3}">
 				<div class="filtr-item col-sm-3" data-category="4" style="text-align: center">
-					<img align="left" style="max-width: 10%"
+					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
 			</c:when>
 			<c:otherwise>
 				<div class="filtr-item col-sm-3" data-category="5" style="text-align: center">
-					<img align="left" style="max-width: 10%"
+					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/red-x.png" />
 			</c:otherwise>
 		</c:choose>

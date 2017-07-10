@@ -32,8 +32,8 @@
 
 	<jsp:include page="header.jsp" />
 	
-	<div class="row">
-            <ul class="multifilter">
+	<div class="col-sm-6 col-centered row">
+            <ul class="multifilter" style="width: 70%;">
                 <li class="active" data-multifilter="all">All</li>
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
