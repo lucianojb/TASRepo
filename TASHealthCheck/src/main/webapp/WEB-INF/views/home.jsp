@@ -22,6 +22,14 @@
 				$( "#inner-home" ).html( data );
 			});}, 20000 * ${fn:length(payloads)});
 	});
+	 
+	 $(function() {
+		    //Multifilter controls
+		    $('.multifilter li').click(function() {
+		        $(this).toggleClass('active');
+		    });
+
+		});
 </script>
 <script type="text/javascript" src="<c:url value="/resources/jquery.filterizr.min.js"/>"></script>
 
@@ -34,7 +42,6 @@
 	
 	<div class="col-sm-6 col-centered row">
             <ul class="multifilter" style="width: 70%;">
-                <li class="active" data-multifilter="all">All</li>
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
                 <li data-multifilter="3">Some</li>
