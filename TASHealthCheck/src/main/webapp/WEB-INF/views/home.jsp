@@ -18,7 +18,7 @@
 		setInterval(function() {
 			$.get( "${pageContext.request.contextPath}/homeinner", function( data ) {
 				$( "#inner-home" ).html( data );
-			});}, 20000 * ${fn:length(payloads)});
+			});}, 2000 * ${fn:length(payloads)});
 	});
 	 
 	 $(function() {
@@ -45,7 +45,8 @@
                 <li data-multifilter="4">Down</li>
                 <li data-multifilter="5">Error</li>
             </ul>
-        </div>
+            <input type="text" class="filtr-search" name="filtr-search" placeholder="Search..." data-search>
+	</div>
 	
 	<div id="inner-home">
 		<jsp:include page="homeinner.jsp" />
