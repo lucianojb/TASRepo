@@ -45,7 +45,10 @@
                 <li data-multifilter="4">Down</li>
                 <li data-multifilter="5">Error</li>
             </ul>
-            <input type="text" class="filtr-search" name="filtr-search" placeholder="Search..." data-search>
+	</div>
+	
+	<div class="col-sm-3 col-centered">
+		<input type="text" style="text-align: center; width:100%;" class="filtr-search" name="filtr-search" placeholder="Search..." data-search>
 	</div>
 	
 	<div id="inner-home">
