@@ -28,9 +28,6 @@ public class Application {
 	@NotEmpty
 	private String url;
 	
-	@Column(name="connections")
-	private String connections;
-	
 	@Column(name="version_num")
 	private String versionNum;
 	
@@ -41,18 +38,17 @@ public class Application {
 		super();
 	}
 	
-	public Application(String appName, String url, String connections, String versionNum, boolean activeState){
+	public Application(String appName, String url, String versionNum, boolean activeState){
 		super();
 		this.appName = appName;
 		this.url = url;
-		this.connections = connections;
 		this.versionNum = versionNum;
 		this.activeState = activeState;
 	}
 
 	@Override
 	public String toString() {
-		return "Application [appName=" + appName + ", url=" + url + ", connections=" + connections + ", versionNum="
+		return "Application [appName=" + appName + ", url=" + url + ", versionNum="
 				+ versionNum + ", activeState=" + activeState + "]";
 	}
 
@@ -78,14 +74,6 @@ public class Application {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public String getConnections() {
-		return connections;
-	}
-
-	public void setConnections(String connections) {
-		this.connections = connections;
 	}
 
 	public String getVersionNum() {

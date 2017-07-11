@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
+import com.tas.healthcheck.service.AppConnectionService;
 import com.tas.healthcheck.service.DownScheduleService;
 import com.tas.healthcheck.service.TASApplicationService;
 
@@ -32,6 +33,9 @@ public class HomeController {
 	
 	@Autowired
 	DownScheduleService downScheduleService;
+	
+	@Autowired
+	AppConnectionService appConnectionService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.

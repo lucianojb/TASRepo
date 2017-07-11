@@ -35,20 +35,22 @@ private static final Logger logger = LoggerFactory.getLogger(DownScheduleDaoImpl
 	}
 
 	@Override
-	public boolean saveDownSchedule(DownSchedule sched) {
+	public DownSchedule saveDownSchedule(DownSchedule sched) {
 		logger.info("Adding {} to database", sched.toString());
 		
+		DownSchedule savedSched = null;
+		
 		try{
-			DownSchedule savedSched = (DownSchedule) sessionFactory.getCurrentSession().merge(sched);
+			savedSched = (DownSchedule) sessionFactory.getCurrentSession().merge(sched);
 			
 			Date date = new Date();
 			
 			sessionFactory.getCurrentSession().createQuery("update DownSchedule set uppdated_date = :update"
 					+ " where sched_id = :id").setParameter("update", date).setParameter("id", savedSched.getSchedID()).executeUpdate();
 			
-			return true;
+			return savedSched;
 		}catch(HibernateException exc){
-			return false;
+			return null;
 		}
 	}
 
@@ -77,6 +79,12 @@ private static final Logger logger = LoggerFactory.getLogger(DownScheduleDaoImpl
 	public List<DownSchedule> getAllDownSchedulesByAppId(int id) {
 		return this.sessionFactory.getCurrentSession().createQuery("from DownSchedule "
 				+ " where app_id = :id", DownSchedule.class).setParameter("id", id).getResultList();
+	}
+
+	@Override
+	public void removeByAppId(int id) {
+		sessionFactory.getCurrentSession().createQuery("DELETE from DownSchedule where app_id = :givenid")
+		.setParameter("givenid", id).executeUpdate();
 	}
 	
 }

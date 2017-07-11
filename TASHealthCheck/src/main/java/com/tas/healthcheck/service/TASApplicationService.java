@@ -25,8 +25,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tas.healthcheck.dao.AppConnectionDao;
 import com.tas.healthcheck.dao.DownScheduleDao;
 import com.tas.healthcheck.dao.TASApplicationDao;
+import com.tas.healthcheck.models.AppConnection;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
@@ -48,8 +50,11 @@ public class TASApplicationService {
 	@Autowired
 	DownScheduleDao downScheduleDao;
 	
-	public void saveApplication(Application application) {
-		tasApplicationDao.saveApplication(application);
+	@Autowired
+	AppConnectionDao appConnectionDao;
+	
+	public Application saveApplication(Application application) {
+		return tasApplicationDao.saveApplication(application);
 	}
 
 	public List<Application> getAllApplications() {
@@ -165,16 +170,13 @@ public class TASApplicationService {
 			}
 			
 			if(!rootNode.has(CONN_CHECKS)){
-				if(app.getConnections() != null){
-					String[] connections = null;
-					List<String> appConnections = null;
-					if(app.getConnections() != null){
-						connections = app.getConnections().split(",");
-						for(int x = 0; x < connections.length; x++){
-							connections[x] = connections[x].toLowerCase();
-						}
+				List<AppConnection> connections = appConnectionDao.getAllAppConnectionByAppId(app.getAppID());
+				if(connections != null && connections.size() > 0){
 					
-						appConnections = new ArrayList<String>(Arrays.asList(connections));
+					List<String> appConnections = new ArrayList<String>();
+						
+					for(AppConnection conn : connections){
+						appConnections.add(conn.getConnName().toLowerCase());
 					}
 					
 					Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
@@ -194,16 +196,17 @@ public class TASApplicationService {
 			}
 			JsonNode connectionsNode = rootNode.get(CONN_CHECKS);
 			
-			String[] connections = null;
+
+			List<AppConnection> connections = appConnectionDao.getAllAppConnectionByAppId(app.getAppID());
 			List<String> appConnections = null;
-			if(app.getConnections() != null){
-				connections = app.getConnections().split(",");
-				for(int x = 0; x < connections.length; x++){
-					connections[x] = connections[x].toLowerCase();
-				}
+			if(connections != null && connections.size() > 0){
+				appConnections = new ArrayList<String>();
 			
-				appConnections = new ArrayList<String>(Arrays.asList(connections));
+				for(AppConnection con : connections){
+					appConnections.add(con.getConnName().toLowerCase());
+				}
 			}
+			
 			
 			Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
 			
