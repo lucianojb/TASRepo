@@ -1,7 +1,5 @@
 package com.tas.healthcheck.web;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
@@ -149,18 +147,20 @@ public class HomeController {
 		
 		logger.info(payload.toString());
 		
-		Date date = new Date();
-		long diff = date.getTime() - app.getupTime().getTime();
-		
-		long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-		long hours = TimeUnit.MILLISECONDS.toHours(diff); 
+		if (app.getupTime() != null) {
+			Date date = new Date();
+			long diff = date.getTime() - app.getupTime().getTime();
 
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long hours = TimeUnit.MILLISECONDS.toHours(diff);
+
+			model.addAttribute("upHours", hours);
+			model.addAttribute("upMinutes", minutes);
+		}
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
 		model.addAttribute("scheduledTimes", dScheds);
-		model.addAttribute("upHours",  hours);
-		model.addAttribute("upMinutes", minutes);
-		
+
 		return "appinner";
 	}
 	
