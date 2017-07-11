@@ -1,21 +1,24 @@
 drop table if exists user_roles;
 drop table if exists admin_users;
 drop table if exists down_schedule;
+drop table if exists app_conns;
 drop table if exists tas_app;
 drop sequence if exists tas_app_app_id_seq;
 drop sequence if exists down_schedule_sched_id_seq;
+drop sequence if exists app_conns_conn_id_seq;
 
 create sequence tas_app_app_id_seq;
 create sequence down_schedule_sched_id_seq;
+create sequence app_conns_conn_id_seq;
 
 CREATE TABLE tas_app (
 	app_name varchar NULL,
 	url varchar NULL,
-	connections varchar NULL,
 	version_num varchar NULL,
 	app_id int8 NOT NULL DEFAULT nextval('tas_app_app_id_seq'::regclass),
 	uppdated_date timestamp NULL DEFAULT now(),
 	active bool NULL,
+	uptimestart timestamp NULL,
 	CONSTRAINT tas_app_pkey PRIMARY KEY (app_id)
 )
 WITH (
@@ -29,6 +32,19 @@ CREATE TABLE down_schedule (
 	end_date timestamp NOT NULL,
 	uppdated_date timestamp NULL,
 	CONSTRAINT down_schedule_pkey PRIMARY KEY (sched_id),
+	CONSTRAINT app_id FOREIGN KEY (app_id) REFERENCES public.tas_app(app_id) ON UPDATE CASCADE
+)
+WITH (
+	OIDS=FALSE
+);
+
+CREATE TABLE app_conns (
+	conn_name varchar not NULL,
+	conn_id int8 NOT NULL DEFAULT nextval('app_conns_conn_id_seq'::regclass),
+	app_id int4 NOT NULL,
+	uppdated_date timestamp NULL DEFAULT now(),
+	priority bool not NULL,
+	CONSTRAINT app_conns_pkey PRIMARY KEY (conn_id),
 	CONSTRAINT app_id FOREIGN KEY (app_id) REFERENCES public.tas_app(app_id) ON UPDATE CASCADE
 )
 WITH (
