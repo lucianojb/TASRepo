@@ -1,6 +1,8 @@
 package com.tas.healthcheck.web;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tas.healthcheck.models.AppConnection;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
+import com.tas.healthcheck.service.AppConnectionService;
 import com.tas.healthcheck.service.DownScheduleService;
 import com.tas.healthcheck.service.TASApplicationService;
 
@@ -29,6 +33,9 @@ public class AdminController {
 	
 	@Autowired
 	DownScheduleService downScheduleService;
+	
+	@Autowired
+	AppConnectionService appConnectionService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -69,9 +76,10 @@ public class AdminController {
 			return "createapplication";
 		}
 		
+		List<AppConnection> connList = new LinkedList<AppConnection>();
+
 		if(connectionValues != null){
 			logger.info("Parsing through connection values {}", connectionValues.toString());
-			StringBuilder strBuild = new StringBuilder();
 			for(int x = 0; x < connectionValues.length; x++){
 				
 				if(connectionValues[x].isEmpty()){
@@ -84,18 +92,21 @@ public class AdminController {
 					return "createapplication";
 				}
 				
-				strBuild.append(connectionValues[x] + ",");
-			}
-			if(strBuild.length() > 0){
-				strBuild.deleteCharAt(strBuild.length() - 1);
-		
-				application.setConnections(strBuild.toString());
+				//for now make all priorities false
+				connList.add(new AppConnection(connectionValues[x], false));
 			}
 		}
 		
 		logger.info("Creating: " + application);
 		application.setActiveState(true);
-		tasApplicationService.saveApplication(application);
+		Application app = tasApplicationService.saveApplication(application);
+		
+		if(app != null){
+			for(AppConnection conn : connList){
+				conn.setAppID(app.getAppID());
+				appConnectionService.saveAppConnection(conn);
+			}
+		}
 		
 		return "redirect:./applications";
 	}
@@ -113,10 +124,12 @@ public class AdminController {
 		
 		model.addAttribute("application", application);
 		
-		if(application.getConnections() != null){
-			String[] connections = application.getConnections().split(",");
-			model.addAttribute("connections", connections);
+		List<AppConnection> connections = appConnectionService.getConnectionsByAppId(application.getAppID());
+		List<String> connectionNames = new LinkedList<String>();
+		for(AppConnection conn : connections){
+			connectionNames.add(conn.getConnName());
 		}
+		model.addAttribute("connections", connectionNames);
 		
 		return "editapplication";
 	}
@@ -143,8 +156,10 @@ public class AdminController {
 			return "editapplication";
 		}
 		
+		appConnectionService.removeApplicationConnections(application.getAppID());
+		
+		List<AppConnection> conns = new LinkedList<AppConnection>();
 		if(connectionValues != null){
-			StringBuilder strBuild = new StringBuilder();
 			for(int x = 0; x < connectionValues.length; x++){
 				
 				if(connectionValues[x].isEmpty()){
@@ -157,15 +172,13 @@ public class AdminController {
 					return "editapplication";
 				}
 				
-				strBuild.append(connectionValues[x] + ",");
+				//for now make them all false
+				conns.add(new AppConnection(connectionValues[x], false, application.getAppID()));
 			}
-			if(strBuild.length() > 0){
-				strBuild.deleteCharAt(strBuild.length() - 1);
+		}
 		
-				application.setConnections(strBuild.toString());
-			}else{
-				application.setConnections(null);
-			}
+		for(AppConnection conn : conns){
+			appConnectionService.saveAppConnection(conn);
 		}
 		
 		tasApplicationService.saveApplication(application);
@@ -199,6 +212,8 @@ public class AdminController {
 				return "redirect:../error";
 			}
 
+			appConnectionService.removeApplicationConnections(id);
+			downScheduleService.removeSchedulesByAppId(id);
 			tasApplicationService.removeApplicationById(id);
 		}
 		
