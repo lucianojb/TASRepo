@@ -1,8 +1,12 @@
 package com.tas.healthcheck.web;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +39,12 @@ public class HomeController {
 	@Autowired
 	DownScheduleService downScheduleService;
 	
+	private static int STATUS_OFF = -1;
+	private static int STATUS_UP = 0;
+	private static int STATUS_ERROR = 1;
+	private static int STATUS_SOME = 2;
+	private static int STATUS_DOWN = 3;
+	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
@@ -50,6 +60,20 @@ public class HomeController {
 		}
 		
 		Collections.sort(payloads, new PayloadComparator());
+		
+		for(HealthcheckPayload pl : payloads){
+			if(pl.getResultValue() ==  STATUS_DOWN || pl.getResultValue() ==  STATUS_ERROR||
+					pl.getResultValue() == STATUS_OFF){
+					pl.getApp().setupTime(null);
+					tasApplicationService.saveApplication(pl.getApp());
+			}
+			else if((pl.getResultValue() == STATUS_UP || pl.getResultValue() == STATUS_SOME)
+					&& pl.getApp().getupTime() == null){
+					Date date = new Date();
+					pl.getApp().setupTime(date);
+					tasApplicationService.saveApplication(pl.getApp());
+			}
+		}
 		
 		model.addAttribute("applications", apps);
 		model.addAttribute("payloads", payloads);
@@ -90,6 +114,16 @@ public class HomeController {
 		
 		logger.info(payload.toString());
 		
+		if (app.getupTime() != null) {
+			Date date = new Date();
+			long diff = date.getTime() - app.getupTime().getTime();
+
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long hours = TimeUnit.MILLISECONDS.toHours(diff);
+
+			model.addAttribute("upHours", hours);
+			model.addAttribute("upMinutes", minutes);
+		}
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
 		model.addAttribute("scheduledTimes", dScheds);
@@ -111,9 +145,17 @@ public class HomeController {
 		
 		logger.info(payload.toString());
 		
+		Date date = new Date();
+		long diff = date.getTime() - app.getupTime().getTime();
+		
+		long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+		long hours = TimeUnit.MILLISECONDS.toHours(diff); 
+
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
 		model.addAttribute("scheduledTimes", dScheds);
+		model.addAttribute("upHours",  hours);
+		model.addAttribute("upMinutes", minutes);
 		
 		return "appinner";
 	}

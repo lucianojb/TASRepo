@@ -169,4 +169,11 @@
 			</div>
 		</div>
 	</div>
+	<c:if test="${not empty healthPayload.app.upTime}">
+		<div class = "row">
+			<div class = "col-sm-3 col-centered">
+				<h2 style="text-align:center">Up for ${upHours} hours and ${upMinutes} minutes</h2>
+			</div>
+		</div>
+	</c:if>
 </div>

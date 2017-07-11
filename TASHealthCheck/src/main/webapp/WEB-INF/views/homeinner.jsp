@@ -35,7 +35,7 @@
 	<c:forEach items="${payloads}" var="payload">
 		<c:choose>
 			<c:when test="${payload.resultValue == -1}">
-				<div class="filtr-item col-sm-3" data-category="1" style="text-align: center">
+				<div class="filtr-item col-sm3" data-category="1" style="text-align: center">
 					<img class="helper" align="left" style="max-width: 10%"
 						src="${pageContext.request.contextPath}/resources/pictures/bluecircle.png" />
 			</c:when>
