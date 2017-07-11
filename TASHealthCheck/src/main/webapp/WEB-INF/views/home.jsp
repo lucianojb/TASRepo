@@ -37,15 +37,18 @@
 <body>
 	<jsp:include page="header.jsp" />
 	
-	<div class="col-sm-6 col-centered row">
-            <ul class="multifilter" style="width: 70%;">
+	<div class="col-sm-6 col-centered">
+            <ul class="multifilter" style="text-align:center; padding-right: 40px;">
                 <li data-multifilter="1">Off</li>
                 <li data-multifilter="2">Up</li>
-                <li data-multifilter="3">Some</li>
+                <li data-multifilter="3">Warning</li>
                 <li data-multifilter="4">Down</li>
                 <li data-multifilter="5">Error</li>
             </ul>
-            <input type="text" class="filtr-search" name="filtr-search" placeholder="Search..." data-search>
+	</div>
+	
+	<div class = "col-sm-3 col-centered">
+		<input style="width:100%; text-align:center;" type="text" class="filtr-search" name="filtr-search" placeholder="Search..." data-search>
 	</div>
 	
 	<div id="inner-home">

@@ -67,7 +67,7 @@
 						<thead class="thead-inverse">
 							<tr>
 								<th style="text-align: center; font-size: 20px;">Connection</th>
-								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
+								<th width="100%" style="text-align: center; font-size: 20px; padding-right:45px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
 							</tr>
 						</thead>
