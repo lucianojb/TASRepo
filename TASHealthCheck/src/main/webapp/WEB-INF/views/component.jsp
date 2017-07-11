@@ -5,19 +5,29 @@
 		element.setAttribute("name", "connection");
 		element.setAttribute("class","form-control margin-bottom");
 		
+		var checkElement = document.createElement("input");
+		checkElement.setAttribute("type", "checkbox");
+		checkElement.setAttribute("name", "core");
+		
 		var group = document.getElementById("connectionsGroup");
 		group.appendChild(element);
+		group.appendChild(checkElement);
 	}
 	
 	function remove() {		
 		var group = document.getElementById("connectionsGroup");
-		if(group.childElementCount > 2){
+		if(group.childElementCount > 3){
 			var element = group.lastChild;
 			if(element.tagName != "INPUT"){
 				group.removeChild(element);
 				element = group.lastChild;
 			}
-			
+			group.removeChild(element);
+			element = group.lastChild;
+			if(element.tagName != "INPUT"){
+				group.removeChild(element);
+				element = group.lastChild;
+			}
 			group.removeChild(element);
 		}
 }

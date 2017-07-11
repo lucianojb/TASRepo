@@ -55,6 +55,7 @@
 							<c:forEach var="con" items="${connections}">
 								<input type="text" name="connection" value="${con}"
 									class="form-control margin-bottom">
+								<input type="checkbox" value="">	
 							</c:forEach>
 						</c:if>
 					</div>

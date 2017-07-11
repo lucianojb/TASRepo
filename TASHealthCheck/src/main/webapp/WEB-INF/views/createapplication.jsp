@@ -53,6 +53,7 @@
 							<c:otherwise>
 								<input type="text" class="form-control margin-bottom"
 									name="connection" value="${con}">
+								<input type="checkbox" value="">
 							</c:otherwise>
 						</c:choose>
 					</div>
