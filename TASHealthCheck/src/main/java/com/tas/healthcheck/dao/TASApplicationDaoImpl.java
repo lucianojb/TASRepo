@@ -27,20 +27,22 @@ private static final Logger logger = LoggerFactory.getLogger(TASApplicationDaoIm
 	}
 
 	@Override
-	public boolean saveApplication(Application app) {
+	public Application saveApplication(Application app) {
 		logger.info("Adding {} to database", app.toString());
 		
+		Application savedApp = null;
+		
 		try{
-			sessionFactory.getCurrentSession().merge(app);
+			savedApp = (Application)sessionFactory.getCurrentSession().merge(app);
 			
 			Date date = new Date();
 			
 			sessionFactory.getCurrentSession().createQuery("update Application set uppdated_date = :update"
-					+ " where app_id = :id").setParameter("update", date).setParameter("id", app.getAppID()).executeUpdate();
+					+ " where app_id = :id").setParameter("update", date).setParameter("id", savedApp.getAppID()).executeUpdate();
 			
-			return true;
+			return savedApp;
 		}catch(HibernateException exc){
-			return false;
+			return null;
 		}
 	}
 

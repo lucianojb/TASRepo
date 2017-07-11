@@ -18,7 +18,7 @@
 		setInterval(function() {
 			$.get( "${pageContext.request.contextPath}/homeinner", function( data ) {
 				$( "#inner-home" ).html( data );
-			});}, 20000 * ${fn:length(payloads)});
+			});}, (20000 * ${fn:length(payloads)}) + 20000);
 	});
 	 
 	 $(function() {
