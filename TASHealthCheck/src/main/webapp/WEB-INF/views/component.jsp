@@ -8,6 +8,7 @@
 		var checkElement = document.createElement("input");
 		checkElement.setAttribute("type", "checkbox");
 		checkElement.setAttribute("name", "core");
+		checkElement.setAttribute("value", document.getElementsByName("core").length);
 		
 		var group = document.getElementById("connectionsGroup");
 		group.appendChild(element);
