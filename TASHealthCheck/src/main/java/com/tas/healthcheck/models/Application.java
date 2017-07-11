@@ -1,5 +1,7 @@
 package com.tas.healthcheck.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="tas_app")
@@ -33,6 +36,10 @@ public class Application {
 	
 	@Column(name="active")
 	private boolean activeState;
+	
+	@Column(name="uptimestart")
+	@DateTimeFormat(pattern = "MM/dd/yy HH:mm")
+	private Date upTime;
 	
 	public Application(){
 		super();
@@ -90,5 +97,13 @@ public class Application {
 
 	public void setActiveState(boolean activeState) {
 		this.activeState = activeState;
+	}
+	
+	public void setupTime(Date ut){
+		this.upTime = ut;
+	}
+	
+	public Date getupTime(){
+		return this.upTime;
 	}
 }
