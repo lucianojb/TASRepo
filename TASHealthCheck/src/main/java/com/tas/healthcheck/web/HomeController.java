@@ -120,7 +120,7 @@ public class HomeController {
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
-			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 			long hours = TimeUnit.MILLISECONDS.toHours(diff);
 
 			model.addAttribute("upHours", hours);
@@ -151,7 +151,7 @@ public class HomeController {
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
-			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 			long hours = TimeUnit.MILLISECONDS.toHours(diff);
 
 			model.addAttribute("upHours", hours);

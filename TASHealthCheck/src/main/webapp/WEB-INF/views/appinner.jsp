@@ -76,7 +76,14 @@
 									<c:choose>
 										<c:when test="${empty conn.value.functional}">
 											<tr class="spaceUnder">
-											<td align="center">${conn.key}</td>
+											<td align="center">${conn.key}
+												<c:if test="${conn.value.priority}">
+													<img width=20px style="max-width: 40%;" 
+													 align="right" data-toggle="tooltip" data-placement="right" 
+													title="This is a priority connection"
+													src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+												</c:if>
+											</td>
 											<td align="center">${conn.value.details}</td>
 											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" />
@@ -89,7 +96,14 @@
 												<c:choose>
 												<c:when test="${conn.value.functional}">
 													<tr class="spaceUnder">
-													<td align="center">${conn.key}</td>
+													<td align="center">${conn.key}
+													<c:if test="${conn.value.priority}">
+														<img width=20px style="max-width: 40%;" 
+													 	align="right" data-toggle="tooltip" data-placement="right" 
+														title="This is a priority connection"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+													</c:if>
+													</td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
@@ -98,7 +112,14 @@
 												</c:when>
 												<c:otherwise>
 													<tr class="spaceUnder">
-													<td align="center">${conn.key}</td>
+													<td align="center">${conn.key}
+													<c:if test="${conn.value.priority}">
+														<img width=20px style="max-width: 40%;" 
+													 	align="right" data-toggle="tooltip" data-placement="right" 
+														title="This is a priority connection"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+													</c:if>
+													</td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
