@@ -56,7 +56,9 @@ public class AdminController {
 	
 	@RequestMapping(value = "/createapplication", method = RequestMethod.POST)
 	public String saveApp(Model model, @Valid Application application, BindingResult bindingResult, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
 		
 		if(submit.equals("cancel")){
 			return "redirect:./applications";
@@ -97,6 +99,14 @@ public class AdminController {
 			}
 		}
 		
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < connList.size() && index > -1){
+					connList.get(index).setPriority(true);
+				}
+			}
+		}
+		
 		logger.info("Creating: " + application);
 		application.setActiveState(true);
 		Application app = tasApplicationService.saveApplication(application);
@@ -129,7 +139,8 @@ public class AdminController {
 		for(AppConnection conn : connections){
 			connectionNames.add(conn.getConnName());
 		}
-		model.addAttribute("connections", connectionNames);
+		//model.addAttribute("connections", connectionNames);
+		model.addAttribute("connections", connections);
 		
 		return "editapplication";
 	}
@@ -137,7 +148,9 @@ public class AdminController {
 	@RequestMapping(value = "/editapplication/{id}", method = RequestMethod.POST)
 	public String editAppPost(@PathVariable("id") int id, Model model, @Valid Application application, 
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam("submit")String submit){
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam("submit")String submit){
 		logger.info("Editing Application {} is {} POST", id, application);
 		
 		if(submit.equals("cancel")){
@@ -174,6 +187,14 @@ public class AdminController {
 				
 				//for now make them all false
 				conns.add(new AppConnection(connectionValues[x], false, application.getAppID()));
+			}
+		}
+		
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < conns.size() && index > -1){
+					conns.get(index).setPriority(true);
+				}
 			}
 		}
 		

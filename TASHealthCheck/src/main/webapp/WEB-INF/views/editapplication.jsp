@@ -52,10 +52,17 @@
 					<div class="form-group" id="connectionsGroup">
 						<label class="control-label" for="connectionsGroup">Connections</label>
 						<c:if test="${not empty connections}">
-							<c:forEach var="con" items="${connections}">
-								<input type="text" name="connection" value="${con}"
+							<c:forEach var="con" items="${connections}" varStatus="myIndex">
+								<input type="text" name="connection" value="${con.connName}"
 									class="form-control margin-bottom">
-								<input type="checkbox" value="">	
+								<c:choose>
+								<c:when test="${con.priority}">
+									<input type="checkbox" name="core" value="${myIndex.index}" checked>
+								</c:when>
+								<c:otherwise>
+									<input type="checkbox" name="core" value="${myIndex.index}">
+								</c:otherwise>
+								</c:choose>
 							</c:forEach>
 						</c:if>
 					</div>
