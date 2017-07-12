@@ -139,7 +139,6 @@ public class AdminController {
 		for(AppConnection conn : connections){
 			connectionNames.add(conn.getConnName());
 		}
-		//model.addAttribute("connections", connectionNames);
 		model.addAttribute("connections", connections);
 		
 		return "editapplication";
