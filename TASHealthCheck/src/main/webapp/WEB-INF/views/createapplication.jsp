@@ -47,12 +47,26 @@
 							<c:when test="${not empty connectionsAdded}">
 							<c:set var="count" value="0" scope="page" />
 								<c:forEach var="con" items="${connectionsAdded}">
+								<c:set var="priority" value="false"/>
 									<div class="col-sm-8">
 										<input type="text" class="form-control margin-bottom"
 											name="connection" value="${con}">
 									</div>
+									
+									<c:forEach var="box" items="${priorityValues}">
+										<c:if test="${count == box}">
+											<c:set var="priority" value="true"/>
+										</c:if>	
+									</c:forEach>
 									<div class="col-sm-2">
-										<input type="checkbox" name="core" value=${count}>
+									<c:choose>
+										<c:when test="${priority}">
+											<input type="checkbox" name="core" value=${count} checked>
+										</c:when>
+										<c:otherwise>
+											<input type="checkbox" name="core" value=${count}>
+										</c:otherwise>
+									</c:choose>
 									</div>
 								<c:set var="count" value="${count + 1}" scope="page"/>
 								</c:forEach>
