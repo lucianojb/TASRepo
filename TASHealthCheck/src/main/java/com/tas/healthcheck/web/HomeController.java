@@ -157,6 +157,7 @@ public class HomeController {
 			model.addAttribute("upHours", hours);
 			model.addAttribute("upMinutes", minutes);
 		}
+		
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
 		model.addAttribute("scheduledTimes", dScheds);
@@ -167,7 +168,6 @@ public class HomeController {
 	
 	@RequestMapping(value = {"/jsontest"}, method = RequestMethod.GET)
 	public String jsonEndpointTest(Model model){
-		
 		return "jsontest";
 	}
 	

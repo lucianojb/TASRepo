@@ -51,9 +51,17 @@
 								</c:forEach>
 							</c:when>
 							<c:otherwise>
+							<div class = "col-sm-8">
 								<input type="text" class="form-control margin-bottom"
 									name="connection" value="${con}">
+<<<<<<< HEAD
+									</div>
+							<div class = "col-sm-2">
+								<input type="checkbox" value="">
+							</div>
+=======
 								<input type="checkbox" name="core" value=0>
+>>>>>>> 3c8be5038e3621481aff727a320b131c11cd6b6b
 							</c:otherwise>
 						</c:choose>
 					</div>
