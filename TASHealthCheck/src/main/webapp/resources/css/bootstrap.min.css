@@ -7639,4 +7639,13 @@ tr.spaceUnder>td {
 	float:left;	
 }
 
+.first-col-label{
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    text-align:center;
+    font-weight: 700;
+}
+
 /*# sourceMappingURL=bootstrap.min.css.map */
