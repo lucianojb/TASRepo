@@ -45,9 +45,16 @@
 						<label class="control-label" for="connectionsGroup">Connections</label>
 						<c:choose>
 							<c:when test="${not empty connectionsAdded}">
+							<c:set var="count" value="0" scope="page" />
 								<c:forEach var="con" items="${connectionsAdded}">
-									<input type="text" class="form-control margin-bottom"
-										name="connection" value="${con}">
+									<div class="col-sm-8">
+										<input type="text" class="form-control margin-bottom"
+											name="connection" value="${con}">
+									</div>
+									<div class="col-sm-2">
+										<input type="checkbox" name="core" value=${count}>
+									</div>
+								<c:set var="count" value="${count + 1}" scope="page"/>
 								</c:forEach>
 							</c:when>
 							<c:otherwise>

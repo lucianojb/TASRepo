@@ -74,6 +74,7 @@ public class AdminController {
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
 			model.addAttribute("connectionsAdded", connectionValues);
+			model.addAttribute("priorityValues", priorityValues);
 			
 			return "createapplication";
 		}
