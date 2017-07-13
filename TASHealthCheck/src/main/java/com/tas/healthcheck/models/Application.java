@@ -23,12 +23,12 @@ public class Application {
 	private int appID;
 	
 	@Column(name="app_name")
-	@NotEmpty
+	@NotEmpty(message = "Please enter an application name")
 	private String appName;
 	
 	@Column(name="url")
-	@URL(message="Not a valid url (assure url contains http:// or https:// in front)")
-	@NotEmpty
+	@URL(message="Not a valid URL (URL must contain http:// or https://)")
+	@NotEmpty(message = "Please enter a valid URL")
 	private String url;
 	
 	@Column(name="version_num")

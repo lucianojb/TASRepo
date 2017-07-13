@@ -157,19 +157,25 @@ public class AdminController {
 			return "redirect:../applications";
 		}
 		
+		List<AppConnection> appConns = appConnectionService.getConnectionsByAppId(application.getAppID());
+
+		
 		if(bindingResult.hasErrors()){
 			logger.info("Binding errors on application " + application);
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
+			application.setAppName(tasApplicationService.getApplicationById(id).getAppName());
+			application.setUrl((tasApplicationService.getApplicationById(id).getUrl()));
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
-			model.addAttribute("connections", connectionValues);
+			model.addAttribute("connections", appConns);
 			
 			return "editapplication";
 		}
 		
-		appConnectionService.removeApplicationConnections(application.getAppID());
 		
 		List<AppConnection> conns = new LinkedList<AppConnection>();
 		if(connectionValues != null){
@@ -179,7 +185,7 @@ public class AdminController {
 					logger.info("Empty connection component");
 					
 					redirectAttributes.addFlashAttribute("application", application);
-					model.addAttribute("connections", connectionValues);
+					model.addAttribute("connections", appConns);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
 					
 					return "editapplication";
@@ -198,6 +204,7 @@ public class AdminController {
 			}
 		}
 		
+		appConnectionService.removeApplicationConnections(application.getAppID());
 		for(AppConnection conn : conns){
 			appConnectionService.saveAppConnection(conn);
 		}

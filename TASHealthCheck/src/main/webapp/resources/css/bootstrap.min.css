@@ -7648,4 +7648,8 @@ tr.spaceUnder>td {
     font-weight: 700;
 }
 
+.urlError{
+	text-align:center;
+}
+
 /*# sourceMappingURL=bootstrap.min.css.map */

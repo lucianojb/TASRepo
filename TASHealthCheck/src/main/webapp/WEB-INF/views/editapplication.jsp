@@ -31,7 +31,7 @@
 						<label class="control-label" for="appName">Application Name</label>
 						<sf:input class="form-control" id="appName" name="appName" style = "text-align:center"
 							path="appName" type="text" value="${application.appName}" />
-						<sf:errors path="appName" />
+						<sf:errors path="appName" cssClass="urlError" element="h2"/>
 					</div>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 						<label class="control-label" for="url">URL</label>
 						<sf:input class="form-control" id="url" name="url" path="url"
 							type="text" value="${application.url}" style = "text-align:center"/>
-						<sf:errors path="url" />
+						<sf:errors path="url" cssClass="urlError" element="h2"/>
 					</div>
 				</div>
 			</div>
@@ -73,7 +73,11 @@
 				</div>
 				<div>
 					<c:if test="${not empty connectionInvalid}">
-						<c:out value="${connectionInvalid}"></c:out>
+					<div class = "row" style="padding-bottom:20px">
+						<div class="col-sm-3 col-centered">
+							<h2 style="text-align:center">${connectionInvalid}</h2>
+						</div>
+					</div>
 					</c:if>
 				</div>
 			</div>
