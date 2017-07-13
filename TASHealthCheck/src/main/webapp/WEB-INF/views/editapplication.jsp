@@ -13,7 +13,7 @@
 <body>
 	<jsp:include page="header.jsp" />
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-centered row-bordered">
 				<h1 style="text-align: center;">Edit ${application.appName}</h1>
@@ -26,7 +26,7 @@
 			<sf:input type="hidden" path="versionNum" value="${application.versionNum}"/>
 						
 			<div class="row top-buffer">
-				<div class="col-sm-3 col-centered">
+				<div class="col-sm-2 col-centered">
 					<div class="form-group">
 						<label class="control-label" for="appName">App Name</label>
 						<sf:input class="form-control" id="appName" name="appName"
@@ -37,7 +37,7 @@
 			</div>
 			<div class="row">
 
-				<div class="col-sm-3 col-centered">
+				<div class="col-sm-2 col-centered">
 					<div class="form-group">
 						<label class="control-label" for="url">URL</label>
 						<sf:input class="form-control" id="url" name="url" path="url"
@@ -48,13 +48,16 @@
 			</div>
 
 			<div class="row">
-				<div class="col-sm-3 col-centered">
 					<div class="form-group" id="connectionsGroup">
-						<label class="control-label" for="connectionsGroup">Connections</label>
 						<c:if test="${not empty connections}">
+						<div class="col-sm-2 col-sm-offset-5 first-col-label">Connections</div>
+						<div class="first-col-label" style="text-align:left">Priority</div>
 							<c:forEach var="con" items="${connections}" varStatus="myIndex">
-								<input type="text" name="connection" value="${con.connName}"
-									class="form-control margin-bottom">
+								<div class = "col-sm-2 col-sm-offset-5 cn">
+									<input type="text" name="connection" value="${con.connName}"
+										class="form-control margin-bottom">
+								</div>
+								<div class="col-sm-1 cb">
 								<c:choose>
 								<c:when test="${con.priority}">
 									<input type="checkbox" name="core" value="${myIndex.index}" checked>
@@ -63,6 +66,7 @@
 									<input type="checkbox" name="core" value="${myIndex.index}">
 								</c:otherwise>
 								</c:choose>
+								</div>
 							</c:forEach>
 						</c:if>
 					</div>
