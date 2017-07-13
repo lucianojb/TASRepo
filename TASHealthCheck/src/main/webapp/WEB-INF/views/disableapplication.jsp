@@ -16,7 +16,8 @@
 	$(function(){
 		jQuery.noConflict();
 		$('#startDate').datetimepicker({
-			format:'m/d/Y H:i',
+			formatTime:'g:i A', 
+			format: 'm/d/Y h:i A',
 			step: 15
 		});
 		$('#endDate').datetimepicker({
@@ -33,7 +34,8 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-4 col-centered row-bordered">
-				<h1 style="text-align: center;">Downtime for ${application.appName}</h1>
+				<h1 style="text-align: center;">Downtime for
+					${application.appName}</h1>
 			</div>
 		</div>
 		<sf:form method="POST" commandName="downSchedule">
@@ -57,36 +59,33 @@
 			</div>
 
 			<div class="row top-buffer">
-			<div class="col-sm-4 col-centered row-bordered">
-				<h1 style="text-align: center;">Schedule Downtime</h1>
-			</div>
+				<div class="col-sm-4 col-centered row-bordered">
+					<h1 style="text-align: center;">Schedule Downtime</h1>
+				</div>
 			</div>
 
 			<div class="row top-buffer">
 				<div class="col-sm-3 col-sm-offset-2">
 					<sf:input type="hidden" path="appID" value="${application.appID}" />
 
-					<h2 style="text-align:center">Start Date and Time:</h2>
+					<h2 style="text-align: center">Start Date and Time:</h2>
 					<sf:input class="form-control" id="startDate" name="startDate"
-						path="startDate" type="text" placeholder="MM/dd/yyyy hh:mm" 
-						autocomplete="off" style="text-align:center"/>
+						path="startDate" type="text" placeholder="MM/dd/yyyy hh:mm"
+						autocomplete="off" style="text-align:center" />
 					<sf:errors path="startDate" />
-					<br/>
+					<br />
 
-					<h2 style="text-align:center">End Date and Time:</h2>
+					<h2 style="text-align: center">End Date and Time:</h2>
 					<sf:input class="form-control" id="endDate" name="endDate"
-						path="endDate" type="text" placeholder="MM/dd/yyyy hh:mm" 
-						autocomplete="off" style="text-align:center"/>
+						path="endDate" type="text" placeholder="MM/dd/yyyy hh:mm"
+						autocomplete="off" style="text-align:center" />
 					<sf:errors path="endDate" />
-					<div class ="row top-buffer">
-					<button type="submit" class="btn btn-success btn-block"
-						name="submit" value="schedule">Schedule</button>
-						</div>
+					<div class="row top-buffer"></div>
 				</div>
 				<div class="col-sm-6">
 					<c:if test="${not empty scheduledTimes}">
-						<h2 style="text-align:center">Scheduled Downtimes</h2>
-						<table class="table-striped" style = "width:100%">
+						<h2 style="text-align: center">Scheduled Downtimes</h2>
+						<table class="table-striped" style="width: 100%">
 							<thead class="thead-inverse">
 								<tr>
 									<td align="center">Start time</td>
@@ -97,10 +96,10 @@
 							<tbody>
 								<c:forEach items="${scheduledTimes}" var="sched">
 									<tr>
-										<td align="center"><fmt:formatDate value="${sched.startDate}"
-												pattern="MM/dd/yyyy hh:mm aa" /></td>
-										<td align="center"><fmt:formatDate value="${sched.endDate}"
-												pattern="MM/dd/yyyy hh:mm aa" /></td>
+										<td align="center"><fmt:formatDate
+												value="${sched.startDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
+										<td align="center"><fmt:formatDate
+												value="${sched.endDate}" pattern="MM/dd/yyyy hh:mm aa" /></td>
 										<td><a
 											href="<c:url value='/deleteschedule/${sched.schedID}'/>">Delete</a></td>
 									</tr>
@@ -114,13 +113,22 @@
 		
 		<div class="row top-buffer">
 				<div class="col-sm-3 col-centered">
-					<button type="submit" class="btn btn-error btn-block" name="submit"
-						value="cancel">Return to App List</button>
+
+					<button type="submit" class="btn btn-success btn-block"
+						name="submit" value="schedule">Schedule</button>
 				</div>
 
 			</div>
+
+			<div class="row top-buffer">
+				<div class="col-sm-3 col-centered">
+					<button type="submit" class="btn btn-error btn-block" name="submit"
+						value="cancel">Return to App List</button>
+				</div>
+			</div>
+
 		</sf:form>
 	</div>
-	
+
 </body>
 </html>
