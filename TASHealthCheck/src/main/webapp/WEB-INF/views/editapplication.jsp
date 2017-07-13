@@ -16,7 +16,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-centered row-bordered">
-				<h1 style="text-align: center;">Edit ${application.appName}</h1>
+				<h1 style="text-align: center; font-weight: bold;">Edit ${application.appName}</h1>
 			</div>
 		</div>
 
@@ -28,8 +28,8 @@
 			<div class="row top-buffer">
 				<div class="col-sm-2 col-centered">
 					<div class="form-group">
-						<label class="control-label" for="appName">App Name</label>
-						<sf:input class="form-control" id="appName" name="appName"
+						<label class="control-label" for="appName">Application Name</label>
+						<sf:input class="form-control" id="appName" name="appName" style = "text-align:center"
 							path="appName" type="text" value="${application.appName}" />
 						<sf:errors path="appName" />
 					</div>
@@ -41,7 +41,7 @@
 					<div class="form-group">
 						<label class="control-label" for="url">URL</label>
 						<sf:input class="form-control" id="url" name="url" path="url"
-							type="text" value="${application.url}" />
+							type="text" value="${application.url}" style = "text-align:center"/>
 						<sf:errors path="url" />
 					</div>
 				</div>
@@ -55,7 +55,7 @@
 							<c:forEach var="con" items="${connections}" varStatus="myIndex">
 								<div class = "col-sm-2 col-sm-offset-5 cn">
 									<input type="text" name="connection" value="${con.connName}"
-										class="form-control margin-bottom">
+										class="form-control margin-bottom" style = "text-align:center">
 								</div>
 								<div class="col-sm-1 cb">
 								<c:choose>

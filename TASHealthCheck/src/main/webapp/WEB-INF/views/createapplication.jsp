@@ -25,7 +25,7 @@
 				<div class="form-group">
 					<label class="control-label" for="appName">Application Name</label>
 					<sf:input class="form-control" id="appName" name="appName"
-						path="appName" type="text" />
+						path="appName" type="text" style = "text-align:center" />
 					<sf:errors path="appName" />
 				</div>
 			</div>
@@ -34,7 +34,7 @@
 				<div class="form-group">
 					<label class="control-label" for="url">URL</label>
 					<sf:input class="form-control" id="url" name="url" path="url"
-						type="text" />
+						type="text" style = "text-align:center" />
 					<sf:errors path="url" />
 				</div>
 			</div>
@@ -50,7 +50,7 @@
 								<c:set var="priority" value="false"/>
 									<div class = "col-sm-2 col-sm-offset-5 cn">
 										<input type="text" class="form-control margin-bottom "
-											name="connection" value="${con}">
+											name="connection" value="${con}" style = "text-align:center">
 									</div>
 									
 									<c:forEach var="box" items="${priorityValues}">
@@ -75,7 +75,7 @@
 							<div class = "col-sm-2 col-sm-offset-5">
 							<div class="first-col-label">Connections</div>
 								<input type="text" class="form-control margin-bottom"
-									name="connection" value="${con}">
+									name="connection" value="${con}" style = "text-align:center">
 							</div>
 							<div class="first-col-label" style="text-align:left">Priority</div>
 							<div class = "col-sm-1">	
