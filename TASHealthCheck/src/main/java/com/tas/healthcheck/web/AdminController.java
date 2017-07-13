@@ -71,6 +71,7 @@ public class AdminController {
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
 			model.addAttribute("connectionsAdded", connectionValues);
@@ -91,6 +92,7 @@ public class AdminController {
 					redirectAttributes.addFlashAttribute("application", application);
 					model.addAttribute("connectionsAdded", connectionValues);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
+					model.addAttribute("priorityValues", priorityValues);
 					
 					return "createapplication";
 				}
