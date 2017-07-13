@@ -4,7 +4,7 @@
 					 '<input type="text" class="form-control margin-bottom"' +
 					 'name=\"connection\" value=\"${con}\" style = \"text-align:center\"></div>');
 		$('#connectionsGroup').append('<div class = "col-sm-1 cb">' +
-				 '<input type="checkbox" name="core" value=' + document.getElementsByName("core").length.toString() 
+				 '<input type="checkbox" name="core" value=' + document.getElementsByName("core").length 
 		         +'></div>');
 	}
 	

@@ -64,7 +64,7 @@
 											<input type="checkbox" name="core" value=${count} checked>
 										</c:when>
 										<c:otherwise>
-											<input type="checkbox" name="core" value=${count}">
+											<input type="checkbox" name="core" value=${count}>
 										</c:otherwise>
 									</c:choose>
 									</div>
