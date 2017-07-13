@@ -120,7 +120,7 @@ public class HomeController {
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
-			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 			long hours = TimeUnit.MILLISECONDS.toHours(diff);
 
 			model.addAttribute("upHours", hours);
@@ -151,12 +151,13 @@ public class HomeController {
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
-			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
+			long minutes = TimeUnit.MILLISECONDS.toMinutes(diff) % 60;
 			long hours = TimeUnit.MILLISECONDS.toHours(diff);
 
 			model.addAttribute("upHours", hours);
 			model.addAttribute("upMinutes", minutes);
 		}
+		
 		model.addAttribute("app", app);
 		model.addAttribute("healthPayload", payload);
 		model.addAttribute("scheduledTimes", dScheds);
@@ -167,7 +168,6 @@ public class HomeController {
 	
 	@RequestMapping(value = {"/jsontest"}, method = RequestMethod.GET)
 	public String jsonEndpointTest(Model model){
-		
 		return "jsontest";
 	}
 	

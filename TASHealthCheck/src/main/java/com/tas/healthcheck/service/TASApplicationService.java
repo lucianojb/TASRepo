@@ -174,18 +174,25 @@ public class TASApplicationService {
 				if(connections != null && connections.size() > 0){
 					
 					List<String> appConnections = new ArrayList<String>();
-						
+					
+					boolean priorityConnectionDown = false;
+					Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
+
 					for(AppConnection conn : connections){
 						appConnections.add(conn.getConnName().toLowerCase());
+						if(conn.getPriority()){
+							priorityConnectionDown = true;
+							connectionsMap.put(conn.getConnName().toLowerCase(), new Connection(null, "Expected connection but was not in JSON", true, true));
+						}else{
+							connectionsMap.put(conn.getConnName().toLowerCase(), new Connection(null, "Expected connection but was not in JSON", true, false));
+						}
 					}
 					
-					Map<String, Connection> connectionsMap = new HashMap<String, Connection>();
-					
-					for(String connection: appConnections){
-						connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true));
+					if(priorityConnectionDown){
+						payload.setResultValue(STATUS_DOWN);
+					}else{
+						payload.setResultValue(STATUS_SOME);
 					}
-					
-					payload.setResultValue(STATUS_SOME);
 					payload.setConnections(connectionsMap);
 					return payload;
 				}else{
@@ -199,11 +206,15 @@ public class TASApplicationService {
 
 			List<AppConnection> connections = appConnectionDao.getAllAppConnectionByAppId(app.getAppID());
 			List<String> appConnections = null;
+			List<String> priorityConnections = new ArrayList<String>();
 			if(connections != null && connections.size() > 0){
 				appConnections = new ArrayList<String>();
 			
 				for(AppConnection con : connections){
 					appConnections.add(con.getConnName().toLowerCase());
+					if(con.getPriority()){
+						priorityConnections.add(con.getConnName().toLowerCase());
+					}
 				}
 			}
 			
@@ -213,6 +224,7 @@ public class TASApplicationService {
 			boolean allFalse = true;
 			boolean allTrue = true;
 			boolean incorrectJSON = false;
+			boolean priorityConnectionDown = false;
 			
 			if(!connectionsNode.isArray()){
 				payload.setResultValue(STATUS_ERROR);
@@ -240,9 +252,16 @@ public class TASApplicationService {
 					}
 					
 					if(appConnections != null && appConnections.contains(connName)){
-						connectionsMap.put(connName, new Connection(connValue, connDetails, true));
+						if(priorityConnections.contains(connName)){
+							connectionsMap.put(connName, new Connection(connValue, connDetails, true, true));
+							if(!connValue){
+								priorityConnectionDown = true;
+							}
+						}else{
+							connectionsMap.put(connName, new Connection(connValue, connDetails, true, false));
+						}
 					}else{
-						connectionsMap.put(connName, new Connection(connValue, connDetails, false));
+						connectionsMap.put(connName, new Connection(connValue, connDetails, false, false));
 					}
 				}
 			}
@@ -251,7 +270,12 @@ public class TASApplicationService {
 			if(appConnections != null){
 				for(String connection: appConnections){
 					if(!connectionsMap.containsKey(connection.toLowerCase())){
-						connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true));
+						if(priorityConnections.contains(connection)){
+							priorityConnectionDown = true;
+							connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true, true));
+						}else{
+							connectionsMap.put(connection, new Connection(null, "Expected connection but was not in JSON", true, false));
+						}
 					
 						doesNotContainConnection = true;
 					}
@@ -265,8 +289,11 @@ public class TASApplicationService {
 					payload.setErrorMessage("Connection values incorrectly formatted in JSON");
 					return payload;
 			}
-				
-			if(doesNotContainConnection){
+			
+			if(priorityConnectionDown){
+				payload.setResultValue(STATUS_DOWN);
+			}
+			else if(doesNotContainConnection){
 				if(allFalse){
 					payload.setResultValue(STATUS_DOWN);
 				}else{
