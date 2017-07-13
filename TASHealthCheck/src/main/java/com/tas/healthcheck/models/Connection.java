@@ -4,20 +4,22 @@ public class Connection {
 	private Boolean functional;
 	private String details;
 	private boolean expected;
+	private boolean priority;
 	
 	public Connection(){
 		super();
 	}
 	
-	public Connection(Boolean functional, String details, boolean expected) {
+	public Connection(Boolean functional, String details, boolean expected, boolean priority) {
 		super();
 		this.functional = functional;
 		this.details = details;
 		this.expected = expected;
+		this.priority = priority;
 	}
 	@Override
 	public String toString() {
-		return "Connection [functional=" + functional + ", details=" + details + ", expected=" + expected + "]";
+		return "Connection [functional=" + functional + ", details=" + details + ", expected=" + expected + ", priority=" + priority + "]";
 	}
 	public Boolean getFunctional() {
 		return functional;
@@ -36,5 +38,13 @@ public class Connection {
 	}
 	public void setExpected(boolean expected) {
 		this.expected = expected;
+	}
+	
+	public boolean getPriority() {
+		return priority;
+	}
+	
+	public void setPriority(boolean priority) {
+		this.priority = priority;
 	}
 }

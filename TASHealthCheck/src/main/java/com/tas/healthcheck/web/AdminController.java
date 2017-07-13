@@ -56,7 +56,9 @@ public class AdminController {
 	
 	@RequestMapping(value = "/createapplication", method = RequestMethod.POST)
 	public String saveApp(Model model, @Valid Application application, BindingResult bindingResult, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
 		
 		if(submit.equals("cancel")){
 			return "redirect:./applications";
@@ -69,9 +71,11 @@ public class AdminController {
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
 			model.addAttribute("connectionsAdded", connectionValues);
+			model.addAttribute("priorityValues", priorityValues);
 			
 			return "createapplication";
 		}
@@ -88,12 +92,21 @@ public class AdminController {
 					redirectAttributes.addFlashAttribute("application", application);
 					model.addAttribute("connectionsAdded", connectionValues);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
+					model.addAttribute("priorityValues", priorityValues);
 					
 					return "createapplication";
 				}
 				
 				//for now make all priorities false
 				connList.add(new AppConnection(connectionValues[x], false));
+			}
+		}
+		
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < connList.size() && index > -1){
+					connList.get(index).setPriority(true);
+				}
 			}
 		}
 		
@@ -129,7 +142,7 @@ public class AdminController {
 		for(AppConnection conn : connections){
 			connectionNames.add(conn.getConnName());
 		}
-		model.addAttribute("connections", connectionNames);
+		model.addAttribute("connections", connections);
 		
 		return "editapplication";
 	}
@@ -137,26 +150,34 @@ public class AdminController {
 	@RequestMapping(value = "/editapplication/{id}", method = RequestMethod.POST)
 	public String editAppPost(@PathVariable("id") int id, Model model, @Valid Application application, 
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam("submit")String submit){
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam("submit")String submit){
 		logger.info("Editing Application {} is {} POST", id, application);
 		
 		if(submit.equals("cancel")){
 			return "redirect:../applications";
 		}
 		
+		List<AppConnection> appConns = appConnectionService.getConnectionsByAppId(application.getAppID());
+
+		
 		if(bindingResult.hasErrors()){
 			logger.info("Binding errors on application " + application);
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
+			application.setAppName(tasApplicationService.getApplicationById(id).getAppName());
+			application.setUrl((tasApplicationService.getApplicationById(id).getUrl()));
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
-			model.addAttribute("connections", connectionValues);
+			model.addAttribute("connections", appConns);
 			
 			return "editapplication";
 		}
 		
-		appConnectionService.removeApplicationConnections(application.getAppID());
 		
 		List<AppConnection> conns = new LinkedList<AppConnection>();
 		if(connectionValues != null){
@@ -166,7 +187,7 @@ public class AdminController {
 					logger.info("Empty connection component");
 					
 					redirectAttributes.addFlashAttribute("application", application);
-					model.addAttribute("connections", connectionValues);
+					model.addAttribute("connections", appConns);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
 					
 					return "editapplication";
@@ -177,6 +198,15 @@ public class AdminController {
 			}
 		}
 		
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < conns.size() && index > -1){
+					conns.get(index).setPriority(true);
+				}
+			}
+		}
+		
+		appConnectionService.removeApplicationConnections(application.getAppID());
 		for(AppConnection conn : conns){
 			appConnectionService.saveAppConnection(conn);
 		}

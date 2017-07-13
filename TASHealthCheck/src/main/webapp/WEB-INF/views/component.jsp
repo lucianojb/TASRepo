@@ -1,30 +1,23 @@
 <script type="text/javascript">
 	function add() {
-		var element = document.createElement("input");
-		element.setAttribute("type", "text");
-		element.setAttribute("name", "connection");
-		element.setAttribute("class","form-control margin-bottom");
-		
-		var group = document.getElementById("connectionsGroup");
-		group.appendChild(element);
+		$('#connectionsGroup').append('<div class ="col-sm-2 col-sm-offset-5 cn">' +
+					 '<input type="text" class="form-control margin-bottom"' +
+					 'name=\"connection\" value=\"${con}\" style = \"text-align:center\"></div>');
+		$('#connectionsGroup').append('<div class = "col-sm-1 cb">' +
+				 '<input type="checkbox" name="core" value=' + document.getElementsByName("core").length 
+		         +'></div>');
 	}
 	
-	function remove() {		
-		var group = document.getElementById("connectionsGroup");
-		if(group.childElementCount > 2){
-			var element = group.lastChild;
-			if(element.tagName != "INPUT"){
-				group.removeChild(element);
-				element = group.lastChild;
-			}
-			
-			group.removeChild(element);
+	function remove() {
+		if($(".cb").length > 1){
+			$(".cb").last().remove();
+			$(".cn").last().remove();
 		}
 }
 </script>
 <div class="row">
 	<div class="col-sm-1 col-sm-offset-5 text-center">
-		<button type="button" style="display: block"
+		<button type="button"
 			class="btn btn-danger btn-circle btn-lg" name="removeConnection"
 			value="removeConnection" onclick="remove();">
 			<i class="glyphicon glyphicon-minus"></i>
