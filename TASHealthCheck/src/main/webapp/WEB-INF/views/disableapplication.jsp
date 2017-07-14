@@ -21,7 +21,8 @@
 			step: 15
 		});
 		$('#endDate').datetimepicker({
-			format:'m/d/Y H:i',
+			formatTime:'g:i A', 
+			format: 'm/d/Y h:i A',
 			step: 15
 		});
 	});
@@ -44,7 +45,7 @@
 					<c:choose>
 						<c:when test="${application.activeState}">
 							<h2 style="text-align: center;">${application.appName}
-								Healthchecks are currently active</h2>
+								Healthchecks are currently enabled</h2>
 							<button type="submit" class="btn btn-danger btn-block"
 								name="submit" value="continue">Turn HealthChecks Off</button>
 						</c:when>
