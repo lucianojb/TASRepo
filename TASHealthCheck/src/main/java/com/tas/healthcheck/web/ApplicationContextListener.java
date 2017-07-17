@@ -45,13 +45,6 @@ public class ApplicationContextListener implements ApplicationListener<ContextRe
 			executor.execute(new Runnable() {
 				public void run() {
 					while (true) {
-						try {
-							logger.info("Sleeping for health check");
-							// Thread.sleep(300000);
-							Thread.sleep(20000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
 						if (tasApplicationService != null) {
 							List<Application> apps = tasApplicationService.getAllApplications();
 							List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
@@ -74,6 +67,12 @@ public class ApplicationContextListener implements ApplicationListener<ContextRe
 							}
 						} else {
 							logger.info("tasApplicationService is null");
+						}
+						try {
+							logger.info("Sleeping for health checks");
+							Thread.sleep(60000);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
 						}
 
 					}
