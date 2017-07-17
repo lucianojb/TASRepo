@@ -66,7 +66,15 @@
 			</div>
 
 			<div class="row top-buffer">
-				<div class="col-sm-3 col-sm-offset-2">
+			
+				<c:choose>
+				<c:when test="${not empty scheduledTimes}">
+					<div class="col-sm-3 col-sm-offset-2">
+				</c:when>
+				<c:otherwise>
+					<div class="col-sm-3 col-centered">
+				</c:otherwise>
+				</c:choose>
 					<sf:input type="hidden" path="appID" value="${application.appID}" />
 
 					<h2 style="text-align: center">Start Date and Time:</h2>
