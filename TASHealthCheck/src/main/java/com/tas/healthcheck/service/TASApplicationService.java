@@ -17,6 +17,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -330,7 +331,7 @@ public class TASApplicationService {
 		List<DownSchedule> dScheds = downScheduleDao.getAllDownSchedulesByAppId(app.getAppID());
 		
 		Date currentDateTime = new Date();
-		
+				
 		boolean appScheduledDown = false;
 		//remove schedules in past
 		//check to see if current time falls in one schedule and return true
@@ -343,7 +344,7 @@ public class TASApplicationService {
 			}
 			
 		}
-		
+				
 		return appScheduledDown;
 	}
 	

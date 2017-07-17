@@ -6,12 +6,16 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.models.Connection;
 import com.tas.healthcheck.models.HealthcheckPayload;
+import com.tas.healthcheck.service.ConnectionService;
+import com.tas.healthcheck.service.HealthcheckPayloadService;
 import com.tas.healthcheck.service.TASApplicationService;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -27,6 +31,12 @@ public class ApplicationContextListener implements ApplicationListener<ContextRe
 
 	@Autowired
 	TASApplicationService tasApplicationService;
+	
+	@Autowired
+	HealthcheckPayloadService healthcheckPayloadService;
+	
+	@Autowired
+	ConnectionService connectionService;
 
 	private static int STATUS_OFF = -1;
 	private static int STATUS_UP = 0;
@@ -52,7 +62,41 @@ public class ApplicationContextListener implements ApplicationListener<ContextRe
 							for (Application app : apps) {
 								payloads.add(tasApplicationService.determineHealthOfApp(app));
 							}
-
+							
+							for(HealthcheckPayload payload : payloads){
+								HealthcheckPayload saveP = new HealthcheckPayload();
+								
+								saveP.setAppId(payload.getApp().getAppID());
+								saveP.setErrorMessage(payload.getErrorMessage());
+								saveP.setResultValue(payload.getResultValue());
+								
+								healthcheckPayloadService.removeAllByAppId(saveP.getAppId());
+								connectionService.removeAllByAppId(saveP.getAppId());
+								
+								healthcheckPayloadService.saveHealthCheckPayload(saveP);
+								
+								List<Connection> listOfNewConnections = new LinkedList<Connection>();
+								if(payload.getConnections() != null){
+									for (Map.Entry<String, Connection> entry : payload.getConnections().entrySet()){
+										Connection oldC = entry.getValue();
+									
+										Connection saveC = new Connection();
+										saveC.setConnName(entry.getKey());
+										saveC.setDetails(oldC.getDetails());
+										saveC.setAppId(saveP.getAppId());
+										saveC.setFunctional(oldC.getFunctional());
+										saveC.setExpected(oldC.getExpected());
+										saveC.setPriority(oldC.getPriority());
+									
+										listOfNewConnections.add(saveC);
+									}
+								
+									for(Connection conn : listOfNewConnections){
+										connectionService.saveNewConnection(conn);
+									}
+								}
+							}
+							
 							for (HealthcheckPayload pl : payloads) {
 								if (pl.getResultValue() == STATUS_DOWN || pl.getResultValue() == STATUS_ERROR
 										|| pl.getResultValue() == STATUS_OFF) {
