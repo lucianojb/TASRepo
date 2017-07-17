@@ -12,6 +12,7 @@ import com.tas.healthcheck.service.TASApplicationService;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -60,6 +61,7 @@ public class ApplicationContextListener implements ApplicationListener<ContextRe
 									tasApplicationService.saveApplication(pl.getApp());
 								} else if ((pl.getResultValue() == STATUS_UP || pl.getResultValue() == STATUS_SOME)
 										&& pl.getApp().getupTime() == null) {
+									TimeZone.setDefault(TimeZone.getTimeZone("EST"));
 									Date date = new Date();
 									pl.getApp().setupTime(date);
 									tasApplicationService.saveApplication(pl.getApp());
