@@ -1,7 +1,9 @@
 package com.tas.healthcheck.web;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -299,6 +301,18 @@ public class AdminController {
 			if(!downSchedule.getEndDate().after(downSchedule.getStartDate())){
 				redirectAttributes.addFlashAttribute("downSchedule", downSchedule);
 				model.addAttribute("dateError", "End date must be after start date");
+				model.addAttribute("application", app);
+				model.addAttribute("scheduledTimes", dScheds);
+				
+				return "disableapplication";
+			}
+			
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+			Date currentdate = new Date();
+			
+			if(downSchedule.getEndDate().before(currentdate)){
+				redirectAttributes.addFlashAttribute("downSchedule", downSchedule);
+				model.addAttribute("dateError", "End date must be in the future");
 				model.addAttribute("application", app);
 				model.addAttribute("scheduledTimes", dScheds);
 				
