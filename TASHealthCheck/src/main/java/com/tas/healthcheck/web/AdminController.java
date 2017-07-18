@@ -305,6 +305,7 @@ public class AdminController {
 				return "disableapplication";
 			}
 			
+			logger.info(downSchedule.toString());
 			downScheduleService.saveSchedule(downSchedule);
 			
 			return "redirect:../disableapplication/" + app.getAppID();

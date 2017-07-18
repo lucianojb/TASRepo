@@ -1,6 +1,7 @@
 package com.tas.healthcheck.models;
 
 import java.util.Date;
+import java.util.TimeZone;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,13 +24,13 @@ public class DownSchedule {
 	private int schedID;
 	
 	@Column(name="start_date")
-	@Future(message="Date must be in future")
+//	@Future(message="Date must be in future")
 	@DateTimeFormat(pattern = "MM/dd/yyyy hh:mm a")
 	@NotNull
 	private Date startDate;
 	
 	@Column(name="end_date")
-	@Future(message="Date must be in future")
+//	@Future(message="Date must be in future")
 	@DateTimeFormat(pattern = "MM/dd/yyyy hh:mm a")
 	@NotNull
 	private Date endDate;
@@ -38,7 +39,7 @@ public class DownSchedule {
 	@NotNull
 	private int appID;
 	
-	public DownSchedule(){
+	public DownSchedule(){	
 		super();
 	}
 	

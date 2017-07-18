@@ -2,6 +2,7 @@ package com.tas.healthcheck.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
@@ -34,7 +35,7 @@ private static final Logger logger = LoggerFactory.getLogger(TASApplicationDaoIm
 		
 		try{
 			savedApp = (Application)sessionFactory.getCurrentSession().merge(app);
-			
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 			Date date = new Date();
 			
 			sessionFactory.getCurrentSession().createQuery("update Application set uppdated_date = :update"

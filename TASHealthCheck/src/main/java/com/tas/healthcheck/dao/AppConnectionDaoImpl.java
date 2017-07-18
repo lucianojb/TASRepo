@@ -2,6 +2,7 @@ package com.tas.healthcheck.dao;
 
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
@@ -34,7 +35,7 @@ public class AppConnectionDaoImpl implements AppConnectionDao{
 			
 			try{
 				savedConn = (AppConnection) sessionFactory.getCurrentSession().merge(conn);
-				
+				TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 				Date date = new Date();
 				
 				sessionFactory.getCurrentSession().createQuery("update AppConnection set uppdated_date = :update"

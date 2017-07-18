@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -71,6 +72,7 @@ public class HomeController {
 			}
 			else if((pl.getResultValue() == STATUS_UP || pl.getResultValue() == STATUS_SOME)
 					&& pl.getApp().getupTime() == null){
+					TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 					Date date = new Date();
 					pl.getApp().setupTime(date);
 					tasApplicationService.saveApplication(pl.getApp());
@@ -117,6 +119,7 @@ public class HomeController {
 		logger.info(payload.toString());
 		
 		if (app.getupTime() != null) {
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
@@ -148,6 +151,7 @@ public class HomeController {
 		logger.info(payload.toString());
 		
 		if (app.getupTime() != null) {
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
