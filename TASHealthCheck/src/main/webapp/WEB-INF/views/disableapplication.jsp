@@ -118,8 +118,15 @@
 					</c:if>
 				</div>
 			</div>
-		${dateError}
-		
+			
+		<c:if test="${not empty dateError}">
+					<div class = "row" style="padding-bottom:20px">
+						<div class="col-sm-3 col-centered">
+							<h2 style="text-align:center">${dateError}</h2>
+						</div>
+					</div>
+		</c:if>
+
 		<div class="row top-buffer">
 				<div class="col-sm-3 col-centered">
 

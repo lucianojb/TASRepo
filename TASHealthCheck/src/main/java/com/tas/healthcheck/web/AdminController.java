@@ -1,10 +1,10 @@
 package com.tas.healthcheck.web;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.TimeZone;
 import javax.validation.Valid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -320,6 +320,19 @@ public class AdminController {
 				return "disableapplication";
 			}
 			
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+			Date currentdate = new Date();
+			
+			if(downSchedule.getEndDate().before(currentdate)){
+				redirectAttributes.addFlashAttribute("downSchedule", downSchedule);
+				model.addAttribute("dateError", "End date must be in the future");
+				model.addAttribute("application", app);
+				model.addAttribute("scheduledTimes", dScheds);
+				
+				return "disableapplication";
+			}
+			
+			logger.info(downSchedule.toString());
 			downScheduleService.saveSchedule(downSchedule);
 			
 			return "redirect:../disableapplication/" + app.getAppID();

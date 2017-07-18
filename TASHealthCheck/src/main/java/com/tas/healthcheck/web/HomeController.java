@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
@@ -108,6 +109,7 @@ public class HomeController {
 		logger.info(payload.toString());
 		
 		if (app.getupTime() != null) {
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
@@ -139,6 +141,7 @@ public class HomeController {
 		logger.info(payload.toString());
 		
 		if (app.getupTime() != null) {
+			TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 			Date date = new Date();
 			long diff = date.getTime() - app.getupTime().getTime();
 
