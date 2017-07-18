@@ -2,14 +2,20 @@ drop table if exists user_roles;
 drop table if exists admin_users;
 drop table if exists down_schedule;
 drop table if exists app_conns;
+drop table if exists connections;
+drop table if exists health_payload;
 drop table if exists tas_app;
 drop sequence if exists tas_app_app_id_seq;
 drop sequence if exists down_schedule_sched_id_seq;
 drop sequence if exists app_conns_conn_id_seq;
+drop sequence if exists connections_conn_id_seq;
+drop sequence if exists health_payload_health_id_seq;
 
 create sequence tas_app_app_id_seq;
 create sequence down_schedule_sched_id_seq;
 create sequence app_conns_conn_id_seq;
+create sequence health_payload_health_id_seq;
+create sequence connections_conn_id_seq;
 
 CREATE TABLE tas_app (
 	app_name varchar NULL,
@@ -45,6 +51,35 @@ CREATE TABLE app_conns (
 	uppdated_date timestamp NULL DEFAULT now(),
 	priority bool not NULL,
 	CONSTRAINT app_conns_pkey PRIMARY KEY (conn_id),
+	CONSTRAINT app_id FOREIGN KEY (app_id) REFERENCES public.tas_app(app_id) ON UPDATE CASCADE
+)
+WITH (
+	OIDS=FALSE
+);
+
+CREATE TABLE health_payload (
+	health_id int4 NOT NULL DEFAULT nextval('health_payload_health_id_seq'::regclass),
+	app_id int4 not null,
+	error_message varchar,
+	result_value int4,
+	uppdated_date timestamp NULL,
+	CONSTRAINT health_payload_pkey PRIMARY KEY (health_id),
+	CONSTRAINT app_id FOREIGN KEY (app_id) REFERENCES public.tas_app(app_id) ON UPDATE CASCADE
+)
+WITH (
+	OIDS=FALSE
+);
+
+CREATE TABLE connections (
+	conn_id int4 NOT NULL DEFAULT nextval('connections_conn_id_seq'::regclass),
+	conn_name varchar not null,
+	details varchar NOT NULL,
+	app_id int4 not null,
+	functional boolean,
+	expected boolean not null,
+	priority boolean not null,
+	uppdated_date timestamp NULL,
+	CONSTRAINT connections_pkey PRIMARY KEY (conn_id),
 	CONSTRAINT app_id FOREIGN KEY (app_id) REFERENCES public.tas_app(app_id) ON UPDATE CASCADE
 )
 WITH (

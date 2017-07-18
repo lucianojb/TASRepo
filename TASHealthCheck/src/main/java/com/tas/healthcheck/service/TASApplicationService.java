@@ -2,19 +2,17 @@ package com.tas.healthcheck.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
@@ -53,6 +51,12 @@ public class TASApplicationService {
 	
 	@Autowired
 	AppConnectionDao appConnectionDao;
+	
+	@Autowired
+	ConnectionService connectionService;
+	
+	@Autowired
+	HealthcheckPayloadService healthcheckPayloadService;
 	
 	public Application saveApplication(Application application) {
 		return tasApplicationDao.saveApplication(application);
@@ -331,7 +335,6 @@ public class TASApplicationService {
 		List<DownSchedule> dScheds = downScheduleDao.getAllDownSchedulesByAppId(app.getAppID());
 		TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
 		Date currentDateTime = new Date();
-		logger.info(currentDateTime.toString());
 		boolean appScheduledDown = false;
 		//remove schedules in past
 		//check to see if current time falls in one schedule and return true
@@ -344,7 +347,7 @@ public class TASApplicationService {
 			}
 			
 		}
-		
+				
 		return appScheduledDown;
 	}
 	
@@ -361,5 +364,66 @@ public class TASApplicationService {
 				return null;
 			}
 		    return sb.toString();
+	  }
+	  
+	  public void runHealthChecksOnApps(List<Application> apps){
+		  List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
+
+			for (Application app : apps) {
+				payloads.add(this.determineHealthOfApp(app));
+			}
+			
+			for(HealthcheckPayload payload : payloads){
+				HealthcheckPayload existingPayload = healthcheckPayloadService.getByAppId(payload.getApp().getAppID());
+				
+				HealthcheckPayload saveP = new HealthcheckPayload();
+				
+				if(existingPayload != null){
+					saveP.setHealthId(existingPayload.getHealthId());
+				}
+				
+				saveP.setAppId(payload.getApp().getAppID());
+				saveP.setErrorMessage(payload.getErrorMessage());
+				saveP.setResultValue(payload.getResultValue());
+				
+				connectionService.removeAllByAppId(saveP.getAppId());
+				
+				healthcheckPayloadService.saveHealthCheckPayload(saveP);
+				
+				List<Connection> listOfNewConnections = new LinkedList<Connection>();
+				if(payload.getConnections() != null){
+					for (Map.Entry<String, Connection> entry : payload.getConnections().entrySet()){
+						Connection oldC = entry.getValue();
+					
+						Connection saveC = new Connection();
+						saveC.setConnName(entry.getKey());
+						saveC.setDetails(oldC.getDetails());
+						saveC.setAppId(saveP.getAppId());
+						saveC.setFunctional(oldC.getFunctional());
+						saveC.setExpected(oldC.getExpected());
+						saveC.setPriority(oldC.getPriority());
+					
+						listOfNewConnections.add(saveC);
+					}
+				
+					for(Connection conn : listOfNewConnections){
+						connectionService.saveNewConnection(conn);
+					}
+				}
+			}
+			
+			for (HealthcheckPayload pl : payloads) {
+				if (pl.getResultValue() == STATUS_DOWN || pl.getResultValue() == STATUS_ERROR
+						|| pl.getResultValue() == STATUS_OFF) {
+					pl.getApp().setupTime(null);
+					this.saveApplication(pl.getApp());
+				} else if ((pl.getResultValue() == STATUS_UP || pl.getResultValue() == STATUS_SOME)
+						&& pl.getApp().getupTime() == null) {
+					TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
+					Date date = new Date();
+					pl.getApp().setupTime(date);
+					this.saveApplication(pl.getApp());
+				}
+			}
 	  }
 }

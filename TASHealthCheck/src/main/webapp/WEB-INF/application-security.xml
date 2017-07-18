@@ -12,6 +12,8 @@
     	<intercept-url pattern="/homeinner" access="permitAll" />
     	<intercept-url pattern="/application/**" access="permitAll" />
     	<intercept-url pattern="/appinner/**" access="permitAll" />
+    	<intercept-url pattern="/404" access="permitAll" />
+    	<intercept-url pattern="/servererror" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/login" access="permitAll" />
         <intercept-url pattern="/logout" access="permitAll" />

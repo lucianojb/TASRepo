@@ -2,8 +2,10 @@ package com.tas.healthcheck.web;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
@@ -18,10 +20,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.tas.healthcheck.models.Application;
+import com.tas.healthcheck.models.Connection;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.models.HealthcheckPayload;
 import com.tas.healthcheck.service.AppConnectionService;
+import com.tas.healthcheck.service.ConnectionService;
 import com.tas.healthcheck.service.DownScheduleService;
+import com.tas.healthcheck.service.HealthcheckPayloadService;
 import com.tas.healthcheck.service.PayloadComparator;
 import com.tas.healthcheck.service.TASApplicationService;
 
@@ -42,11 +47,11 @@ public class HomeController {
 	@Autowired
 	AppConnectionService appConnectionService;
 	
-	private static int STATUS_OFF = -1;
-	private static int STATUS_UP = 0;
-	private static int STATUS_ERROR = 1;
-	private static int STATUS_SOME = 2;
-	private static int STATUS_DOWN = 3;
+	@Autowired
+	HealthcheckPayloadService healthcheckPayloadService;
+	
+	@Autowired
+	ConnectionService connectionService;
 
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -59,32 +64,17 @@ public class HomeController {
 		List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
 		
 		for(Application app : apps){
-			payloads.add(tasApplicationService.determineHealthOfApp(app));
+			payloads.add(createPayloadFromApp(app));
 		}
 		
 		Collections.sort(payloads, new PayloadComparator());
-		
-		for(HealthcheckPayload pl : payloads){
-			if(pl.getResultValue() ==  STATUS_DOWN || pl.getResultValue() ==  STATUS_ERROR||
-					pl.getResultValue() == STATUS_OFF){
-					pl.getApp().setupTime(null);
-					tasApplicationService.saveApplication(pl.getApp());
-			}
-			else if((pl.getResultValue() == STATUS_UP || pl.getResultValue() == STATUS_SOME)
-					&& pl.getApp().getupTime() == null){
-					TimeZone.setDefault(TimeZone.getTimeZone("America/New_York"));
-					Date date = new Date();
-					pl.getApp().setupTime(date);
-					tasApplicationService.saveApplication(pl.getApp());
-			}
-		}
 		
 		model.addAttribute("applications", apps);
 		model.addAttribute("payloads", payloads);
 		
 		return "home";
 	}
-	
+
 	@RequestMapping(value = "/homeinner", method = RequestMethod.GET)
 	public String homeInner(Model model) {
 		logger.info("Accessing the tas healthcheck dashboard homepage");
@@ -93,7 +83,7 @@ public class HomeController {
 		List<HealthcheckPayload> payloads = new LinkedList<HealthcheckPayload>();
 		
 		for(Application app : apps){
-			payloads.add(tasApplicationService.determineHealthOfApp(app));
+			payloads.add(createPayloadFromApp(app));
 		}
 		
 		Collections.sort(payloads, new PayloadComparator());
@@ -113,7 +103,7 @@ public class HomeController {
 			return "redirect:../error";
 		}
 		
-		HealthcheckPayload payload = tasApplicationService.determineHealthOfApp(app);
+		HealthcheckPayload payload = createPayloadFromApp(app);
 		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
 		
 		logger.info(payload.toString());
@@ -145,7 +135,7 @@ public class HomeController {
 			return "redirect:../error";
 		}
 		
-		HealthcheckPayload payload = tasApplicationService.determineHealthOfApp(app);
+		HealthcheckPayload payload = createPayloadFromApp(app);
 		List<DownSchedule> dScheds = downScheduleService.getAllScheduledDownByAppId(id);
 		
 		logger.info(payload.toString());
@@ -178,5 +168,25 @@ public class HomeController {
 	@RequestMapping(value = "/error", method = RequestMethod.GET)
 	public String error(Model model) {
 		return "error";
+	}
+	
+	private HealthcheckPayload createPayloadFromApp(Application app) {
+		HealthcheckPayload payload = new HealthcheckPayload(app);
+		
+		HealthcheckPayload storedP = healthcheckPayloadService.getByAppId(app.getAppID());
+		List<Connection> storedConns = connectionService.getAllByAppId(app.getAppID());
+		
+		payload.setAppId(app.getAppID());
+		payload.setErrorMessage(storedP.getErrorMessage());
+		payload.setResultValue(storedP.getResultValue());
+		
+		Map<String, Connection> connections = new HashMap<String, Connection>();
+		for(Connection conn : storedConns){
+			connections.put(conn.getConnName(), conn);
+		}
+
+		payload.setConnections(connections);
+		
+		return payload;
 	}
 }
