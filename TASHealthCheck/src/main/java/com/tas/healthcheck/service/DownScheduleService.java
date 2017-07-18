@@ -18,7 +18,12 @@ public class DownScheduleService {
 	
 	public boolean saveSchedule(DownSchedule downSchedule) {
 		logger.info("Saving schedule to dao");
-		return downScheduleDao.saveDownSchedule(downSchedule);
+		DownSchedule result = downScheduleDao.saveDownSchedule(downSchedule);
+		if(result == null){
+			return false;
+		}else{
+			return true;
+		}
 	}
 
 	public List<DownSchedule> getAllScheduledDownByAppId(int id) {
@@ -31,6 +36,10 @@ public class DownScheduleService {
 
 	public boolean removeScheduleById(int id) {
 		return downScheduleDao.removeById(id);
+	}
+
+	public void removeSchedulesByAppId(int id) {
+		downScheduleDao.removeByAppId(id);
 	}
 
 }

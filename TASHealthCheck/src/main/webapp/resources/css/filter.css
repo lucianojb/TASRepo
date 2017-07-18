@@ -1,0 +1,89 @@
+body {
+    margin-top: 1rem;
+}
+.filtr-item {
+    padding: 1rem;
+}
+.item-desc {
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    position: absolute;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 1rem;
+    z-index: 1;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+}
+
+/* Filter controls */
+.simplefilter li, .multifilter li, .sortandshuffle li {
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    padding: .5rem .5rem;
+    background-color: #3cd27b;
+    transition: background-color 0.25s;
+    transition-property: background-color;
+    transition-duration: 0.25s;
+    transition-timing-function: initial;
+    transition-delay: initial;
+}
+}
+.simplefilter li {
+    background-color: #585858;
+}
+.simplefilter li.active {
+    background-color: #212121;
+}
+.multifilter li {
+    background-color: #3cd27b;
+}
+.multifilter li.active {
+    background-color: #26a45b;
+}
+
+/* Shuffle and sort controls */
+select {
+    padding: 1rem 1rem;
+    text-transform: uppercase;
+}
+.sortandshuffle .shuffle-btn {
+    background-color: #dec800;
+}
+.sortandshuffle .sort-btn {
+    background-color: #de0000;
+}
+.sortandshuffle .sort-btn.active {
+    background-color: #9d0000;
+}
+
+/* Search control */
+.search-row {
+    margin-left: 2.5rem;
+}
+.filtr-search {
+	padding: 0.5rem;
+	text-transform: uppercase;
+}
+
+.filterbutton {
+	border-right: 1px solid #26a45b;
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+	border-right: 1px solid #26a45b !important;;
+}
+
+.filtermiddlebutton {
+	border-top-right-radius: 0 !important;
+	border-bottom-right-radius: 0 !important;
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+	border-right: 1px solid #26a45b !important;
+}
+
+.filterlastbutton {
+	border-top-left-radius: 0 !important;
+	border-bottom-left-radius: 0 !important;
+}

@@ -6,7 +6,7 @@ import com.tas.healthcheck.models.Application;
 
 public interface TASApplicationDao {
 
-	boolean saveApplication(Application app);
+	Application saveApplication(Application app);
 
 	List<Application> getAllApps();
 

@@ -1,6 +1,8 @@
 package com.tas.healthcheck.web;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.tas.healthcheck.models.AppConnection;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
+import com.tas.healthcheck.service.AppConnectionService;
 import com.tas.healthcheck.service.DownScheduleService;
 import com.tas.healthcheck.service.TASApplicationService;
 
@@ -29,6 +33,9 @@ public class AdminController {
 	
 	@Autowired
 	DownScheduleService downScheduleService;
+	
+	@Autowired
+	AppConnectionService appConnectionService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -49,7 +56,9 @@ public class AdminController {
 	
 	@RequestMapping(value = "/createapplication", method = RequestMethod.POST)
 	public String saveApp(Model model, @Valid Application application, BindingResult bindingResult, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam(name="submit") String submit, RedirectAttributes redirectAttributes) {
 		
 		if(submit.equals("cancel")){
 			return "redirect:./applications";
@@ -62,16 +71,19 @@ public class AdminController {
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
 			model.addAttribute("connectionsAdded", connectionValues);
+			model.addAttribute("priorityValues", priorityValues);
 			
 			return "createapplication";
 		}
 		
+		List<AppConnection> connList = new LinkedList<AppConnection>();
+
 		if(connectionValues != null){
 			logger.info("Parsing through connection values {}", connectionValues.toString());
-			StringBuilder strBuild = new StringBuilder();
 			for(int x = 0; x < connectionValues.length; x++){
 				
 				if(connectionValues[x].isEmpty()){
@@ -80,22 +92,34 @@ public class AdminController {
 					redirectAttributes.addFlashAttribute("application", application);
 					model.addAttribute("connectionsAdded", connectionValues);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
+					model.addAttribute("priorityValues", priorityValues);
 					
 					return "createapplication";
 				}
 				
-				strBuild.append(connectionValues[x] + ",");
+				//for now make all priorities false
+				connList.add(new AppConnection(connectionValues[x], false));
 			}
-			if(strBuild.length() > 0){
-				strBuild.deleteCharAt(strBuild.length() - 1);
+		}
 		
-				application.setConnections(strBuild.toString());
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < connList.size() && index > -1){
+					connList.get(index).setPriority(true);
+				}
 			}
 		}
 		
 		logger.info("Creating: " + application);
 		application.setActiveState(true);
-		tasApplicationService.saveApplication(application);
+		Application app = tasApplicationService.saveApplication(application);
+		
+		if(app != null){
+			for(AppConnection conn : connList){
+				conn.setAppID(app.getAppID());
+				appConnectionService.saveAppConnection(conn);
+			}
+		}
 		
 		return "redirect:./applications";
 	}
@@ -113,10 +137,12 @@ public class AdminController {
 		
 		model.addAttribute("application", application);
 		
-		if(application.getConnections() != null){
-			String[] connections = application.getConnections().split(",");
-			model.addAttribute("connections", connections);
+		List<AppConnection> connections = appConnectionService.getConnectionsByAppId(application.getAppID());
+		List<String> connectionNames = new LinkedList<String>();
+		for(AppConnection conn : connections){
+			connectionNames.add(conn.getConnName());
 		}
+		model.addAttribute("connections", connections);
 		
 		return "editapplication";
 	}
@@ -124,48 +150,65 @@ public class AdminController {
 	@RequestMapping(value = "/editapplication/{id}", method = RequestMethod.POST)
 	public String editAppPost(@PathVariable("id") int id, Model model, @Valid Application application, 
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, 
-			@RequestParam(name="connection", required=false) String[] connectionValues, @RequestParam("submit")String submit){
+			@RequestParam(name="connection", required=false) String[] connectionValues, 
+			@RequestParam(name="core", required=false) Integer[] priorityValues,
+			@RequestParam("submit")String submit){
 		logger.info("Editing Application {} is {} POST", id, application);
 		
 		if(submit.equals("cancel")){
 			return "redirect:../applications";
 		}
 		
+		List<AppConnection> appConns = appConnectionService.getConnectionsByAppId(application.getAppID());
+
+		
 		if(bindingResult.hasErrors()){
 			logger.info("Binding errors on application " + application);
 			if(connectionValues != null){
 				logger.info("Preserving connectionValues " + connectionValues.toString() + ", size " + connectionValues.length);
 			}
+			
+			application.setAppName(tasApplicationService.getApplicationById(id).getAppName());
+			application.setUrl((tasApplicationService.getApplicationById(id).getUrl()));
+			
 	        redirectAttributes.addFlashAttribute("errors", bindingResult);
 			redirectAttributes.addFlashAttribute("application", application);
-			model.addAttribute("connections", connectionValues);
+			model.addAttribute("connections", appConns);
 			
 			return "editapplication";
 		}
 		
+		
+		List<AppConnection> conns = new LinkedList<AppConnection>();
 		if(connectionValues != null){
-			StringBuilder strBuild = new StringBuilder();
 			for(int x = 0; x < connectionValues.length; x++){
 				
 				if(connectionValues[x].isEmpty()){
 					logger.info("Empty connection component");
 					
 					redirectAttributes.addFlashAttribute("application", application);
-					model.addAttribute("connections", connectionValues);
+					model.addAttribute("connections", appConns);
 					model.addAttribute("connectionInvalid", "Connection values cannot be empty");
 					
 					return "editapplication";
 				}
 				
-				strBuild.append(connectionValues[x] + ",");
+				//for now make them all false
+				conns.add(new AppConnection(connectionValues[x], false, application.getAppID()));
 			}
-			if(strBuild.length() > 0){
-				strBuild.deleteCharAt(strBuild.length() - 1);
+		}
 		
-				application.setConnections(strBuild.toString());
-			}else{
-				application.setConnections(null);
+		if(priorityValues != null){
+			for(int index : priorityValues){
+				if(index < conns.size() && index > -1){
+					conns.get(index).setPriority(true);
+				}
 			}
+		}
+		
+		appConnectionService.removeApplicationConnections(application.getAppID());
+		for(AppConnection conn : conns){
+			appConnectionService.saveAppConnection(conn);
 		}
 		
 		tasApplicationService.saveApplication(application);
@@ -199,6 +242,8 @@ public class AdminController {
 				return "redirect:../error";
 			}
 
+			appConnectionService.removeApplicationConnections(id);
+			downScheduleService.removeSchedulesByAppId(id);
 			tasApplicationService.removeApplicationById(id);
 		}
 		
@@ -298,25 +343,24 @@ public class AdminController {
 	}
 	
 	@RequestMapping(value = "/deleteschedule/{id}", method = RequestMethod.POST)
-	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=true)String submit, RedirectAttributes redirect) {
+	public String deleteSchedule(Model model,  @PathVariable("id") int id, @RequestParam(name="submit", required=false)String submit, RedirectAttributes redirect) {
 		logger.info("Deleting application {}!", id);
 		
+		DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
+		if(sched == null){
+			redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
+			return "redirect:../error";
+		}
+		
+		int appId = sched.getAppID();
+		
 		if(submit.equals("delete")){
-			DownSchedule sched = downScheduleService.getScheduleBySchedId(id);
-			if(sched == null){
-				redirect.addFlashAttribute("errorMessage", "Could not find schedule to delete");
-				return "redirect:../error";
-			}
-			
-			int appId = sched.getAppID();
 			
 			downScheduleService.removeScheduleById(id);
 			
-			String url = "redirect:../disableapplication/" + appId;
-			
-			return url;
 		}
-				
-		return "redirect:../applications";
+		
+		return "redirect:../disableapplication/" + appId;
+		
 	}
 }

@@ -1,5 +1,7 @@
 package com.tas.healthcheck.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,6 +11,7 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(name="tas_app")
@@ -20,16 +23,13 @@ public class Application {
 	private int appID;
 	
 	@Column(name="app_name")
-	@NotEmpty
+	@NotEmpty(message = "Please enter an application name")
 	private String appName;
 	
 	@Column(name="url")
-	@URL(message="Not a valid url (assure url contains http:// or https:// in front)")
-	@NotEmpty
+	@URL(message="Not a valid URL (URL must contain http:// or https://)")
+	@NotEmpty(message = "Please enter a valid URL")
 	private String url;
-	
-	@Column(name="connections")
-	private String connections;
 	
 	@Column(name="version_num")
 	private String versionNum;
@@ -37,22 +37,25 @@ public class Application {
 	@Column(name="active")
 	private boolean activeState;
 	
+	@Column(name="uptimestart")
+	@DateTimeFormat(pattern = "MM/dd/yy HH:mm")
+	private Date upTime;
+	
 	public Application(){
 		super();
 	}
 	
-	public Application(String appName, String url, String connections, String versionNum, boolean activeState){
+	public Application(String appName, String url, String versionNum, boolean activeState){
 		super();
 		this.appName = appName;
 		this.url = url;
-		this.connections = connections;
 		this.versionNum = versionNum;
 		this.activeState = activeState;
 	}
 
 	@Override
 	public String toString() {
-		return "Application [appName=" + appName + ", url=" + url + ", connections=" + connections + ", versionNum="
+		return "Application [appName=" + appName + ", url=" + url + ", versionNum="
 				+ versionNum + ", activeState=" + activeState + "]";
 	}
 
@@ -80,14 +83,6 @@ public class Application {
 		this.url = url;
 	}
 
-	public String getConnections() {
-		return connections;
-	}
-
-	public void setConnections(String connections) {
-		this.connections = connections;
-	}
-
 	public String getVersionNum() {
 		return versionNum;
 	}
@@ -102,5 +97,13 @@ public class Application {
 
 	public void setActiveState(boolean activeState) {
 		this.activeState = activeState;
+	}
+	
+	public void setupTime(Date ut){
+		this.upTime = ut;
+	}
+	
+	public Date getupTime(){
+		return this.upTime;
 	}
 }

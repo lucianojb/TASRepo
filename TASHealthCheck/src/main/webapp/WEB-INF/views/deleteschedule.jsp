@@ -45,7 +45,8 @@ function goBack() {
 					<button type="submit" class="btn btn-danger btn-block"
 						name="submit" value="delete">Delete</button>
 
-					<button class="btn btn-error btn-block" onclick="goBack()">Cancel</button>
+					<button type="submit" class="btn btn-error btn-block" 
+					name="submit" value="cancel">Cancel</button>
 				</div>
 			</div>
 		</sf:form>

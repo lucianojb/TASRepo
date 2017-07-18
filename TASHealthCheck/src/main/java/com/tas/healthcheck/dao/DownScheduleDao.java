@@ -6,7 +6,7 @@ import com.tas.healthcheck.models.DownSchedule;;
 
 public interface DownScheduleDao {
 
-	boolean saveDownSchedule(DownSchedule sched);
+	DownSchedule saveDownSchedule(DownSchedule sched);
 
 	List<DownSchedule> getAllDownSchedule();
 
@@ -15,5 +15,7 @@ public interface DownScheduleDao {
 	List<DownSchedule> getAllDownSchedulesByAppId(int id);
 
 	boolean removeById(int id);
+
+	void removeByAppId(int id);
 
 }

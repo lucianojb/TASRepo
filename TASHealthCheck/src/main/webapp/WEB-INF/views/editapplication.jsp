@@ -13,10 +13,10 @@
 <body>
 	<jsp:include page="header.jsp" />
 
-	<div class="container">
+	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-3 col-centered row-bordered">
-				<h1 style="text-align: center;">Edit ${application.appName}</h1>
+				<h1 style="text-align: center; font-weight: bold;">Edit ${application.appName}</h1>
 			</div>
 		</div>
 
@@ -26,42 +26,58 @@
 			<sf:input type="hidden" path="versionNum" value="${application.versionNum}"/>
 						
 			<div class="row top-buffer">
-				<div class="col-sm-3 col-centered">
+				<div class="col-sm-2 col-centered">
 					<div class="form-group">
-						<label class="control-label" for="appName">App Name</label>
-						<sf:input class="form-control" id="appName" name="appName"
+						<label class="control-label" for="appName">Application Name</label>
+						<sf:input class="form-control" id="appName" name="appName" style = "text-align:center"
 							path="appName" type="text" value="${application.appName}" />
-						<sf:errors path="appName" />
+						<sf:errors path="appName" cssClass="urlError" element="h2"/>
 					</div>
 				</div>
 			</div>
 			<div class="row">
 
-				<div class="col-sm-3 col-centered">
+				<div class="col-sm-2 col-centered">
 					<div class="form-group">
 						<label class="control-label" for="url">URL</label>
 						<sf:input class="form-control" id="url" name="url" path="url"
-							type="text" value="${application.url}" />
-						<sf:errors path="url" />
+							type="text" value="${application.url}" style = "text-align:center"/>
+						<sf:errors path="url" cssClass="urlError" element="h2"/>
 					</div>
 				</div>
 			</div>
 
 			<div class="row">
-				<div class="col-sm-3 col-centered">
 					<div class="form-group" id="connectionsGroup">
-						<label class="control-label" for="connectionsGroup">Connections</label>
 						<c:if test="${not empty connections}">
-							<c:forEach var="con" items="${connections}">
-								<input type="text" name="connection" value="${con}"
-									class="form-control margin-bottom">
+						<div class="col-sm-2 col-sm-offset-5 first-col-label">Connections</div>
+						<div class="first-col-label" style="text-align:left">Priority</div>
+							<c:forEach var="con" items="${connections}" varStatus="myIndex">
+								<div class = "col-sm-2 col-sm-offset-5 cn">
+									<input type="text" name="connection" value="${con.connName}"
+										class="form-control margin-bottom" style = "text-align:center">
+								</div>
+								<div class="col-sm-1 cb">
+								<c:choose>
+								<c:when test="${con.priority}">
+									<input type="checkbox" name="core" value="${myIndex.index}" checked>
+								</c:when>
+								<c:otherwise>
+									<input type="checkbox" name="core" value="${myIndex.index}">
+								</c:otherwise>
+								</c:choose>
+								</div>
 							</c:forEach>
 						</c:if>
 					</div>
 				</div>
 				<div>
 					<c:if test="${not empty connectionInvalid}">
-						<c:out value="${connectionInvalid}"></c:out>
+					<div class = "row" style="padding-bottom:20px">
+						<div class="col-sm-3 col-centered">
+							<h2 style="text-align:center">${connectionInvalid}</h2>
+						</div>
+					</div>
 					</c:if>
 				</div>
 			</div>

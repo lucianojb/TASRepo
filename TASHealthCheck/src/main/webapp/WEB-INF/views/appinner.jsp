@@ -67,7 +67,7 @@
 						<thead class="thead-inverse">
 							<tr>
 								<th style="text-align: center; font-size: 20px;">Connection</th>
-								<th width="100%" style="text-align: center; font-size: 20px;">Details</th>
+								<th width="100%" style="text-align: center; font-size: 20px; padding-right:45px;">Details</th>
 								<th style="text-align: center; font-size: 20px;">Status</th>
 							</tr>
 						</thead>
@@ -76,7 +76,14 @@
 									<c:choose>
 										<c:when test="${empty conn.value.functional}">
 											<tr class="spaceUnder">
-											<td align="center">${conn.key}</td>
+											<td align="center">${conn.key}
+												<c:if test="${conn.value.priority}">
+													<img width=20px style="max-width: 40%;" 
+													 align="right" data-toggle="tooltip" data-placement="right" 
+													title="This is a priority connection"
+													src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+												</c:if>
+											</td>
 											<td align="center">${conn.value.details}</td>
 											<td align="center"><img style="max-width: 40%"
 												src="${pageContext.request.contextPath}/resources/pictures/greycircle.png" />
@@ -89,7 +96,14 @@
 												<c:choose>
 												<c:when test="${conn.value.functional}">
 													<tr class="spaceUnder">
-													<td align="center">${conn.key}</td>
+													<td align="center">${conn.key}
+													<c:if test="${conn.value.priority}">
+														<img width=20px style="max-width: 40%;" 
+													 	align="right" data-toggle="tooltip" data-placement="right" 
+														title="This is a priority connection"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+													</c:if>
+													</td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/greencircle.png" />
@@ -98,7 +112,14 @@
 												</c:when>
 												<c:otherwise>
 													<tr class="spaceUnder">
-													<td align="center">${conn.key}</td>
+													<td align="center">${conn.key}
+													<c:if test="${conn.value.priority}">
+														<img width=20px style="max-width: 40%;" 
+													 	align="right" data-toggle="tooltip" data-placement="right" 
+														title="This is a priority connection"
+														src="${pageContext.request.contextPath}/resources/pictures/exclamation-priority.png" />
+													</c:if>
+													</td>
 													<td align="center">${conn.value.details}</td>
 													<td align="center"><img style="max-width: 40%"
 														src="${pageContext.request.contextPath}/resources/pictures/redcircle.png" />
@@ -169,4 +190,11 @@
 			</div>
 		</div>
 	</div>
+	<c:if test="${not empty healthPayload.app.upTime}">
+		<div class = "row">
+			<div class = "col-sm-3 col-centered">
+				<h2 style="text-align:center">Up for ${upHours} hours and ${upMinutes} minutes</h2>
+			</div>
+		</div>
+	</c:if>
 </div>

@@ -7465,7 +7465,7 @@ span {
 #sup{
     display: table-cell;
     vertical-align: middle;
-    width: 80%;
+    width: 100%;
 }
 .detail a {
     text-decoration: none;
@@ -7622,6 +7622,34 @@ img-md {
 
 tr.spaceUnder>td {
   padding-bottom: 1em;
+}
+
+.helper {
+    margin-top: 30px;
+}
+.left{
+	float:left;
+}
+
+.center{
+	float:center;
+}
+
+.core{
+	float:left;	
+}
+
+.first-col-label{
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #333;
+    text-align:center;
+    font-weight: 700;
+}
+
+.urlError{
+	text-align:center;
 }
 
 /*# sourceMappingURL=bootstrap.min.css.map */
