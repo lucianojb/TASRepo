@@ -2,7 +2,6 @@ package com.tas.healthcheck.web;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -22,7 +21,9 @@ import com.tas.healthcheck.models.AppConnection;
 import com.tas.healthcheck.models.Application;
 import com.tas.healthcheck.models.DownSchedule;
 import com.tas.healthcheck.service.AppConnectionService;
+import com.tas.healthcheck.service.ConnectionService;
 import com.tas.healthcheck.service.DownScheduleService;
+import com.tas.healthcheck.service.HealthcheckPayloadService;
 import com.tas.healthcheck.service.TASApplicationService;
 
 @Controller
@@ -36,6 +37,12 @@ public class AdminController {
 	
 	@Autowired
 	AppConnectionService appConnectionService;
+	
+	@Autowired
+	ConnectionService connectionService;
+	
+	@Autowired
+	HealthcheckPayloadService healthcheckPayloadService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 	
@@ -119,6 +126,10 @@ public class AdminController {
 				conn.setAppID(app.getAppID());
 				appConnectionService.saveAppConnection(conn);
 			}
+			
+			List<Application> apps = new LinkedList<Application>();
+			apps.add(app);
+			tasApplicationService.runHealthChecksOnApps(apps);	
 		}
 		
 		return "redirect:./applications";
@@ -193,7 +204,6 @@ public class AdminController {
 					return "editapplication";
 				}
 				
-				//for now make them all false
 				conns.add(new AppConnection(connectionValues[x], false, application.getAppID()));
 			}
 		}
@@ -212,6 +222,9 @@ public class AdminController {
 		}
 		
 		tasApplicationService.saveApplication(application);
+		List<Application> apps = new LinkedList<Application>();
+		apps.add(application);
+		tasApplicationService.runHealthChecksOnApps(apps);
 		
 		return "redirect:../applications";
 	}
@@ -244,6 +257,8 @@ public class AdminController {
 
 			appConnectionService.removeApplicationConnections(id);
 			downScheduleService.removeSchedulesByAppId(id);
+			connectionService.removeAllByAppId(id);
+			healthcheckPayloadService.removeAllByAppId(id);
 			tasApplicationService.removeApplicationById(id);
 		}
 		
@@ -313,6 +328,9 @@ public class AdminController {
 			logger.info("Toggling state of application to {}", !app.isActiveState());
 			app.setActiveState(!app.isActiveState());
 			tasApplicationService.saveApplication(app);
+			List<Application> apps = new LinkedList<Application>();
+			apps.add(app);
+			tasApplicationService.runHealthChecksOnApps(apps);
 			
 			return "redirect:../disableapplication/" + app.getAppID();
 		}

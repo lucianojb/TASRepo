@@ -173,7 +173,7 @@ public class HomeController {
 		HealthcheckPayload storedP = healthcheckPayloadService.getByAppId(app.getAppID());
 		List<Connection> storedConns = connectionService.getAllByAppId(app.getAppID());
 		
-		payload.setAppId(storedP.getAppId());
+		payload.setAppId(app.getAppID());
 		payload.setErrorMessage(storedP.getErrorMessage());
 		payload.setResultValue(storedP.getResultValue());
 		

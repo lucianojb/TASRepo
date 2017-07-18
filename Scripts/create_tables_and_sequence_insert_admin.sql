@@ -17,7 +17,6 @@ create sequence app_conns_conn_id_seq;
 create sequence health_payload_health_id_seq;
 create sequence connections_conn_id_seq;
 
-
 CREATE TABLE tas_app (
 	app_name varchar NULL,
 	url varchar NULL,
