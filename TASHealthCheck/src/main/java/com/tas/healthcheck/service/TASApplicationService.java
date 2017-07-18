@@ -374,13 +374,18 @@ public class TASApplicationService {
 			}
 			
 			for(HealthcheckPayload payload : payloads){
+				HealthcheckPayload existingPayload = healthcheckPayloadService.getByAppId(payload.getApp().getAppID());
+				
 				HealthcheckPayload saveP = new HealthcheckPayload();
+				
+				if(existingPayload != null){
+					saveP.setHealthId(existingPayload.getHealthId());
+				}
 				
 				saveP.setAppId(payload.getApp().getAppID());
 				saveP.setErrorMessage(payload.getErrorMessage());
 				saveP.setResultValue(payload.getResultValue());
 				
-				healthcheckPayloadService.removeAllByAppId(saveP.getAppId());
 				connectionService.removeAllByAppId(saveP.getAppId());
 				
 				healthcheckPayloadService.saveHealthCheckPayload(saveP);
