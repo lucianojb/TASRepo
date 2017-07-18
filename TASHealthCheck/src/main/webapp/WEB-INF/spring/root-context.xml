@@ -47,6 +47,8 @@
 				<value>com.tas.healthcheck.models.Application</value>
 				<value>com.tas.healthcheck.models.DownSchedule</value>
 				<value>com.tas.healthcheck.models.AppConnection</value>
+				<value>com.tas.healthcheck.models.Connection</value>
+				<value>com.tas.healthcheck.models.HealthcheckPayload</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -69,6 +71,18 @@
 			<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	
+	<bean id="connectionDao" class="com.tas.healthcheck.dao.ConnectionDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="healthcheckPayloadDao" class="com.tas.healthcheck.dao.HealthcheckPayloadDaoImpl">
+			<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+		
+	<bean id="connectionService" class="com.tas.healthcheck.service.ConnectionService"></bean>
+	
+	<bean id="healthcheckPayloadService" class="com.tas.healthcheck.service.HealthcheckPayloadService"></bean>
+
 	<bean id="tasApplicationService" class="com.tas.healthcheck.service.TASApplicationService"></bean>
 	
 	<bean id="downScheduleService" class="com.tas.healthcheck.service.DownScheduleService"></bean>
